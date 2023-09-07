@@ -10,16 +10,16 @@ include '../shared/utils/translate-date.php';
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Reserva administrativo</title>
+    <title>Reserva docente</title>
     <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js'></script>
     <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
         integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
-    <link rel="stylesheet" href="./css/bootstrap.min.css">
-    <link rel="stylesheet" href="./fullcalendar/lib/main.min.css">
-    <link rel="stylesheet" type="text/css" href="reserva.css">
-    <script src="./js/jquery-3.6.0.min.js"></script>
-    <script src="./js/bootstrap.min.js"></script>
-    <script src="./fullcalendar/lib/main.min.js"></script>
+    <link rel="stylesheet" href="../shared/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../shared/fullcalendar/lib/main.min.css">
+    <link rel="stylesheet" type="text/css" href="../shared/css/reserva.css">
+    <script src="../shared/js/jquery-3.6.0.min.js"></script>
+    <script src="../shared/js/bootstrap.min.js"></script>
+    <script src="../shared/fullcalendar/lib/main.min.js"></script>
     <style>
         :root {
             --bs-success-rgb: 71, 222, 152 !important;
@@ -137,12 +137,16 @@ include '../shared/utils/translate-date.php';
     var calendar = new FullCalendar.Calendar(document.getElementById("calendar"), {
         headerToolbar: {
             left: "prev,next today",
-            right: "dayGridWeek,dayGridMonth,list",
+            right: "timeGridWeek,dayGridMonth,list",
             center: "title"
         },
         locale: "es",
         selectable: true,
+        hiddenDays: [0],
         themeSystem: "bootstrap",
+        buttonText: {
+            today: 'Hoy', month: 'Mes', week: 'Semana', list: 'Lista'
+        },
         events: events,
         eventClick: function (info) {
             var _details = $("#event-details-modal");
@@ -164,7 +168,7 @@ include '../shared/utils/translate-date.php';
         editable: true,
     });
 
-    calendar.changeView('dayGridWeek');
+    calendar.changeView('timeGridWeek');
     calendar.render();
 
     /*

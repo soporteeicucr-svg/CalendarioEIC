@@ -28,7 +28,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
                </div>
                <div class="center">
                     <h2>Reservas</h2>
-                    <button id="btn1" onclick="location.href='reservas-aprobadas.php'">Reservaciones activas</button>
+                    <button id="btn1" onclick="location.href='reservas-aprobadas.php'">Reservaciones aprobadas</button>
                     <button id="btn1" onclick="location.href='realizar-reserva.php'">Realizar reservación</button>
                     <button id="btn1" onclick="location.href='calendario-reserva.php'">Calendario de reservaciones</button>
                </div>

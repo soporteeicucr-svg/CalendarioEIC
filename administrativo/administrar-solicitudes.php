@@ -12,7 +12,6 @@ include '../shared/utils/db-conn.php';
     <title>Revisión Reserva</title>
     <link rel="stylesheet" type="text/css" href="../shared/css/lista.css">
     <link rel="stylesheet" type="text/css" href="../shared/css/bootstrap.min.css">
-
 </head>
 
 <body style="margin: 50px;">
@@ -64,43 +63,44 @@ include '../shared/utils/db-conn.php';
                     </td>
                     <td>
                         <form action="administrar-solicitudes.php" method="POST" style="">
-                            <input type="hidden" name="id" value="<?php echo $row['id']; ?>" />
+                            <input type="hidden" name="id" id="<?php echo $row['id']; ?>"
+                                value="<?php echo $row['id']; ?>" />
                             <input type="submit" name="aprobar" value="Aprobar" />
                             <input type="submit" name="rechazar" value="Rechazar" />
                         </form>
                     </td>
                 </tr>
-            </tbody>
-        </table>
-        <?php
+                <?php
             }
             ?>
-
-    <?php
-    if (isset($_POST['aprobar'])) {
-        $id = $_POST['id'];
-
-        $select = "UPDATE `lista_horarios` SET estado = 'aprobado' WHERE id = '$id' ";
-        $result = mysqli_query($conn, $select);
-
-        echo '<script type = "text/javascript">';
-        echo 'alert("Reserva aprobada")';
-        echo 'window.location.href = "administrar-solicitudes.php"';
-        echo '</script>';
-    }
-
-    if (isset($_POST['rechazar'])) {
-        $id = $_POST['id'];
-
-        $select = "DELETE FROM `lista_horarios` WHERE id = '$id' ";
-        $result = mysqli_query($conn, $select);
-
-        echo '<script type = "text/javascript">';
-        echo 'alert("Reserva rechazada")';
-        echo 'window.location.href = "administrar-solicitudes.php"';
-        echo '</script>';
-    }
-    ?>
+        </tbody>
+    </table>
 </body>
+
+<?php
+if (isset($_POST['aprobar'])) {
+    $id = $_POST['id'];
+
+    $select = "UPDATE `lista_horarios` SET estado = 'aprobado' WHERE id = '$id'";
+    $result = mysqli_query($conn, $select);
+
+    echo '<script type = "text/javascript">';
+    echo 'alert("Reserva aprobada");';
+    echo 'window.location.href = "administrar-solicitudes.php";';
+    echo '</script>';
+}
+
+if (isset($_POST['rechazar'])) {
+    $id = $_POST['id'];
+
+    $select = "UPDATE `lista_horarios` SET estado = 'rechazado' WHERE id = '$id'";
+    $result = mysqli_query($conn, $select);
+
+    echo '<script type = "text/javascript">';
+    echo 'alert("Reserva rechazada");';
+    echo 'window.location.href = "administrar-solicitudes.php";';
+    echo '</script>';
+}
+?>
 
 </html>

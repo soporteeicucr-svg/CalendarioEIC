@@ -29,7 +29,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
                          value="<?php echo $_SESSION['nombre']; ?>" readonly>
 
                     <label for="correo">Correo institucional</label>
-                    <input type="text" name="correo" id="correo" placeholder="Ingrese su nombre" value=<?php echo $_SESSION['usuario']; ?> readonly>
+                    <input type="text" name="correo" id="correo" placeholder="Ingrese su correo institucional" value=<?php echo $_SESSION['usuario']; ?> readonly>
 
                     <label for="cedula">Cédula de identidad</label>
                     <input type="text" name="cedula" id="cedula" placeholder="Ingrese su cédula de identidad" value=<?php echo $_SESSION['id']; ?> readonly>

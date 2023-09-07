@@ -13,8 +13,8 @@ if (!isset($_GET['id'])) {
 $delete = $conn->query("DELETE FROM `lista_horarios` where id = '{$_GET['id']}'");
 if ($delete) {
 	echo "<script>
-	alert('Event has deleted successfully.');
-	location.replace('./')
+	alert('Reserva eliminada de manera exitosa');
+	location.replace('./');
 	</script>";
 } else {
     echo "<pre>";
