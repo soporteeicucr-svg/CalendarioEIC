@@ -1,0 +1,164 @@
+.center {
+  margin: auto;
+  width: 50%;
+  padding: 10px;
+  text-align: center;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f2f2f2;
+  padding: 20px;
+}
+
+h1 {
+  text-align: center;
+  margin-bottom: 25px;
+}
+
+input[type="submit"] {
+  background-color: #4caf50;
+  color: #fff;
+  padding: 15px 25px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  display: block;
+  margin-top: 20px;
+  margin-right: auto;
+  margin-left: auto;
+  font-weight: bold;
+  font-size: 15px;
+}
+
+input[type="submit"]:hover {
+  background-color: #48964c;
+}
+
+a {
+  background: #555;
+  padding: 15px 25px;
+  color: #fff;
+  border-radius: 5px;
+  border: none;
+  text-decoration: none;
+  margin-top: 35px;
+  margin-bottom: 15%;
+  text-align: center;
+  font-weight: bold;
+}
+
+a:hover {
+  opacity: 0.7;
+}
+
+.logout {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.spacingLogout {
+  margin-bottom: 10%;
+}
+
+.container {
+  width: 100%;
+  float: left;
+  border: solid 1px blue;
+  text-align: center;
+}
+
+.container button {
+  display: inline-block;
+}
+
+#btn1 {
+  background-color: #396496;
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+#btn1:hover {
+  background-color: #2b4a6e;
+}
+
+#btn2 {
+  background-color: #a57b53;
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+#btn2:hover {
+  background-color: #8b6745;
+}
+
+#btn3 {
+  background-color: #c75858;
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+#btn3:hover {
+  background-color: #df5a51;
+}
+
+#btn4 {
+  background-color: #5fb464;
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+#btn4:hover {
+  background-color: #4f9454;
+}
+
+#btn5 {
+  background-color: #9b9b9b;
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+#btn5:hover {
+  background-color: #d1d1d1;
+}
