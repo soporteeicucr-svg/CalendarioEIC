@@ -10,6 +10,8 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
      <html>
 
      <head>
+          <meta charset="UTF-8">
+          <meta http-equiv="X-UA-Compatible" content="ie=edge">
           <title>Registro docente</title>
           <link rel="stylesheet" type="text/css" href="../shared/css/formulario.css">
      </head>

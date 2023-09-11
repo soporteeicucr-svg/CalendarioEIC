@@ -20,9 +20,11 @@ if ($_SERVER['REQUEST_METHOD'] != 'POST') {
 extract($_POST);
 $allday = isset($allday);
 
+$sql = "";
+
 if (empty($id)) {
-    if ($_SESSION['tipo'] == "doncente") {
-    $sql = "INSERT INTO `lista_horarios` (`espacio`,`sigla_curso`,`nombre_curso`,`solicitante`,`hora_inicio`,`hora_fin`, estado) VALUES ('$espacio','$siglaCurso','$nombreCurso','$solicitante','$horaInicio','$horaFin','pendiente')";
+    if ($_SESSION['tipo'] == "docente") {
+        $sql = "INSERT INTO `lista_horarios` (`espacio`,`sigla_curso`,`nombre_curso`,`solicitante`,`hora_inicio`,`hora_fin`, estado) VALUES ('$espacio','$siglaCurso','$nombreCurso','$solicitante','$horaInicio','$horaFin','pendiente')";
     } else if ($_SESSION['tipo'] == "administrativo") {
         $sql = "INSERT INTO `lista_horarios` (`espacio`,`sigla_curso`,`nombre_curso`,`solicitante`,`hora_inicio`,`hora_fin`, estado) VALUES ('$espacio','$siglaCurso','$nombreCurso','$solicitante','$horaInicio','$horaFin','aprobado')";
     }

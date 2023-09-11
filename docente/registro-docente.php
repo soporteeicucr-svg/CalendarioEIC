@@ -10,6 +10,8 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
      <html>
 
      <head>
+          <meta charset="UTF-8">
+          <meta http-equiv="X-UA-Compatible" content="ie=edge">
           <title>Registro docente</title>
           <link rel="stylesheet" type="text/css" href="../shared/css/formulario.css">
      </head>
@@ -18,7 +20,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
           <div>
                <div class="center">
                     <img src="../img/logoEIC.png" alt="Logo Escuela de Ingeniería Civil UCR">
-                    <h1>Sistema de registro docente</h1>
+                    <h1>Sistema de registro y retiro de cartuchera</h1>
                </div>
 
                <form action="utils/db-registro-docente.php" method="post">
@@ -47,7 +49,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
                     <input type="text" name="nombre_curso" id="nombre_curso" placeholder="Ingrese la sigla del curso primero"
                          readonly>
 
-                    <label for="espacio">¿Cual espacio desea reservar?</label>
+                    <label for="espacio">Espacio a utilizar</label>
                     <div class="selectOption">
                          <select name="espacio" id="espacio">
                               <option value="Laboratorio 1">Laboratorio 1</option>

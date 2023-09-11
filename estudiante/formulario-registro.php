@@ -7,6 +7,8 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
      <html>
 
      <head>
+          <meta charset="UTF-8">
+          <meta http-equiv="X-UA-Compatible" content="ie=edge">
           <title>Registro para uso de laboratorios para estudiantes</title>
           <link rel="stylesheet" type="text/css" href="../shared/css/formulario.css">
      </head>
@@ -51,7 +53,11 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
 
                <div class="center">
                     <button id="btn3" onclick="location.href='../shared/cerrar-sesion.php'">Cerrar sesión</button>
+                    <!--
+                    Botón para cambiar contraseña, la funcionalidad ya existe,
+                    si se desea implementar simplemente descomentar:
                     <button id="btn5" onclick="location.href='../shared/cambiar-contrasena.php'">Cambiar contraseña</button>
+                    -->
                </div>
           </div>
 
@@ -72,7 +78,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
                          document.getElementById('submit').disabled = true;
                     }
                }
-               
+
                getDate();
                let refreshDate = setInterval(getDate, 1000);
           </script>
