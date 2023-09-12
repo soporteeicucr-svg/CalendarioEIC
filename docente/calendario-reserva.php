@@ -136,12 +136,16 @@ include '../shared/utils/translate-date.php';
     var calendar = new FullCalendar.Calendar(document.getElementById("calendar"), {
         headerToolbar: {
             left: "prev,next today",
-            right: "dayGridWeek,dayGridMonth,list",
+            right: "timeGridWeek,dayGridMonth,list",
             center: "title"
         },
         locale: "es",
         selectable: true,
+        hiddenDays: [0],
         themeSystem: "bootstrap",
+        buttonText: {
+            today: 'Hoy', month: 'Mes', week: 'Semana', list: 'Lista'
+        },
         events: events,
         eventClick: function (info) {
             var _details = $("#event-details-modal");
@@ -163,7 +167,7 @@ include '../shared/utils/translate-date.php';
         editable: true,
     });
 
-    calendar.changeView('dayGridWeek');
+    calendar.changeView('timeGridWeek');
     calendar.render();
 
     /*

@@ -1,6 +1,9 @@
 <?php
-include 'utils/courses.php';
 include '../shared/utils/db-conn.php';
+include '../shared/utils/get-courses.php';
+include '../shared/utils/translate-date.php';
+
+include '../shared/utils/console-log.php';
 
 session_start();
 ?>
@@ -32,7 +35,7 @@ session_start();
         <label for="espacio">Espacio a reservar</label>
         <div class="selectOption">
             <select name="espacio" id="espacio" required>
-                <option selected>Seleccione un espacio</option>
+                <option value="">Seleccione un espacio</option>
                 <option value="Laboratorio 1">Laboratorio 1</option>
                 <option value="Laboratorio 2">Laboratorio 2</option>
                 <option value="Laboratorio 3">Laboratorio 3</option>
@@ -85,6 +88,7 @@ session_start();
         $row['sdate'] = translateDate($row['hora_inicio']);
         $row['edate'] = translateDate($row['hora_fin']);
 
+        consoleLog($row['espacio'] . " " . $row['hora_inicio'] . " " . $row['hora_fin']);
         $sched_res[$row['id']] = $row;
     }
     ?>

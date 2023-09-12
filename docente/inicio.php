@@ -20,11 +20,11 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
                     <h1>Sistema de reserva de labortorios y salas</h1>
                </div>
                <div class="center">
-                    <h2>Registro y retiro de cartuchera para laboratorio</h2>
+                    <h2>Registro y retiro de cartuchera para espacio reservado</h2>
                     <button id="btn1" onclick="location.href='registro-docente.php'">Realizar registro</button>
                </div>
                <div class="center">
-                    <h2>Solicitud de reserva de laboratorio</h2>
+                    <h2>Solicitud de reserva de espacio</h2>
                     <button id="btn2" onclick="location.href='solicitud-reserva.php'">Realizar reserva</button>
                </div>
                <div class="center">

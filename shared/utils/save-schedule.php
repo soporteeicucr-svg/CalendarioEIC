@@ -34,7 +34,7 @@ if (empty($id)) {
 $save = $conn->query($sql);
 if ($save) {
     echo "<script>alert('Solicitud de reserva enviada de forma exitosa');
-    location.replace('../../' + '" . $_SESSION['tipo'] . "' + '/solicitud-reserva.php')
+    location.replace('../../' + '" . $_SESSION['tipo'] . "' + '/inicio.php')
     </script>";
 } else {
     echo "<pre>";

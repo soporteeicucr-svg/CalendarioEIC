@@ -1,5 +1,5 @@
 <?php
-include 'utils/courses.php';
+include '../shared/utils/db-conn.php';
 
 session_start();
 
