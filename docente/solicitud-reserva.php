@@ -112,7 +112,6 @@ session_start();
         } else {
             document.getElementById('nombre_curso').setAttribute("value", "");
             foundCourse = false;
-            checkFilled();
         }
     }
 
@@ -148,28 +147,33 @@ session_start();
 
     function updateDatePickers(inputDate) {
         let selectedDate = document.getElementById(inputDate).value + ":00";
+        let conflictFound = false; // Variable to track conflicts
 
         for (i in listaReservas) {
             let startDateTime = listaReservas[i]["hora_inicio"];
             let endDateTime = listaReservas[i]["hora_fin"];
-            if (selectedDate >= startDateTime && selectedDate <= endDateTime) {
+            //-----------------------------------------------------------------------------------------------------------
+            if (selectedDate > startDateTime && selectedDate < endDateTime) { // TODO: Hora inicio puede ser igual a la hora de finalización de otra reserva, hora de fin puede ser igual a la hora de inicio de otra reserva
+            //-----------------------------------------------------------------------------------------------------------
                 document.getElementById("error_" + inputDate).innerHTML = "<h5 style='color: red; margin-top: 0;'>Error: la fecha y hora elegida ya está reservada</h5>"
                 if (inputDate == "hora_inicio") {
                     validStartDateTime = false;
-                    checkFilled();
                 } else {
                     validEndDateTime = false;
-                    checkFilled();
                 }
+                conflictFound = true; // Conflict found, set the flag to true
+                break; // Exit the loop early
+            }
+        }
+
+        if (!conflictFound) {
+            document.getElementById("error_" + inputDate).innerHTML = ""; // Clear the error message
+            if (inputDate == "hora_inicio") {
+                validStartDateTime = true;
+                checkFilled();
             } else {
-                document.getElementById("error_" + inputDate).innerHTML = "";
-                if (inputDate == "hora_inicio") {
-                    validStartDateTime = true;
-                    checkFilled();
-                } else {
-                    validEndDateTime = true;
-                    checkFilled();
-                }
+                validEndDateTime = true;
+                checkFilled();
             }
         }
 
