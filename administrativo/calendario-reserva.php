@@ -10,15 +10,14 @@ include '../shared/utils/translate-date.php';
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Reserva docente</title>
-    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js'></script>
-    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
-        integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
-    <link rel="stylesheet" href="../shared/css/bootstrap.min.css">
-    <link rel="stylesheet" href="../shared/fullcalendar/lib/main.min.css">
+    <link rel="stylesheet" type="text/css" href="../shared/lib/fontawesome/css/all.css">
+    <link rel="stylesheet" type="text/css" href="../shared/lib/bootstrap/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="../shared/lib/fullcalendar/lib/main.min.css">
     <link rel="stylesheet" type="text/css" href="../shared/css/reserva.css">
-    <script src="../shared/js/jquery-3.6.0.min.js"></script>
-    <script src="../shared/js/bootstrap.min.js"></script>
-    <script src="../shared/fullcalendar/lib/main.min.js"></script>
+    <script src="../shared/lib/jquery/jquery-3.6.0.min.js"></script>
+    <script src="../shared/lib/bootstrap/bootstrap.min.js"></script>
+    <script src='../shared/lib/fullcalendar/index.global.min.js'></script>
+    <script src="../shared/lib/fullcalendar/lib/main.min.js"></script>
     <style>
         :root {
             --bs-success-rgb: 71, 222, 152 !important;
@@ -54,7 +53,7 @@ include '../shared/utils/translate-date.php';
     <nav class="navbar navbar-expand-lg navbar-dark bg-gradient bg-primary" id="topNavBar">
         <div class="container">
             <a class="navbar-brand">
-                Escuela de Ingeniería Civil | Sistema de reserva administrativo
+                Escuela de Ingeniería Civil | Sistema de reserva docente
             </a>
             <div>
                 <button class="buttonHome" onclick="location.href='inicio.php'">Inicio</button>

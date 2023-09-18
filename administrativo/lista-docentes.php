@@ -10,7 +10,7 @@ include '../shared/utils/db-conn.php';
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Lista de docentes</title>
     <link rel="stylesheet" type="text/css" href="../shared/css/lista.css">
-    <link rel="stylesheet" type="text/css" href="../shared/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="../shared/lib/bootstrap/bootstrap.min.css">
 </head>
 
 <body style="margin: 50px;">

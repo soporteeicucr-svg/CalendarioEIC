@@ -19,7 +19,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
      <body>
           <div>
                <div class="center">
-                    <img src="../img/logoEIC.png" alt="Logo Escuela de Ingeniería Civil UCR">
+                    <img src="../shared/img/logoEIC.png" alt="Logo Escuela de Ingeniería Civil UCR">
                     <h1>Sistema de registro docente</h1>
                </div>
 
