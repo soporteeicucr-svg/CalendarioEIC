@@ -6,5 +6,5 @@ $tipo = $_SESSION['tipo'];
 session_unset();
 session_destroy();
 
-header('Location: ' . '../' . $tipo);
+header('Location: ' . '../inicio.php');
 ?>

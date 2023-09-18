@@ -6,13 +6,11 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Inicio de sesión</title>
     <link rel="stylesheet" href="../shared/css/login.css">
-    <link rel="stylesheet"
-        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
 </head>
 
 <body>
     <div class="center">
-        <img src="../img/logoEIC.png" alt="Logo Escuela de Ingeniería Civil UCR">
+        <img src="../shared/img/logoEIC.png" alt="Logo Escuela de Ingeniería Civil UCR">
         <h1>Reserva de laboratorios y salas para docentes</h1>
     </div>
 

@@ -19,7 +19,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
      <body>
           <div>
                <div class="center">
-                    <img src="../img/logoEIC.png" alt="Logo Escuela de Ingeniería Civil UCR">
+                    <img src="../shared/img/logoEIC.png" alt="Logo Escuela de Ingeniería Civil UCR">
                     <h1>Sistema de registro y retiro de cartuchera</h1>
                </div>
 
@@ -75,7 +75,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
                     <p class="avisoHora">Si utiliza el laboratorio después de las 17:00, comuníquese con la recepción de la
                          escuela</p>
                     <input type="text" name="fecha_ingreso" id="fecha_ingreso" readonly />
-                    <input type="submit" id="submit" value="Enviar solicitud" disabled>
+                    <input type="submit" id="submit" value="Registrarse" disabled>
                </form>
 
                <div class="center">
