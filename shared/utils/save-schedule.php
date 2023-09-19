@@ -9,9 +9,9 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
     $siglaCurso = $_POST['sigla_curso'];
     $nombreCurso = $_POST['nombre_curso'];
     $solicitante = $_POST['solicitante'];
-    // $repeticion = $_POST['repeticion'];
-    $horaInicio = $_POST['hora_inicio'];
-    $horaFin = $_POST['hora_fin'];
+    $fecha = $_POST['fecha'];
+    $horaInicio = $fecha . " " . $_POST['hora_inicio'];
+    $horaFin = $fecha . " " . $_POST['hora_fin'];
 
     if ($_SERVER['REQUEST_METHOD'] != 'POST') {
         echo "<script>alert('Error: No hay datos para guardar'); location.replace('./')</script>";

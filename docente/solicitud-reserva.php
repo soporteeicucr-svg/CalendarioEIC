@@ -15,7 +15,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
         <title>Sistema Reserva EIC</title>
         <link rel="stylesheet" type="text/css" href="../shared/lib/fontawesome/css/all.css">
         <link rel="stylesheet" type="text/css" href="../shared/css/formulario.css">
-        <!-- Componente de selección de fecha y hora -->
+        <!-- Date and time picker -->
         <link rel="stylesheet" type="text/css" href="../shared/lib/flatpickr/flatpickr.min.css">
         <script src="../shared/lib/flatpickr/flatpickr.js"></script>
     </head>
@@ -51,24 +51,16 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
             <label for="solicitante">Nombre del solicitante</label>
             <input type="text" name="solicitante" id="solicitante" placeholder="Ingrese el nombre del solicitante"
                 value="<?php echo $_SESSION['nombre']; ?>" required>
-            <!--
-        <label for="repeticion">Repetición reserva</label>
-        <select name="repeticion" id="repeticion" class="form-select"
-            aria-label="Default select example">
-            <option selected>Seleccione la repetición</option>
-            <option value="Solo por el día">Solo por el día</option>
-            <option value="Semanal">Semanal</option>
-            <option value="Mensual">Mensual</option>
-            <option value="Semestral">Semestral</option>
-        </select>
-        -->
-            <label for="hora_inicio" class="control-label">Inicio</label>
+            <label for="fecha" class="control-label">Día</label>
+            <input type="text" name="fecha" id="fecha" placeholder="Seleccione la hora de inicio" required
+                onchange="updatePickers('fecha')">
+            <label for="hora_inicio" class="control-label">Hora de inicio</label>
             <input type="text" name="hora_inicio" id="hora_inicio" placeholder="Seleccione la hora de inicio" required
-                onchange="updateDatePickers('hora_inicio')">
+                onchange="updatePickers('hora_inicio')">
             <div id="error_hora_inicio"></div>
-            <label for="hora_fin" class="control-label">Finalización</label>
+            <label for="hora_fin" class="control-label">Hora de finalización</label>
             <input type="text" name="hora_fin" id="hora_fin" placeholder="Seleccione la hora de finalización" required
-                onchange="updateDatePickers('hora_fin')">
+                onchange="updatePickers('hora_fin')">
             <div id="error_hora_fin"></div>
             <input type="submit" id="submit" value="Enviar solicitud" disabled>
         </form>
@@ -116,38 +108,37 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
             }
         }
 
-        // flatpickr is a library to create date and time input fields
+        // Flatpickr is a library to create date and time input fields
         minDate = new Date();
-        flatpickr('#hora_inicio', {
+        flatpickr('#fecha', {
+            position: "above",
             "minDate": minDate,
-            enableTime: true,
             "disable": [
                 function (date) {
-                    // return true to disable
-                    return (date.getDay() === 0);
+                    return (date.getDay() === 0); // Disable Sundays
                 }
             ],
             "locale": {
-                "firstDayOfWeek": 1 // start week on Monday
+                "firstDayOfWeek": 1 // Start week on Monday
             }
+        });
+
+        flatpickr('#hora_inicio', {
+            position: "above",
+            noCalendar: true,
+            enableTime: true,
+            minuteIncrement: 30
         });
 
         flatpickr('#hora_fin', {
-            "minDate": minDate,
+            position: "above",
+            noCalendar: true,
             enableTime: true,
-            "disable": [
-                function (date) {
-                    // return true to disable
-                    return (date.getDay() === 0);
-                }
-            ],
-            "locale": {
-                "firstDayOfWeek": 1 // start week on Monday
-            }
+            minuteIncrement: 30,
         });
 
-        function updateDatePickers(inputDate) {
-            let selectedDate = document.getElementById(inputDate).value + ":00";
+        function updatePickers(inputDate) {
+            let selectedDate = document.getElementById("fecha").value + " " + document.getElementById(inputDate).value + ":00";
             let conflictFound = false; // Variable to track conflicts
 
             for (i in listaReservas) {
@@ -183,6 +174,8 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
                 }
             }
 
+            // Code to use two date and time pickers instead
+            /*
             if (inputDate == "hora_inicio") {
                 flatpickr('#hora_fin', {
                     "minDate": new Date(document.getElementById("hora_inicio").value),
@@ -213,11 +206,12 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
                     }
                 });
             }
+            */
         }
     </script>
 
     </html>
-    
+
     <?php
 } else {
     header("Location: ../index.php");
