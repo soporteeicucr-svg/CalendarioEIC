@@ -1,25 +1,32 @@
 <?php
 include 'db-conn.php';
 
-if (!isset($_GET['id'])) {
-	echo "<script>
+session_start();
+
+if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
+	if (!isset($_GET['id'])) {
+		echo "<script>
 	alert('Undefined Schedule ID.');
 	location.replace('./')
 	</script>";
-	$conn->close();
-	exit;
-}
+		$conn->close();
+		exit;
+	}
 
-$delete = $conn->query("DELETE FROM `lista_horarios` where id = '{$_GET['id']}'");
-if ($delete) {
-	echo "<script>
+	$delete = $conn->query("DELETE FROM `lista_horarios` where id = '{$_GET['id']}'");
+	if ($delete) {
+		echo "<script>
 	alert('Reserva eliminada de manera exitosa');
 	location.replace('./');
 	</script>";
+	} else {
+		echo "<pre>";
+		echo "An Error occurred.";
+		echo "</pre>";
+	}
+	$conn->close();
 } else {
-    echo "<pre>";
-    echo "An Error occurred.";
-    echo "</pre>";
+	header("Location: ../../index.php");
+	exit();
 }
-$conn->close();
 ?>
