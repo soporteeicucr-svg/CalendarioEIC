@@ -18,6 +18,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
         <link rel="stylesheet" type="text/css" href="../shared/lib/bootstrap/bootstrap.min.css">
         <link rel="stylesheet" type="text/css" href="../shared/lib/fullcalendar/lib/main.min.css">
         <link rel="stylesheet" type="text/css" href="../shared/css/reserva.css">
+        <link rel="stylesheet" type="text/css" href="../shared/css/tabs.css">
         <script src="../shared/lib/jquery/jquery-3.6.0.min.js"></script>
         <script src="../shared/lib/bootstrap/bootstrap.min.js"></script>
         <script src='../shared/lib/fullcalendar/index.global.min.js'></script>
@@ -67,7 +68,48 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
         <div class="container py-5" id="page-container">
             <div class="row">
                 <div class="col-md-14">
-                    <div id="calendar"></div>
+
+                    <!-- Tab links -->
+                    <div class="tab">
+                        <button class="tablinks" onclick="openCalendar(event, 'Laboratorio 1')">Laboratorio 1</button>
+                        <button class="tablinks" onclick="openCalendar(event, 'Laboratorio 2')">Laboratorio 2</button>
+                        <button class="tablinks" onclick="openCalendar(event, 'Laboratorio 3')">Laboratorio 3</button>
+                        <button class="tablinks" onclick="openCalendar(event, 'Aula PEC')">Aula PEC</button>
+                        <button class="tablinks" onclick="openCalendar(event, 'Sala Interna')">Sala Interna</button>
+                        <button class="tablinks" onclick="openCalendar(event, 'Sala Externa')">Sala Externa</button>
+                    </div>
+
+                    <!-- Tab content -->
+                    <div id="Laboratorio 1" class="tabcontent">
+                        <h3>Laboratorio 1</h3>
+                        <div id="calendar Laboratorio 1"></div>
+                    </div>
+
+                    <div id="Laboratorio 2" class="tabcontent">
+                        <h3>Laboratorio 2</h3>
+                        <div id="calendar Laboratorio 2"></div>
+                    </div>
+
+                    <div id="Laboratorio 3" class="tabcontent">
+                        <h3>Laboratorio 3</h3>
+                        <div id="calendar Laboratorio 3"></div>
+                    </div>
+
+                    <div id="Aula PEC" class="tabcontent">
+                        <h3>Aula PEC</h3>
+                        <div id="calendar Aula PEC"></div>
+                    </div>
+
+                    <div id="Sala Interna" class="tabcontent">
+                        <h3>Sala Interna</h3>
+                        <div id="calendar Sala Interna"></div>
+                    </div>
+
+                    <div id="Sala Externa" class="tabcontent">
+                        <h3>Sala Externa</h3>
+                        <div id="calendar Sala Externa"></div>
+                    </div>
+
                 </div>
             </div>
         </div>
@@ -123,101 +165,133 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
     </body>
     <script>
         var scheds = $.parseJSON('<?= json_encode($sched_res) ?>');
-        var events = [];
-        if (!!scheds) {
-            Object.keys(scheds).map((k) => {
-                var row = scheds[k];
-                events.push({
-                    id: row.id,
-                    title: row.espacio,
-                    start: row.hora_inicio,
-                    end: row.hora_fin,
+        var calendarNames = ["Laboratorio 1", "Laboratorio 2", "Laboratorio 3", "Aula PEC", "Sala Interna", "Sala Externa"];
+        var calendars = [];
+
+        for (i in calendarNames) {
+            var events = [];
+            if (!!scheds) {
+                Object.keys(scheds).map((k) => {
+                    if (scheds[k].espacio == calendarNames[i]) {
+                        var row = scheds[k];
+                        events.push({
+                            id: row.id,
+                            title: row.espacio,
+                            start: row.hora_inicio,
+                            end: row.hora_fin,
+                        });
+                    }
                 });
+            }
+
+            var calendar = new FullCalendar.Calendar(document.getElementById("calendar " + calendarNames[i]), {
+                headerToolbar: {
+                    left: "prev,next today",
+                    right: "timeGridWeek,dayGridMonth,list",
+                    center: "title"
+                },
+                allDaySlot: false,
+                locale: "es",
+                selectable: true,
+                hiddenDays: [0],
+                themeSystem: "bootstrap",
+                buttonText: {
+                    today: 'Hoy', month: 'Mes', week: 'Semana', list: 'Lista'
+                },
+                events: events,
+                eventClick: function (info) {
+                    var _details = $("#event-details-modal");
+                    var id = info.event.id;
+                    if (!!scheds[id]) {
+                        _details.find("#title").text(scheds[id].espacio);
+                        _details.find("#description").text(scheds[id].sigla_curso + " | " + scheds[id].solicitante);
+                        _details.find("#start").text(scheds[id].sdate);
+                        _details.find("#end").text(scheds[id].edate);
+                        _details.find("#edit,#delete").attr("data-id", id);
+                        _details.modal("show");
+                    } else {
+                        alert("Evento sin parámetros");
+                    }
+                },
+                eventDidMount: function (info) {
+                    // Do Something after events mounted
+                },
+                editable: true,
             });
+
+            calendar.changeView('timeGridWeek');
+            calendars.push(calendar);
+
+            /*
+            // Form reset listener
+            $("#schedule-form").on("reset", function () {
+                $(this).find("input:hidden").val("");
+                $(this).find("input:visible").first().focus();
+            });
+
+            // Edit Button
+            $("#edit").click(function () {
+                var id = $(this).attr("data-id");
+                if (!!scheds[id]) {
+                    var _form = $("#schedule-form");
+                    console.log(
+                        String(scheds[id].start_datetime),
+                        String(scheds[id].start_datetime).replace(" ", "\\t")
+                    );
+                    _form.find('[name="id"]').val(id);
+                    _form.find('[name="title"]').val(scheds[id].title);
+                    _form.find('[name="description"]').val(scheds[id].description);
+                    _form
+                        .find('[name="start_datetime"]')
+                        .val(String(scheds[id].start_datetime).replace(" ", "T"));
+                    _form
+                        .find('[name="end_datetime"]')
+                        .val(String(scheds[id].end_datetime).replace(" ", "T"));
+                    $("#event-details-modal").modal("hide");
+                    _form.find('[name="title"]').focus();
+                } else {
+                    alert("Event is undefined");
+                }
+            });
+
+            // Delete Button / Deleting an Event
+            $("#delete").click(function () {
+                var id = $(this).attr("data-id");
+                if (!!scheds[id]) {
+                    var _conf = confirm("¿Está seguro que desea eliminar esta reserva?");
+                    if (_conf === true) {
+                        location.href = "../utils/delete-schedule.php?id=" + id;
+                    }
+                } else {
+                    alert("Event is undefined");
+                }
+            });
+            */
         }
 
-        var calendar = new FullCalendar.Calendar(document.getElementById("calendar"), {
-            headerToolbar: {
-                left: "prev,next today",
-                right: "timeGridWeek,dayGridMonth,list",
-                center: "title"
-            },
-            locale: "es",
-            selectable: true,
-            hiddenDays: [0],
-            themeSystem: "bootstrap",
-            buttonText: {
-                today: 'Hoy', month: 'Mes', week: 'Semana', list: 'Lista'
-            },
-            events: events,
-            eventClick: function (info) {
-                var _details = $("#event-details-modal");
-                var id = info.event.id;
-                if (!!scheds[id]) {
-                    _details.find("#title").text(scheds[id].espacio);
-                    _details.find("#description").text(scheds[id].sigla_curso + " | " + scheds[id].solicitante);
-                    _details.find("#start").text(scheds[id].sdate);
-                    _details.find("#end").text(scheds[id].edate);
-                    _details.find("#edit,#delete").attr("data-id", id);
-                    _details.modal("show");
-                } else {
-                    alert("Evento sin parámetros");
-                }
-            },
-            eventDidMount: function (info) {
-                // Do Something after events mounted
-            },
-            editable: true,
-        });
+        function openCalendar(evt, calendarName) {
+            // Declare all variables
+            var i, tabcontent, tablinks;
 
-        calendar.changeView('timeGridWeek');
-        calendar.render();
-
-        /*
-        // Form reset listener
-        $("#schedule-form").on("reset", function () {
-            $(this).find("input:hidden").val("");
-            $(this).find("input:visible").first().focus();
-        });
-
-        // Edit Button
-        $("#edit").click(function () {
-            var id = $(this).attr("data-id");
-            if (!!scheds[id]) {
-                var _form = $("#schedule-form");
-                console.log(
-                    String(scheds[id].start_datetime),
-                    String(scheds[id].start_datetime).replace(" ", "\\t")
-                );
-                _form.find('[name="id"]').val(id);
-                _form.find('[name="title"]').val(scheds[id].title);
-                _form.find('[name="description"]').val(scheds[id].description);
-                _form
-                    .find('[name="start_datetime"]')
-                    .val(String(scheds[id].start_datetime).replace(" ", "T"));
-                _form
-                    .find('[name="end_datetime"]')
-                    .val(String(scheds[id].end_datetime).replace(" ", "T"));
-                $("#event-details-modal").modal("hide");
-                _form.find('[name="title"]').focus();
-            } else {
-                alert("Event is undefined");
+            // Get all elements with class="tabcontent" and hide them
+            tabcontent = document.getElementsByClassName("tabcontent");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].style.display = "none";
             }
-        });
 
-        // Delete Button / Deleting an Event
-        $("#delete").click(function () {
-            var id = $(this).attr("data-id");
-            if (!!scheds[id]) {
-                var _conf = confirm("¿Está seguro que desea eliminar esta reserva?");
-                if (_conf === true) {
-                    location.href = "../utils/delete-schedule.php?id=" + id;
-                }
-            } else {
-                alert("Event is undefined");
+            // Get all elements with class="tablinks" and remove the class "active"
+            tablinks = document.getElementsByClassName("tablinks");
+            for (i = 0; i < tablinks.length; i++) {
+                tablinks[i].className = tablinks[i].className.replace(" active", "");
             }
-        });
-        */
+
+            // Show the current tab, and add an "active" class to the button that opened the tab
+            document.getElementById(calendarName).style.display = "block";
+            evt.currentTarget.className += " active";
+
+            calendars[calendarNames.indexOf('calendarName')].render; // Error
+        }
+
     </script>
 
     </html>

@@ -28,8 +28,8 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
                     <button id="btn2" onclick="location.href='solicitud-reserva.php'">Realizar reserva</button>
                </div>
                <div class="center">
-                    <h2>Calendario de reservas</h2>
-                    <button id="btn4" onclick="location.href='calendario-reserva.php'">Calendario de reservas</button>
+                    <h2>Calendario de reservaciones</h2>
+                    <button id="btn4" onclick="location.href='calendario-reserva.php'">Ver calendario</button>
                </div>
                <div class="center">
                     <button id="btn3" onclick="location.href='../shared/cerrar-sesion.php'">Cerrar sesión</button>

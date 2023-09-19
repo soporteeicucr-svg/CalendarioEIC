@@ -142,6 +142,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
                 right: "timeGridWeek,dayGridMonth,list",
                 center: "title"
             },
+            allDaySlot: false,
             locale: "es",
             selectable: true,
             hiddenDays: [0],
