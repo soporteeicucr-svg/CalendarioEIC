@@ -5,10 +5,10 @@ session_start();
 
 if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
 	if (!isset($_GET['id'])) {
-		echo "<script>
-	alert('Undefined Schedule ID.');
-	location.replace('./')
-	</script>";
+		echo "<script>";
+		echo "alert('Undefined Schedule ID.');";
+		echo "location.replace('./')";
+		echo "</script>";
 		$conn->close();
 		exit;
 	}
