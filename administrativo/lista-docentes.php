@@ -79,7 +79,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
 
     <?php
 } else {
-    header("Location: /index.php");
+    header("Location: index.php");
     exit();
 }
 ?>
