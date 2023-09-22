@@ -31,7 +31,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
             <input type="hidden" name="id" value="">
             <label for="espacio">Espacio a reservar (Sujeto a disponibilidad)</label>
             <div class="selectOption">
-                <select name="espacio" id="espacio" required>
+                <select name="espacio" id="espacio" onchange="updateDate()" required>
                     <option value="">Seleccione un espacio</option>
                     <option value="Laboratorio 1">Laboratorio 1</option>
                     <option value="Laboratorio 2">Laboratorio 2</option>
@@ -83,9 +83,10 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
         let foundCourse = false;
         let validStartDateTime = false;
         let validEndDateTime = false;
+        //let validStartEndTime = false
 
         function checkFilled() {
-            if (foundCourse == true && validStartDateTime == true && validEndDateTime == true) {
+            if (foundCourse == true && validStartDateTime == true && validEndDateTime == true /* && validStartEndTime == true*/) {
                 document.getElementById('submit').disabled = false;
             } else {
                 document.getElementById('submit').disabled = true;
@@ -139,36 +140,38 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
 
         function updateDate() {
             if (document.getElementById("hora_inicio").value != "") {
-                updateTime(document.getElementById("hora_inicio").value);
+                updateTime("hora_inicio");
             }
             if (document.getElementById("hora_fin").value != "") {
-                updateTime(document.getElementById("hora_fin").value);
+                updateTime("hora_fin");
             }
         }
 
         function updateTime(input) {
             let selectedDate = document.getElementById("fecha").value + " " + document.getElementById(input).value + ":00";
-            let validTime = false;
             let conflictFound = false; // Variable to track conflicts
 
             if ((input == "hora_inicio" && document.getElementById(input).value >= "07:00" && document.getElementById(input).value < "22:00") || (input == "hora_fin" && document.getElementById(input).value > "07:00" && document.getElementById(input).value <= "22:00")) {
                 for (i in listaReservas) {
                     let startDateTime = listaReservas[i]["hora_inicio"];
                     let endDateTime = listaReservas[i]["hora_fin"];
+                    let space = listaReservas[i]["espacio"];
                     if (selectedDate >= startDateTime && selectedDate <= endDateTime) {
-                        if (input == "hora_inicio") {
-                            if (selectedDate != endDateTime) {
-                                document.getElementById("error_hora_inicio").innerHTML = "<h5 style='color: red; margin-top: 0;'>Error: la fecha y hora elegida ya está reservada</h5>"
-                                validStartDateTime = false;
-                                conflictFound = true; // Conflict found, set the flag to true
-                                break; // Exit the loop early
-                            }
-                        } else {
-                            if (selectedDate != startDateTime) {
-                                document.getElementById("error_hora_fin").innerHTML = "<h5 style='color: red; margin-top: 0;'>Error: la fecha y hora elegida ya está reservada</h5>"
-                                validEndDateTime = false;
-                                conflictFound = true; // Conflict found, set the flag to true
-                                break; // Exit the loop early
+                        if (document.getElementById("espacio").value == space) {
+                            if (input == "hora_inicio") {
+                                if (selectedDate != endDateTime) {
+                                    document.getElementById("error_hora_inicio").innerHTML = "<h5 style='color: red; margin-top: 0;'>Error: la fecha y hora elegida ya está reservada</h5>"
+                                    validStartDateTime = false;
+                                    conflictFound = true; // Conflict found, set the flag to true
+                                    break; // Exit the loop early
+                                }
+                            } else {
+                                if (selectedDate != startDateTime) {
+                                    document.getElementById("error_hora_fin").innerHTML = "<h5 style='color: red; margin-top: 0;'>Error: la fecha y hora elegida ya está reservada</h5>"
+                                    validEndDateTime = false;
+                                    conflictFound = true; // Conflict found, set the flag to true
+                                    break; // Exit the loop early
+                                }
                             }
                         }
                     }
@@ -178,12 +181,20 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
                     document.getElementById("error_" + input).innerHTML = ""; // Clear the error message
                     if (input == "hora_inicio") {
                         validStartDateTime = true;
-                        checkFilled();
                     } else {
                         validEndDateTime = true;
-                        checkFilled();
                     }
                 }
+
+                /*
+                if (document.getElementById("hora_inicio").value >= document.getElementById("hora_fin").value) {
+                    document.getElementById("error_hora_fin").innerHTML = "<h5 style='color: red; margin-top: 0;'>Error: la hora de finalización no puede ser menor que la hora de inicio</h5>"
+                    validStartEndTime = false;
+                } else {
+                    document.getElementById("error_" + input).innerHTML = ""; // Clear the error message
+                    validStartEndTime = true;
+                }
+                */
 
                 // Code to use two date and time pickers instead
                 /*
@@ -220,8 +231,14 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
                 */
             } else {
                 document.getElementById("error_" + input).innerHTML = "<h5 style='color: red; margin-top: 0;'>Error: la fecha y hora elegida no está disponible para reservas</h5>";
-                validEndDateTime = false;
+                if (input == "hora_inicio") {
+                    validStartDateTime = false;
+                } else {
+                    validEndDateTime = false;
+                }
             }
+            
+            checkFilled();
         }
     </script>
 
