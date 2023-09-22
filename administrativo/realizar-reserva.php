@@ -52,14 +52,14 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
             <input type="text" name="solicitante" id="solicitante" placeholder="Ingrese el nombre del solicitante" required>
             <label for="fecha" class="control-label">Día</label>
             <input type="text" name="fecha" id="fecha" placeholder="Seleccione la hora de inicio" required
-                onchange="updatePickers('fecha')">
+                onchange="updateDate()">
             <label for="hora_inicio" class="control-label">Hora de inicio</label>
             <input type="text" name="hora_inicio" id="hora_inicio" placeholder="Seleccione la hora de inicio" required
-                onchange="updatePickers('hora_inicio')">
+                onchange="updateTime('hora_inicio')">
             <div id="error_hora_inicio"></div>
             <label for="hora_fin" class="control-label">Hora de finalización</label>
             <input type="text" name="hora_fin" id="hora_fin" placeholder="Seleccione la hora de finalización" required
-                onchange="updatePickers('hora_fin')">
+                onchange="updateTime('hora_fin')">
             <div id="error_hora_fin"></div>
             <input type="submit" id="submit" value="Enviar solicitud" disabled>
         </form>
@@ -136,76 +136,91 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
             minuteIncrement: 30,
         });
 
-        function updatePickers(inputDate) {
-            let selectedDate = document.getElementById("fecha").value + " " + document.getElementById(inputDate).value + ":00";
+        function updateDate() {
+            if (document.getElementById("hora_inicio").value != "") {
+                updateTime(document.getElementById("hora_inicio").value);
+            }
+            if (document.getElementById("hora_fin").value != "") {
+                updateTime(document.getElementById("hora_fin").value);
+            }
+        }
+
+        function updateTime(input) {
+            let selectedDate = document.getElementById("fecha").value + " " + document.getElementById(input).value + ":00";
+            let validTime = false;
             let conflictFound = false; // Variable to track conflicts
 
-            for (i in listaReservas) {
-                let startDateTime = listaReservas[i]["hora_inicio"];
-                let endDateTime = listaReservas[i]["hora_fin"];
-                if (selectedDate >= startDateTime && selectedDate <= endDateTime) {
-                    if (inputDate == "hora_inicio") {
-                        if (selectedDate != endDateTime) {
-                            document.getElementById("error_hora_inicio").innerHTML = "<h5 style='color: red; margin-top: 0;'>Error: la fecha y hora elegida ya está reservada</h5>"
-                            validStartDateTime = false;
-                            conflictFound = true; // Conflict found, set the flag to true
-                            break; // Exit the loop early
+            if ((input == "hora_inicio" && document.getElementById(input).value >= "07:00" && document.getElementById(input).value < "22:00") || (input == "hora_fin" && document.getElementById(input).value > "07:00" && document.getElementById(input).value <= "22:00")) {
+                for (i in listaReservas) {
+                    let startDateTime = listaReservas[i]["hora_inicio"];
+                    let endDateTime = listaReservas[i]["hora_fin"];
+                    if (selectedDate >= startDateTime && selectedDate <= endDateTime) {
+                        if (input == "hora_inicio") {
+                            if (selectedDate != endDateTime) {
+                                document.getElementById("error_hora_inicio").innerHTML = "<h5 style='color: red; margin-top: 0;'>Error: la fecha y hora elegida ya está reservada</h5>"
+                                validStartDateTime = false;
+                                conflictFound = true; // Conflict found, set the flag to true
+                                break; // Exit the loop early
+                            }
+                        } else {
+                            if (selectedDate != startDateTime) {
+                                document.getElementById("error_hora_fin").innerHTML = "<h5 style='color: red; margin-top: 0;'>Error: la fecha y hora elegida ya está reservada</h5>"
+                                validEndDateTime = false;
+                                conflictFound = true; // Conflict found, set the flag to true
+                                break; // Exit the loop early
+                            }
                         }
+                    }
+                }
+
+                if (!conflictFound) {
+                    document.getElementById("error_" + input).innerHTML = ""; // Clear the error message
+                    if (input == "hora_inicio") {
+                        validStartDateTime = true;
+                        checkFilled();
                     } else {
-                        if (selectedDate != startDateTime) {
-                            document.getElementById("error_hora_fin").innerHTML = "<h5 style='color: red; margin-top: 0;'>Error: la fecha y hora elegida ya está reservada</h5>"
-                            validEndDateTime = false;
-                            conflictFound = true; // Conflict found, set the flag to true
-                            break; // Exit the loop early
-                        }
+                        validEndDateTime = true;
+                        checkFilled();
                     }
                 }
-            }
 
-            if (!conflictFound) {
-                document.getElementById("error_" + inputDate).innerHTML = ""; // Clear the error message
-                if (inputDate == "hora_inicio") {
-                    validStartDateTime = true;
-                    checkFilled();
+                // Code to use two date and time pickers instead
+                /*
+                if (input == "hora_inicio") {
+                    flatpickr('#hora_fin', {
+                        "minDate": new Date(document.getElementById("hora_inicio").value),
+                        enableTime: true,
+                        "disable": [
+                            function (date) {
+                                // return true to disable
+                                return (date.getDay() === 0);
+                            }
+                        ],
+                        "locale": {
+                            "firstDayOfWeek": 1 // start week on Monday
+                        }
+                    });
                 } else {
-                    validEndDateTime = true;
-                    checkFilled();
+                    flatpickr('#hora_inicio', {
+                        "minDate": minDate,
+                        "maxDate": new Date(document.getElementById("hora_fin").value),
+                        enableTime: true,
+                        "disable": [
+                            function (date) {
+                                // return true to disable
+                                return (date.getDay() === 0);
+                            }
+                        ],
+                        "locale": {
+                            "firstDayOfWeek": 1 // start week on Monday
+                        }
+                    });
                 }
-            }
-
-            // Code to use two date and time pickers instead
-            /*
-            if (inputDate == "hora_inicio") {
-                flatpickr('#hora_fin', {
-                    "minDate": new Date(document.getElementById("hora_inicio").value),
-                    enableTime: true,
-                    "disable": [
-                        function (date) {
-                            // return true to disable
-                            return (date.getDay() === 0);
-                        }
-                    ],
-                    "locale": {
-                        "firstDayOfWeek": 1 // start week on Monday
-                    }
-                });
+                */
             } else {
-                flatpickr('#hora_inicio', {
-                    "minDate": minDate,
-                    "maxDate": new Date(document.getElementById("hora_fin").value),
-                    enableTime: true,
-                    "disable": [
-                        function (date) {
-                            // return true to disable
-                            return (date.getDay() === 0);
-                        }
-                    ],
-                    "locale": {
-                        "firstDayOfWeek": 1 // start week on Monday
-                    }
-                });
+                document.getElementById("error_" + input).innerHTML = "<h5 style='color: red; margin-top: 0;'>Error: la fecha y hora elegida no está disponible para reservas</h5>";
+                validEndDateTime = false;
             }
-            */
         }
     </script>
 

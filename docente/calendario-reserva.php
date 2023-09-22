@@ -65,13 +65,14 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
                 </div>
             </div>
         </nav>
-        <div class="container py-5" id="page-container">
+        <div class="container py-3" id="page-container">
             <div class="row">
                 <div class="col-md-14">
 
                     <!-- Tab links -->
-                    <div class="tab">
-                        <button class="tablinks" onclick="openCalendar(event, 'Laboratorio 1')">Laboratorio 1</button>
+                    <div class="tab d-flex justify-content-center">
+                        <button class="tablinks" onclick="openCalendar(event, 'Laboratorio 1')" id="defaultOpen">Laboratorio
+                            1</button>
                         <button class="tablinks" onclick="openCalendar(event, 'Laboratorio 2')">Laboratorio 2</button>
                         <button class="tablinks" onclick="openCalendar(event, 'Laboratorio 3')">Laboratorio 3</button>
                         <button class="tablinks" onclick="openCalendar(event, 'Aula PEC')">Aula PEC</button>
@@ -81,32 +82,26 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
 
                     <!-- Tab content -->
                     <div id="Laboratorio 1" class="tabcontent">
-                        <h3>Laboratorio 1</h3>
                         <div id="calendar Laboratorio 1"></div>
                     </div>
 
                     <div id="Laboratorio 2" class="tabcontent">
-                        <h3>Laboratorio 2</h3>
                         <div id="calendar Laboratorio 2"></div>
                     </div>
 
                     <div id="Laboratorio 3" class="tabcontent">
-                        <h3>Laboratorio 3</h3>
                         <div id="calendar Laboratorio 3"></div>
                     </div>
 
                     <div id="Aula PEC" class="tabcontent">
-                        <h3>Aula PEC</h3>
                         <div id="calendar Aula PEC"></div>
                     </div>
 
                     <div id="Sala Interna" class="tabcontent">
-                        <h3>Sala Interna</h3>
                         <div id="calendar Sala Interna"></div>
                     </div>
 
                     <div id="Sala Externa" class="tabcontent">
-                        <h3>Sala Externa</h3>
                         <div id="calendar Sala Externa"></div>
                     </div>
 
@@ -187,13 +182,17 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
             var calendar = new FullCalendar.Calendar(document.getElementById("calendar " + calendarNames[i]), {
                 headerToolbar: {
                     left: "prev,next today",
-                    right: "timeGridWeek,dayGridMonth,list",
+                    right: "timeGridWeek,dayGridMonth",
                     center: "title"
                 },
+                initialView: 'timeGridWeek',
+                slotMinTime: "07:00:00",
+                slotMaxTime: "22:00:00",
                 allDaySlot: false,
-                locale: "es",
+                expandRows: true,
                 selectable: true,
                 hiddenDays: [0],
+                locale: "es",
                 themeSystem: "bootstrap",
                 buttonText: {
                     today: 'Hoy', month: 'Mes', week: 'Semana', list: 'Lista'
@@ -216,10 +215,11 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
                 eventDidMount: function (info) {
                     // Do Something after events mounted
                 },
+                noEventsText: "No hay eventos",
                 editable: true,
             });
 
-            calendar.changeView('timeGridWeek');
+            calendar.setOption('aspectRatio', 1.6);
             calendars.push(calendar);
 
             /*
@@ -289,8 +289,11 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
             document.getElementById(calendarName).style.display = "block";
             evt.currentTarget.className += " active";
 
-            calendars[calendarNames.indexOf('calendarName')].render; // Error
+            calendars[calendarNames.indexOf(calendarName)].render();
         }
+
+        // Get the element with id="defaultOpen" and click on it
+        document.getElementById("defaultOpen").click();
 
     </script>
 
