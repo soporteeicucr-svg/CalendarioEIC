@@ -118,13 +118,15 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
                     <div class="modal-body rounded-0">
                         <div class="container-fluid">
                             <dl>
-                                <dt class="text-muted">Espacio Reservado</dt>
+                                <dt class="text-muted">Información</dt>
                                 <dd id="title" class="fw-bold fs-4"></dd>
-                                <dt class="text-muted">Sigla del curso y nombre docente</dt>
+                                <dt class="text-muted">Sigla y nombre del curso</dt>
                                 <dd id="description" class=""></dd>
-                                <dt class="text-muted">Inicio Reserva</dt>
+                                <dt class="text-muted">Nombre del docente</dt>
+                                <dd id="name" class=""></dd>
+                                <dt class="text-muted">Inicio</dt>
                                 <dd id="start" class=""></dd>
-                                <dt class="text-muted">Finalización Reserva</dt>
+                                <dt class="text-muted">Finalización</dt>
                                 <dd id="end" class=""></dd>
                                 <!-- Botones de editar y borrar irían aquí -->
                             </dl>
@@ -171,7 +173,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
                         var row = scheds[k];
                         events.push({
                             id: row.id,
-                            title: row.espacio,
+                            title: row.sigla_curso,
                             start: row.hora_inicio,
                             end: row.hora_fin,
                         });
@@ -202,8 +204,9 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
                     var _details = $("#event-details-modal");
                     var id = info.event.id;
                     if (!!scheds[id]) {
-                        _details.find("#title").text(scheds[id].espacio);
-                        _details.find("#description").text(scheds[id].sigla_curso + " | " + scheds[id].solicitante);
+                        _details.find("#title").text("Reserva de " + scheds[id].espacio);
+                        _details.find("#description").text(scheds[id].sigla_curso + ": " + scheds[id].nombre_curso);
+                        _details.find("#name").text(scheds[id].solicitante);
                         _details.find("#start").text(scheds[id].sdate);
                         _details.find("#end").text(scheds[id].edate);
                         _details.find("#edit,#delete").attr("data-id", id);
@@ -211,9 +214,6 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
                     } else {
                         alert("Evento sin parámetros");
                     }
-                },
-                eventDidMount: function (info) {
-                    // Do Something after events mounted
                 },
                 noEventsText: "No hay eventos",
                 editable: true,

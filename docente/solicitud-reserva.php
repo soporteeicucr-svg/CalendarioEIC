@@ -44,7 +44,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
             <br>
             <label for="sigla_curso">Sigla del curso</label>
             <input type="text" name="sigla_curso" id="sigla_curso"
-                placeholder="Ingrese la sigla del curso (ejemplo: IC0101)" oninput="searchCourse()">
+                placeholder="Ingrese la sigla del curso (ejemplo: IC-0101)" oninput="searchCourse()">
             <label for="nombre_curso">Nombre del curso</label>
             <input type="text" name="nombre_curso" id="nombre_curso" placeholder="Ingrese la sigla del curso primero"
                 readonly>
@@ -159,22 +159,20 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
                     let startDateTime = listaReservas[i]["hora_inicio"];
                     let endDateTime = listaReservas[i]["hora_fin"];
                     let space = listaReservas[i]["espacio"];
-                    if (selectedDate >= startDateTime && selectedDate <= endDateTime) {
-                        if (document.getElementById("espacio").value == space) {
-                            if (input == "hora_inicio") {
-                                if (selectedDate != endDateTime) {
-                                    document.getElementById("error_hora_inicio").innerHTML = "<h5 style='color: red; margin-top: 0;'>Error: la fecha y hora elegida ya está reservada</h5>"
-                                    validStartTime = false;
-                                    conflictFound = true; // Conflict found, set the flag to true
-                                    break; // Exit the loop early
-                                }
-                            } else {
-                                if (selectedDate != startDateTime) {
-                                    document.getElementById("error_hora_fin").innerHTML = "<h5 style='color: red; margin-top: 0;'>Error: la fecha y hora elegida ya está reservada</h5>"
-                                    validEndTime = false;
-                                    conflictFound = true; // Conflict found, set the flag to true
-                                    break; // Exit the loop early
-                                }
+                    if (selectedDate >= startDateTime && selectedDate <= endDateTime && document.getElementById("espacio").value == space) {
+                        if (input == "hora_inicio") {
+                            if (selectedDate != endDateTime) {
+                                document.getElementById("error_hora_inicio").innerHTML = "<h5 style='color: red; margin-top: 0;'>Error: la fecha y hora elegida ya está reservada</h5>"
+                                validStartTime = false;
+                                conflictFound = true; // Conflict found, set the flag to true
+                                break; // Exit the loop early
+                            }
+                        } else {
+                            if (selectedDate != startDateTime) {
+                                document.getElementById("error_hora_fin").innerHTML = "<h5 style='color: red; margin-top: 0;'>Error: la fecha y hora elegida ya está reservada</h5>"
+                                validEndTime = false;
+                                conflictFound = true; // Conflict found, set the flag to true
+                                break; // Exit the loop early
                             }
                         }
                     }
@@ -230,7 +228,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
                     });
                 }
                 */
-               
+
             } else {
                 document.getElementById("error_" + input).innerHTML = "<h5 style='color: red; margin-top: 0;'>Error: la fecha y hora elegida no está disponible para reservas</h5>";
                 document.getElementById("hora_fin_mayor").innerHTML = "";
@@ -240,7 +238,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
                     validEndTime = false;
                 }
             }
-            
+
             checkFilled();
         }
     </script>

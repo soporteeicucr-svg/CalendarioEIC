@@ -118,15 +118,12 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
                     <div class="modal-body rounded-0">
                         <div class="container-fluid">
                             <dl>
-                                <dt class="text-muted">Espacio Reservado</dt>
+                                <dt class="text-muted">Información</dt>
                                 <dd id="title" class="fw-bold fs-4"></dd>
-                                <dt class="text-muted">Sigla del curso y nombre docente</dt>
-                                <dd id="description" class=""></dd>
-                                <dt class="text-muted">Inicio Reserva</dt>
+                                <dt class="text-muted">Inicio</dt>
                                 <dd id="start" class=""></dd>
-                                <dt class="text-muted">Finalización Reserva</dt>
+                                <dt class="text-muted">Finalización</dt>
                                 <dd id="end" class=""></dd>
-                                <!-- Botones de editar y borrar irían aquí -->
                             </dl>
                         </div>
                     </div>
@@ -171,7 +168,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
                         var row = scheds[k];
                         events.push({
                             id: row.id,
-                            title: row.espacio,
+                            title: "Reservado",
                             start: row.hora_inicio,
                             end: row.hora_fin,
                         });
@@ -202,18 +199,13 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
                     var _details = $("#event-details-modal");
                     var id = info.event.id;
                     if (!!scheds[id]) {
-                        _details.find("#title").text(scheds[id].espacio);
-                        _details.find("#description").text(scheds[id].sigla_curso + " | " + scheds[id].solicitante);
+                        _details.find("#title").text("Reserva de " + scheds[id].espacio);
                         _details.find("#start").text(scheds[id].sdate);
                         _details.find("#end").text(scheds[id].edate);
-                        _details.find("#edit,#delete").attr("data-id", id);
                         _details.modal("show");
                     } else {
                         alert("Evento sin parámetros");
                     }
-                },
-                eventDidMount: function (info) {
-                    // Do Something after events mounted
                 },
                 noEventsText: "No hay eventos",
                 editable: true,
@@ -221,52 +213,6 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
 
             calendar.setOption('aspectRatio', 1.6);
             calendars.push(calendar);
-
-            /*
-            // Form reset listener
-            $("#schedule-form").on("reset", function () {
-                $(this).find("input:hidden").val("");
-                $(this).find("input:visible").first().focus();
-            });
-
-            // Edit Button
-            $("#edit").click(function () {
-                var id = $(this).attr("data-id");
-                if (!!scheds[id]) {
-                    var _form = $("#schedule-form");
-                    console.log(
-                        String(scheds[id].start_datetime),
-                        String(scheds[id].start_datetime).replace(" ", "\\t")
-                    );
-                    _form.find('[name="id"]').val(id);
-                    _form.find('[name="title"]').val(scheds[id].title);
-                    _form.find('[name="description"]').val(scheds[id].description);
-                    _form
-                        .find('[name="start_datetime"]')
-                        .val(String(scheds[id].start_datetime).replace(" ", "T"));
-                    _form
-                        .find('[name="end_datetime"]')
-                        .val(String(scheds[id].end_datetime).replace(" ", "T"));
-                    $("#event-details-modal").modal("hide");
-                    _form.find('[name="title"]').focus();
-                } else {
-                    alert("Event is undefined");
-                }
-            });
-
-            // Delete Button / Deleting an Event
-            $("#delete").click(function () {
-                var id = $(this).attr("data-id");
-                if (!!scheds[id]) {
-                    var _conf = confirm("¿Está seguro que desea eliminar esta reserva?");
-                    if (_conf === true) {
-                        location.href = "../utils/delete-schedule.php?id=" + id;
-                    }
-                } else {
-                    alert("Event is undefined");
-                }
-            });
-            */
         }
 
         function openCalendar(evt, calendarName) {

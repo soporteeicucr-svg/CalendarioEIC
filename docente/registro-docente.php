@@ -61,14 +61,6 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
                          </select>
                     </div>
 
-                    <!--
-                    <label>Solicitud de cable HDMI</label>
-                    <div class="selectorForm">
-                         <label for="hdmiSi"><input type="radio" name="hdmi" value="si" id="si">Si</label>
-                         <label for="hdmiNo"><input type="radio" name="hdmi" value="no" id="no" checked="checked">No</label>
-                    </div>
-                    -->
-
                     <br>
 
                     <label for="fecha_ingreso">Fecha y hora de ingreso</label>
