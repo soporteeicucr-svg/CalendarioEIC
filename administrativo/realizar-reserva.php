@@ -31,7 +31,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
             <input type="hidden" name="id" value="">
             <label for="espacio">Espacio a reservar (Sujeto a disponibilidad)</label>
             <div class="selectOption">
-                <select name="espacio" id="espacio" required>
+                <select name="espacio" id="espacio" onchange="updateDate()" required>
                     <option value="">Seleccione un espacio</option>
                     <option value="Laboratorio 1">Laboratorio 1</option>
                     <option value="Laboratorio 2">Laboratorio 2</option>
@@ -61,6 +61,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
             <input type="text" name="hora_fin" id="hora_fin" placeholder="Seleccione la hora de finalización" required
                 onchange="updateTime('hora_fin')">
             <div id="error_hora_fin"></div>
+            <div id="hora_fin_mayor"></div>
             <input type="submit" id="submit" value="Enviar solicitud" disabled>
         </form>
 
@@ -80,32 +81,10 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
         let listaCursos = <?php echo json_encode($courses); ?>;
         let listaReservas = <?php echo json_encode($sched_res); ?>;
         let foundCourse = false;
-        let validStartDateTime = false;
-        let validEndDateTime = false;
-
-        function checkFilled() {
-            if (foundCourse == true && validStartDateTime == true && validEndDateTime == true) {
-                document.getElementById('submit').disabled = false;
-            } else {
-                document.getElementById('submit').disabled = true;
-            }
-        }
-
-        function searchCourse() {
-            let p = document.getElementById('sigla_curso').selectionStart;
-            document.getElementById('sigla_curso').value = document.getElementById('sigla_curso').value.toUpperCase();
-            document.getElementById('sigla_curso').setSelectionRange(p, p);
-
-            let curso = listaCursos.find((element) => element.sigla_curso == document.getElementById('sigla_curso').value);
-            if (curso) {
-                document.getElementById('nombre_curso').setAttribute("value", curso.nombre_curso);
-                foundCourse = true;
-                checkFilled();
-            } else {
-                document.getElementById('nombre_curso').setAttribute("value", "");
-                foundCourse = false;
-            }
-        }
+        let validDate = false;
+        let validStartTime = false;
+        let validEndTime = false;
+        let validStartEndTime = false
 
         // Flatpickr is a library to create date and time input fields
         minDate = new Date();
@@ -136,38 +115,65 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
             minuteIncrement: 30,
         });
 
+        function checkFilled() {
+            if (foundCourse == true && validDate == true && validStartTime == true && validEndTime == true && validStartEndTime == true) {
+                document.getElementById('submit').disabled = false;
+            } else {
+                document.getElementById('submit').disabled = true;
+            }
+        }
+
+        function searchCourse() {
+            let p = document.getElementById('sigla_curso').selectionStart;
+            document.getElementById('sigla_curso').value = document.getElementById('sigla_curso').value.toUpperCase();
+            document.getElementById('sigla_curso').setSelectionRange(p, p);
+
+            let curso = listaCursos.find((element) => element.sigla_curso == document.getElementById('sigla_curso').value);
+            if (curso) {
+                document.getElementById('nombre_curso').setAttribute("value", curso.nombre_curso);
+                foundCourse = true;
+            } else {
+                document.getElementById('nombre_curso').setAttribute("value", "");
+                foundCourse = false;
+            }
+            checkFilled();
+        }
+
         function updateDate() {
+            validDate = true;
             if (document.getElementById("hora_inicio").value != "") {
-                updateTime(document.getElementById("hora_inicio").value);
+                updateTime("hora_inicio");
             }
             if (document.getElementById("hora_fin").value != "") {
-                updateTime(document.getElementById("hora_fin").value);
+                updateTime("hora_fin");
             }
         }
 
         function updateTime(input) {
             let selectedDate = document.getElementById("fecha").value + " " + document.getElementById(input).value + ":00";
-            let validTime = false;
             let conflictFound = false; // Variable to track conflicts
 
             if ((input == "hora_inicio" && document.getElementById(input).value >= "07:00" && document.getElementById(input).value < "22:00") || (input == "hora_fin" && document.getElementById(input).value > "07:00" && document.getElementById(input).value <= "22:00")) {
                 for (i in listaReservas) {
                     let startDateTime = listaReservas[i]["hora_inicio"];
                     let endDateTime = listaReservas[i]["hora_fin"];
+                    let space = listaReservas[i]["espacio"];
                     if (selectedDate >= startDateTime && selectedDate <= endDateTime) {
-                        if (input == "hora_inicio") {
-                            if (selectedDate != endDateTime) {
-                                document.getElementById("error_hora_inicio").innerHTML = "<h5 style='color: red; margin-top: 0;'>Error: la fecha y hora elegida ya está reservada</h5>"
-                                validStartDateTime = false;
-                                conflictFound = true; // Conflict found, set the flag to true
-                                break; // Exit the loop early
-                            }
-                        } else {
-                            if (selectedDate != startDateTime) {
-                                document.getElementById("error_hora_fin").innerHTML = "<h5 style='color: red; margin-top: 0;'>Error: la fecha y hora elegida ya está reservada</h5>"
-                                validEndDateTime = false;
-                                conflictFound = true; // Conflict found, set the flag to true
-                                break; // Exit the loop early
+                        if (document.getElementById("espacio").value == space) {
+                            if (input == "hora_inicio") {
+                                if (selectedDate != endDateTime) {
+                                    document.getElementById("error_hora_inicio").innerHTML = "<h5 style='color: red; margin-top: 0;'>Error: la fecha y hora elegida ya está reservada</h5>"
+                                    validStartTime = false;
+                                    conflictFound = true; // Conflict found, set the flag to true
+                                    break; // Exit the loop early
+                                }
+                            } else {
+                                if (selectedDate != startDateTime) {
+                                    document.getElementById("error_hora_fin").innerHTML = "<h5 style='color: red; margin-top: 0;'>Error: la fecha y hora elegida ya está reservada</h5>"
+                                    validEndTime = false;
+                                    conflictFound = true; // Conflict found, set the flag to true
+                                    break; // Exit the loop early
+                                }
                             }
                         }
                     }
@@ -176,12 +182,18 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
                 if (!conflictFound) {
                     document.getElementById("error_" + input).innerHTML = ""; // Clear the error message
                     if (input == "hora_inicio") {
-                        validStartDateTime = true;
-                        checkFilled();
+                        validStartTime = true;
                     } else {
-                        validEndDateTime = true;
-                        checkFilled();
+                        validEndTime = true;
                     }
+                }
+
+                if (document.getElementById("hora_fin").value != "" && document.getElementById("hora_inicio").value >= document.getElementById("hora_fin").value) {
+                    document.getElementById("hora_fin_mayor").innerHTML = "<h5 style='color: red; margin-top: 0;'>Error: la hora de finalización no puede ser menor ni igual a la hora de inicio</h5>"
+                    validStartEndTime = false;
+                } else {
+                    document.getElementById("hora_fin_mayor").innerHTML = ""; // Clear the error message
+                    validStartEndTime = true;
                 }
 
                 // Code to use two date and time pickers instead
@@ -217,10 +229,18 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
                     });
                 }
                 */
+
             } else {
                 document.getElementById("error_" + input).innerHTML = "<h5 style='color: red; margin-top: 0;'>Error: la fecha y hora elegida no está disponible para reservas</h5>";
-                validEndDateTime = false;
+                document.getElementById("hora_fin_mayor").innerHTML = "";
+                if (input == "hora_inicio") {
+                    validStartTime = false;
+                } else {
+                    validEndTime = false;
+                }
             }
+            
+            checkFilled();
         }
     </script>
 

@@ -87,31 +87,6 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
         let validEndTime = false;
         let validStartEndTime = false
 
-        function checkFilled() {
-            if (foundCourse == true && validDate == true && validStartTime == true && validEndTime == true && validStartEndTime == true) {
-                document.getElementById('submit').disabled = false;
-            } else {
-                document.getElementById('submit').disabled = true;
-            }
-        }
-
-        function searchCourse() {
-            let p = document.getElementById('sigla_curso').selectionStart;
-            document.getElementById('sigla_curso').value = document.getElementById('sigla_curso').value.toUpperCase();
-            document.getElementById('sigla_curso').setSelectionRange(p, p);
-
-            let curso = listaCursos.find((element) => element.sigla_curso == document.getElementById('sigla_curso').value);
-            if (curso) {
-                document.getElementById('nombre_curso').setAttribute("value", curso.nombre_curso);
-                foundCourse = true;
-                checkFilled();
-            } else {
-                document.getElementById('nombre_curso').setAttribute("value", "");
-                foundCourse = false;
-                checkFilled();
-            }
-        }
-
         // Flatpickr is a library to create date and time input fields
         minDate = new Date();
         flatpickr('#fecha', {
@@ -140,6 +115,30 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
             enableTime: true,
             minuteIncrement: 30,
         });
+
+        function checkFilled() {
+            if (foundCourse == true && validDate == true && validStartTime == true && validEndTime == true && validStartEndTime == true) {
+                document.getElementById('submit').disabled = false;
+            } else {
+                document.getElementById('submit').disabled = true;
+            }
+        }
+
+        function searchCourse() {
+            let p = document.getElementById('sigla_curso').selectionStart;
+            document.getElementById('sigla_curso').value = document.getElementById('sigla_curso').value.toUpperCase();
+            document.getElementById('sigla_curso').setSelectionRange(p, p);
+
+            let curso = listaCursos.find((element) => element.sigla_curso == document.getElementById('sigla_curso').value);
+            if (curso) {
+                document.getElementById('nombre_curso').setAttribute("value", curso.nombre_curso);
+                foundCourse = true;
+            } else {
+                document.getElementById('nombre_curso').setAttribute("value", "");
+                foundCourse = false;
+            }
+            checkFilled();
+        }
 
         function updateDate() {
             validDate = true;
@@ -231,6 +230,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
                     });
                 }
                 */
+               
             } else {
                 document.getElementById("error_" + input).innerHTML = "<h5 style='color: red; margin-top: 0;'>Error: la fecha y hora elegida no está disponible para reservas</h5>";
                 document.getElementById("hora_fin_mayor").innerHTML = "";
