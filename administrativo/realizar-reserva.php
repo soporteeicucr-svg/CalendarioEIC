@@ -62,6 +62,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
                 onchange="updateTime('hora_fin')">
             <div id="error_hora_fin"></div>
             <div id="hora_fin_mayor"></div>
+            <div id="error_reserva_concurrente"></div>
             <input type="submit" id="submit" value="Enviar solicitud" disabled>
         </form>
 
@@ -70,7 +71,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
         </div>
 
         <?php
-        $schedules = $conn->query("SELECT * FROM `lista_horarios` WHERE estado = 'aprobado'");
+        $schedules = $conn->query("SELECT * FROM `lista_horarios` WHERE estado = 'aprobado' AND hora_inicio > CURRENT_DATE");
         $sched_res = [];
         foreach ($schedules->fetch_all(MYSQLI_ASSOC) as $row) {
             $sched_res[$row['id']] = $row;
@@ -84,7 +85,8 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
         let validDate = false;
         let validStartTime = false;
         let validEndTime = false;
-        let validStartEndTime = false
+        let validStartEndTime = false;
+        let validTimeRange = false;
 
         // Flatpickr is a library to create date and time input fields
         minDate = new Date();
@@ -116,7 +118,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
         });
 
         function checkFilled() {
-            if (foundCourse == true && validDate == true && validStartTime == true && validEndTime == true && validStartEndTime == true) {
+            if (foundCourse && validDate && validStartTime && validEndTime && validStartEndTime && validTimeRange) {
                 document.getElementById('submit').disabled = false;
             } else {
                 document.getElementById('submit').disabled = true;
@@ -175,6 +177,22 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
                             }
                         }
                     }
+
+                    let newReservationStart = "";
+                    let newReservationEnd = "";
+
+                    if (document.getElementById("fecha").value != "" && document.getElementById("hora_inicio").value != "" && document.getElementById("hora_fin").value != "") {
+                        newReservationStart = document.getElementById("fecha").value + " " + document.getElementById("hora_inicio").value + ":00";
+                        newReservationEnd = document.getElementById("fecha").value + " " + document.getElementById("hora_fin").value + ":00";
+                        if (newReservationStart < endDateTime && startDateTime < newReservationEnd && document.getElementById("espacio").value == space) {
+                            document.getElementById("error_reserva_concurrente").innerHTML = "<h5 style='color: red; margin-top: 0;'>Error: el rango de horas elegido hace conflicto con otra reserva</h5>";
+                            validTimeRange = false;
+                            break;
+                        } else {
+                            document.getElementById("error_reserva_concurrente").innerHTML = "";
+                            validTimeRange = true;
+                        }
+                    }
                 }
 
                 if (!conflictFound) {
@@ -192,6 +210,10 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
                 } else {
                     document.getElementById("hora_fin_mayor").innerHTML = ""; // Clear the error message
                     validStartEndTime = true;
+                }
+
+                if (document.getElementById("error_hora_fin").innerHTML != "") {
+                    document.getElementById("error_reserva_concurrente").innerHTML = "";
                 }
 
                 // Code to use two date and time pickers instead
@@ -231,6 +253,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
             } else {
                 document.getElementById("error_" + input).innerHTML = "<h5 style='color: red; margin-top: 0;'>Error: la fecha y hora elegida no está disponible para reservas</h5>";
                 document.getElementById("hora_fin_mayor").innerHTML = "";
+                document.getElementById("error_reserva_concurrente").innerHTML = "";
                 if (input == "hora_inicio") {
                     validStartTime = false;
                 } else {

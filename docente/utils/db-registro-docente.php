@@ -10,11 +10,10 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
     $celular = $_POST['celular'];
     $siglaCurso = $_POST['sigla_curso'];
     $espacio = $_POST['espacio'];
-    // $hdmi = $_POST['hdmi'];
     $fechaIngreso = $_POST['fecha_ingreso'];
 
     $stmt = $conn->prepare("insert into registro_docente(nombre,correo,cedula,celular,sigla_curso,espacio,fecha_ingreso) values(?,?,?,?,?,?,?)");
-    $stmt->bind_param("sssssss", $nombre, $correo, $cedula, $celular, $siglaCurso, $espacio, /* $hdmi, */$fechaIngreso);
+    $stmt->bind_param("sssssss", $nombre, $correo, $cedula, $celular, $siglaCurso, $espacio, $fechaIngreso);
     $stmt->execute();
     $stmt->close();
     $conn->close();
