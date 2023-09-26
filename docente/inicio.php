@@ -10,7 +10,10 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
           <meta charset="UTF-8">
           <meta http-equiv="X-UA-Compatible" content="ie=edge">
           <title>Reserva de laboratorios y salas para docentes</title>
+          <link rel="stylesheet" type="text/css" href="../shared/lib/bootstrap/bootstrap.min.css">
           <link rel="stylesheet" type="text/css" href="../shared/css/home.css">
+          <script src="../shared/lib/jquery/jquery-3.6.0.min.js"></script>
+          <script src="../shared/lib/bootstrap/bootstrap.min.js"></script>
      </head>
 
      <body>
@@ -19,25 +22,59 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
                     <img src="../shared/img/logoEIC.png" alt="Logo Escuela de Ingeniería Civil UCR">
                     <h1>Sistema de reserva de labortorios y salas</h1>
                </div>
-               <div class="center">
-                    <h2>Registro y retiro de cartuchera para espacio reservado</h2>
-                    <button id="btn1" onclick="location.href='registro-docente.php'">Realizar registro</button>
-               </div>
-               <div class="center">
-                    <h2>Solicitud de reserva de espacio</h2>
-                    <button id="btn2" onclick="location.href='solicitud-reserva.php'">Realizar reserva</button>
-               </div>
-               <div class="center">
-                    <h2>Calendario de reservaciones</h2>
-                    <button id="btn4" onclick="location.href='calendario-reserva.php'">Ver calendario</button>
-               </div>
-               <div class="center">
-                    <button id="btn3" onclick="location.href='../shared/cerrar-sesion.php'">Cerrar sesión</button>
-                    <!--
-                    Botón para cambiar contraseña, la funcionalidad ya existe,
-                    si se desea implementar simplemente descomentar:
-                    <button id="btn5" onclick="location.href='../shared/cambiar-contrasena.php'">Cambiar contraseña</button>
-                    -->
+
+               <!-- Use Bootstrap cards for the buttons -->
+               <div class="container-fluid text-center">
+                    <div class="row d-flex justify-content-center">
+                         <div class="col-md-3">
+                              <div class="card w-100 h-100">
+                                   <div class="card-header">
+                                        <h3 class="card-title">Registro</h3>
+                                   </div>
+                                   <div class="card-body">
+                                        <h4 class="card-title">Registro y retiro de cartuchera para espacio reservado
+                                        </h4>
+                                   </div>
+                                   <div class="card-footer">
+                                        <a href="registro-docente.php" class="btn btn-primary">Realizar
+                                             registro</a>
+                                   </div>
+                              </div>
+                         </div>
+                         <div class="col-md-3">
+                              <div class="card w-100 h-100">
+                                   <div class="card-body">
+                                        <h4 class="card-title">Solicitud de reserva de espacio</h4>
+                                   </div>
+                                   <div class="card-footer">
+                                        <a href="solicitud-reserva.php" class="btn btn-primary">Realizar reserva</a>
+                                   </div>
+                              </div>
+                         </div>
+                         <div class="col-md-3">
+                              <div class="card w-100 h-100">
+                                   <div class="card-body">
+                                        <h4 class="card-title">Calendario de reservaciones</h4>
+                                   </div>
+                                   <div class="card-footer">
+                                        <a href="calendario-reserva.php" class="btn btn-primary">Ver calendario</a>
+                                   </div>
+                              </div>
+                         </div>
+                    </div>
+                    <div class="row d-flex justify-content-center">
+
+                         <div class="center">
+                              <button id="btn3" onclick="location.href='../shared/cerrar-sesion.php'"
+                                   class="btn btn-danger">Cerrar
+                                   sesión</button>
+                              <!--
+                              Botón para cambiar contraseña, la funcionalidad ya existe,
+                              si se desea implementar simplemente descomentar:
+                              <button id="btn5" onclick="location.href='../shared/cambiar-contrasena.php'" class="btn btn-secondary">Cambiar contraseña</button>
+                              -->
+                         </div>
+                    </div>
                </div>
           </div>
      </body>
