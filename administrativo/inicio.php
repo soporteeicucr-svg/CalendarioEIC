@@ -2,49 +2,116 @@
 session_start();
 
 if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
-     ?>
-     <!DOCTYPE html>
-     <html>
+    ?>
+    <!DOCTYPE html>
+    <html>
 
-     <head>
-          <meta charset="UTF-8">
-          <meta http-equiv="X-UA-Compatible" content="ie=edge">
-          <title>Sistema administrativo de reservas</title>
-          <link rel="stylesheet" type="text/css" href="../shared/css/home.css">
-     </head>
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>Sistema administrativo de reservas</title>
+        <link rel="stylesheet" type="text/css" href="../shared/lib/bootstrap/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css" href="../shared/css/home.css">
+        <script src="../shared/lib/jquery/jquery-3.6.0.min.js"></script>
+        <script src="../shared/lib/bootstrap/bootstrap.min.js"></script>
+    </head>
 
-     <body>
-          <div>
-               <div class="center">
-                    <img src="../shared/img/logoEIC.png" alt="Logo Escuela de Ingeniería Civil UCR">
-                    <h1>Sistema administrativo de reserva de labortorios y salas</h1>
-               </div>
-               <div class="center">
-                    <h2>Lista de registros</h2>
-                    <button id="btn2" onclick="location.href='lista-docentes.php'">Docentes</button>
-                    <button id="btn2" onclick="location.href='lista-estudiantes.php'">Estudiantes</button>
-               </div>
-               <div class="center">
-                    <h2>Solicitudes de reserva</h2>
-                    <button id="btn4" onclick="location.href='administrar-solicitudes.php'">Ver solicitudes</button>
-                    <button id="btn1" onclick="location.href='realizar-reserva.php'">Realizar reservación</button>
-               </div>
-               <div class="center">
-                    <h2>Visualizar reservaciones</h2>
-                    <button id="btn1" onclick="location.href='reservas-aprobadas.php'">Reservaciones aprobadas</button>
-                    <button id="btn1" onclick="location.href='calendario-reserva.php'">Ver calendario</button>
-               </div>
-               <div class="center">
-               <button id="btn3" onclick="location.href='../shared/cerrar-sesion.php'">Cerrar sesión</button>
-               </div>
-          </div>
-     </body>
+    <body>
+        <div>
+            <div class="center">
+                <img src="../shared/img/logoEIC.png" alt="Logo Escuela de Ingeniería Civil UCR">
+                <h1>Sistema administrativo de reserva de espacios</h1>
+            </div>
 
-     </html>
+            <!-- Use Bootstrap cards for the buttons -->
+            <div class="container-fluid text-center">
+                <div class="row d-flex justify-content-center">
+                    <div class="col-md-3">
+                        <div class="card w-100 h-100">
+                            <div class="card-header">
+                                <h3 class="mb-0">Lista de registros</h3>
+                            </div>
+                            <div class="card-body card-body d-flex justify-content-center align-content-between flex-wrap">
+                                <div class="w-100">
+                                    <h4 class="card-title">Lista de registros para uso de salas
+                                    </h4>
+                                </div>
+                                <img class="img-fluid" width="50%" src="../shared/img/Llave.png" alt="Llave">
+                            </div>
+                            <div class="card-footer">
+                                <ul class="list-group list-group-flush">
+                                    <li class="list-group-item bg-transparent"><a href="lista-docentes.php"
+                                            class="btn btn-primary">Docentes</a></li>
+                                    <li class="list-group-item bg-transparent"><a href="lista-estudiantes.php"
+                                            class="btn btn-primary">Estudiantes</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card w-100 h-100">
+                            <div class="card-header">
+                                <h3 class="mb-0">Solicitudes de reserva</h3>
+                            </div>
+                            <div class="card-body card-body d-flex justify-content-center align-content-between flex-wrap">
+                                <div class="w-100">
+                                    <h4 class="card-title">Solicitudes de reserva de espacio</h4>
+                                </div>
+                                <img class="img-fluid" width="50%" src="../shared/img/Formulario.png" alt="Formulario">
+                            </div>
+                            <div class="card-footer">
+                                <ul class="list-group list-group-flush">
+                                    <li class="list-group-item bg-transparent"><a href="administrar-solicitudes.php"
+                                            class="btn btn-primary">Ver solicitudes</a></li>
+                                    <li class="list-group-item bg-transparent"><a href="realizar-reserva.php"
+                                            class="btn btn-primary">Realizar reservación</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card w-100 h-100">
+                            <div class="card-header">
+                                <h3 class="mb-0">Visualizar reservaciones</h3>
+                            </div>
+                            <div class="card-body card-body d-flex justify-content-center align-content-between flex-wrap">
+                                <div class="w-100">
+                                    <h4 class="card-title">Reservaciones aprobadas y calendario</h4>
+                                </div>
+                                <img class="img-fluid" width="50%" src="../shared/img/Calendario.png" alt="Calendario">
+                            </div>
+                            <div class="card-footer">
+                                <ul class="list-group list-group-flush">
+                                    <li class="list-group-item bg-transparent"><a href="reservas-aprobadas.php"
+                                            class="btn btn-primary">Reservaciones aprobadas</a></li>
+                                    <li class="list-group-item bg-transparent"><a href="calendario-reserva.php"
+                                            class="btn btn-primary">Ver calendario</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row d-flex justify-content-center">
+                    <div class="center">
+                        <button id="btn3" onclick="location.href='../shared/cerrar-sesion.php'"
+                            class="btn btn-danger">Cerrar sesión</button>
+                        <!--
+                        Botón para cambiar contraseña, la funcionalidad ya existe,
+                        si se desea implementar simplemente descomentar:
+                        <button id="btn5" onclick="location.href='../shared/cambiar-contrasena.php'" class="btn btn-secondary">Cambiar contraseña</button>
+                        -->
+                    </div>
+                </div>
+            </div>
+        </div>
 
-     <?php
+    </body>
+
+    </html>
+
+    <?php
 } else {
-     header("Location: index.php");
-     exit();
+    header("Location: index.php");
+    exit();
 }
 ?>

@@ -58,7 +58,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
         <nav class="navbar navbar-expand-lg navbar-dark bg-gradient bg-primary" id="topNavBar">
             <div class="container">
                 <a class="navbar-brand">
-                    Escuela de Ingeniería Civil | Sistema de reserva docente
+                    Escuela de Ingeniería Civil
                 </a>
                 <div>
                     <button class="buttonHome" onclick="location.href='inicio.php'">Inicio</button>

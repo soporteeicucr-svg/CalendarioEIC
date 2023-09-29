@@ -154,6 +154,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
         function updateTime(input) {
             let selectedDate = document.getElementById("fecha").value + " " + document.getElementById(input).value + ":00";
             let conflictFound = false; // Variable to track conflicts
+            let overlapFound = false;
 
             if ((input == "hora_inicio" && document.getElementById(input).value >= "07:00" && document.getElementById(input).value < "22:00") || (input == "hora_fin" && document.getElementById(input).value > "07:00" && document.getElementById(input).value <= "22:00")) {
                 for (i in listaReservas) {
@@ -187,10 +188,8 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
                         if (newReservationStart < endDateTime && startDateTime < newReservationEnd && document.getElementById("espacio").value == space) {
                             document.getElementById("error_reserva_concurrente").innerHTML = "<h5 style='color: red; margin-top: 0;'>Error: el rango de horas elegido hace conflicto con otra reserva</h5>";
                             validTimeRange = false;
+                            overlapFound = true;
                             break;
-                        } else {
-                            document.getElementById("error_reserva_concurrente").innerHTML = "";
-                            validTimeRange = true;
                         }
                     }
                 }
@@ -202,6 +201,11 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
                     } else {
                         validEndTime = true;
                     }
+                }
+
+                if (!overlapFound) {
+                    document.getElementById("error_reserva_concurrente").innerHTML = "";
+                    validTimeRange = true;
                 }
 
                 if (document.getElementById("hora_fin").value != "" && document.getElementById("hora_inicio").value >= document.getElementById("hora_fin").value) {

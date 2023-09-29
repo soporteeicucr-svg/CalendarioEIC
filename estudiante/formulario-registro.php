@@ -28,7 +28,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
                          value="<?php echo $_SESSION['nombre']; ?>">
 
                     <label for="correo">Correo institucional</label>
-                    <input type="text" name="correo" id="correo" placeholder="Ingrese su correo institucional" value=<?php echo $_SESSION['usuario']; ?>>
+                    <input type="text" name="correo" id="correo" placeholder="Ingrese su correo institucional" value=<?php echo $_SESSION['usuario'] . "@ucr.ac.cr"; ?>>
 
                     <label for="carnet">Carnet</label>
                     <input type="text" name="carnet" id="carnet" placeholder="Ingrese su carnet institucional" value=<?php echo $_SESSION['id']; ?>>

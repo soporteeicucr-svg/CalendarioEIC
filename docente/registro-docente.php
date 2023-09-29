@@ -31,7 +31,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
                          value="<?php echo $_SESSION['nombre']; ?>" readonly>
 
                     <label for="correo">Correo institucional</label>
-                    <input type="text" name="correo" id="correo" placeholder="Ingrese su correo institucional" value=<?php echo $_SESSION['usuario']; ?> readonly>
+                    <input type="text" name="correo" id="correo" placeholder="Ingrese su correo institucional" value=<?php echo $_SESSION['usuario'] . "@ucr.ac.cr"; ?> readonly>
 
                     <label for="cedula">Cédula de identidad</label>
                     <input type="text" name="cedula" id="cedula" placeholder="Ingrese su cédula de identidad" value=<?php echo $_SESSION['id']; ?> readonly>
@@ -43,7 +43,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
 
                     <label for="sigla_curso">Sigla del curso</label>
                     <input type="text" name="sigla_curso" id="sigla_curso"
-                         placeholder="Ingrese la sigla del curso (ejemplo: IC1234)" oninput="searchCourse()">
+                         placeholder="Ingrese la sigla del curso (ejemplo: IC-0101)" oninput="searchCourse()">
 
                     <label for="nombre_curso">Nombre del curso</label>
                     <input type="text" name="nombre_curso" id="nombre_curso" placeholder="Ingrese la sigla del curso primero"
