@@ -9,7 +9,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
     <head>
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
-        <title>Sistema administrativo de reservas</title>
+        <title>Sistema de reservas administrativo</title>
         <link rel="stylesheet" type="text/css" href="../shared/lib/bootstrap/bootstrap.min.css">
         <link rel="stylesheet" type="text/css" href="../shared/css/home.css">
         <script src="../shared/lib/jquery/jquery-3.6.0.min.js"></script>

@@ -13,7 +13,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
     <head>
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title>Reserva docente</title>
+        <title>Calendario de reservas para administradores</title>
         <link rel="stylesheet" type="text/css" href="../shared/lib/fontawesome/css/all.css">
         <link rel="stylesheet" type="text/css" href="../shared/lib/bootstrap/bootstrap.min.css">
         <link rel="stylesheet" type="text/css" href="../shared/lib/fullcalendar/lib/main.min.css">
@@ -81,9 +81,9 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
         </div>
         <div class="modal fade" tabindex="-1" data-bs-backdrop="static" id="event-details-modal">
             <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content rounded-0">
+                <div class="modal-content rounded-3">
                     <div class="modal-header rounded-0">
-                        <h5 class="modal-title">Detalles Reserva</h5>
+                        <h5 class="modal-title">Detalles de reservación</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body rounded-0">
@@ -99,13 +99,18 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
                                 <dd id="start" class=""></dd>
                                 <dt class="text-muted">Finalización</dt>
                                 <dd id="end" class=""></dd>
-                                <!-- Botones de editar y borrar irían aquí -->
                             </dl>
                         </div>
                     </div>
-                    <div class="modal-footer rounded-0">
+                    <div class="modal-footer rounded-0 justify-content-between">
+                        <div class="text-start">
+                            <dd id="reserveID" class="mb-0"></dd>
+                        </div>
                         <div class="text-end">
-                            <button type="button" class="btn btn-secondary btn-sm rounded-0"
+                            <button type="button" class="btn btn-secondary btn-sm rounded-3"
+                                onclick="deleteEvent(event, document.getElementById('reserveID').innerHTML)"
+                                data-bs-dismiss="modal">Borrar</button>
+                            <button type="button" class="btn btn-secondary btn-sm rounded-3"
                                 data-bs-dismiss="modal">Cerrar</button>
                         </div>
                     </div>
@@ -126,15 +131,12 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
             $sched_res[$row['id']] = $row;
         }
         ?>
-        <?php
-        if (isset($conn))
-            $conn->close();
-        ?>
     </body>
     <script>
         var scheds = $.parseJSON('<?= json_encode($sched_res) ?>');
         var calendarNames = ["Laboratorio 1", "Laboratorio 2", "Laboratorio 3", "Aula PEC", "Sala Interna", "Sala Externa"];
         var calendars = [];
+        var currentCalendar = "Laboratorio 1";
 
         for (i in calendarNames) {
             var events = [];
@@ -180,7 +182,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
                         _details.find("#name").text(scheds[id].solicitante);
                         _details.find("#start").text(scheds[id].sdate);
                         _details.find("#end").text(scheds[id].edate);
-                        _details.find("#edit,#delete").attr("data-id", id);
+                        _details.find("#reserveID").text("ID de reserva: " + scheds[id].id);
                         _details.modal("show");
                     } else {
                         alert("Evento sin parámetros");
@@ -192,52 +194,6 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
 
             calendar.setOption('aspectRatio', 1.6);
             calendars.push(calendar);
-
-            /*
-            // Form reset listener
-            $("#schedule-form").on("reset", function () {
-                $(this).find("input:hidden").val("");
-                $(this).find("input:visible").first().focus();
-            });
-
-            // Edit Button
-            $("#edit").click(function () {
-                var id = $(this).attr("data-id");
-                if (!!scheds[id]) {
-                    var _form = $("#schedule-form");
-                    console.log(
-                        String(scheds[id].start_datetime),
-                        String(scheds[id].start_datetime).replace(" ", "\\t")
-                    );
-                    _form.find('[name="id"]').val(id);
-                    _form.find('[name="title"]').val(scheds[id].title);
-                    _form.find('[name="description"]').val(scheds[id].description);
-                    _form
-                        .find('[name="start_datetime"]')
-                        .val(String(scheds[id].start_datetime).replace(" ", "T"));
-                    _form
-                        .find('[name="end_datetime"]')
-                        .val(String(scheds[id].end_datetime).replace(" ", "T"));
-                    $("#event-details-modal").modal("hide");
-                    _form.find('[name="title"]').focus();
-                } else {
-                    alert("Event is undefined");
-                }
-            });
-
-            // Delete Button / Deleting an Event
-            $("#delete").click(function () {
-                var id = $(this).attr("data-id");
-                if (!!scheds[id]) {
-                    var _conf = confirm("¿Está seguro que desea eliminar esta reserva?");
-                    if (_conf === true) {
-                        location.href = "../utils/delete-schedule.php?id=" + id;
-                    }
-                } else {
-                    alert("Event is undefined");
-                }
-            });
-            */
         }
 
         function openCalendar(evt, calendarName) {
@@ -260,13 +216,46 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
             document.getElementById(calendarName).style.display = "block";
             evt.currentTarget.className += " active";
 
+            currentCalendar = calendarName;
             calendars[calendarNames.indexOf(calendarName)].render();
+        }
+
+        function deleteEvent(evt, id) {
+            let form = document.createElement('form');
+            form.action = 'calendario-reserva.php';
+            form.method = 'POST';
+
+            form.innerHTML = '<input type="hidden" name="id" id=' + id + '><input name="borrar" value=borrar>';
+
+            // the form must be in the document to submit it
+            document.body.append(form);
+
+            form.submit();
         }
 
         // Get the element with id="defaultOpen" and click on it
         document.getElementById("defaultOpen").click();
 
     </script>
+
+    <?php
+    if (isset($_POST['borrar'])) {
+        $id = $_POST['id'];
+
+        $select = "UPDATE `lista_horarios` SET estado = 'rechazado' WHERE id = '$id'";
+        $result = mysqli_query($conn, $select);
+
+        echo '<script type = "text/javascript">';
+        echo 'alert("Reservación eliminada");';
+        echo 'window.location.href = "calendario-reserva.php";';
+        echo '</script>';
+    }
+    ?>
+
+    <?php
+    if (isset($conn))
+        $conn->close();
+    ?>
 
     </html>
 

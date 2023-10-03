@@ -56,7 +56,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
                                 <img class="img-fluid" width="50%" src="../shared/img/Formulario.png" alt="Formulario">
                             </div>
                             <div class="card-footer">
-                                <a href="solicitud-reserva.php" class="btn btn-primary">Realizar reserva</a>
+                                <a href="solicitud-reserva.php" class="btn btn-primary">Solicitar</a>
                             </div>
                         </div>
                     </div>

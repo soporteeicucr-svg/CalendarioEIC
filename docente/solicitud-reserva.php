@@ -12,7 +12,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
     <head>
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title>Sistema Reserva EIC</title>
+        <title>Solicitud de reserva</title>
         <link rel="stylesheet" type="text/css" href="../shared/lib/fontawesome/css/all.css">
         <link rel="stylesheet" type="text/css" href="../shared/css/formulario.css">
         <!-- Date and time picker -->

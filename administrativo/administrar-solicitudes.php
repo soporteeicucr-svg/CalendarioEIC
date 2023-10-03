@@ -12,7 +12,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
     <head>
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title>Revisión de solicitudes de reserva</title>
+        <title>Administración de solicitudes de reserva</title>
         <link rel="stylesheet" type="text/css" href="../shared/lib/bootstrap/bootstrap.min.css">
         <link rel="stylesheet" type="text/css" href="../shared/css/reserva.css">
     </head>
