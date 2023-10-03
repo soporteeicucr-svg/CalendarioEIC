@@ -23,35 +23,6 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
         <script src="../shared/lib/bootstrap/bootstrap.min.js"></script>
         <script src='../shared/lib/fullcalendar/index.global.min.js'></script>
         <script src="../shared/lib/fullcalendar/lib/main.min.js"></script>
-        <style>
-            :root {
-                --bs-success-rgb: 71, 222, 152 !important;
-            }
-
-            html,
-            body {
-                height: 100%;
-                width: 100%;
-                font-family: Noto Sans, sans-serif;
-            }
-
-            .btn-info.text-light:hover,
-            .btn-info.text-light:focus {
-                background: #000;
-            }
-
-            table,
-            tbody,
-            td,
-            tfoot,
-            th,
-            thead,
-            tr {
-                border-color: #ededed !important;
-                border-style: solid;
-                border-width: 1px !important;
-            }
-        </style>
     </head>
 
     <body class="bg-light">

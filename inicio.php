@@ -16,18 +16,14 @@
     </div>
 
     <div class="main-container">
-        <div>
-            <a href="/estudiante">
-                <h2>Estudiante</h2>
-            </a>
+        <div style="margin-bottom: 10px;">
+            <button type="button" class="btn btn-custom"
+                onclick="window.location.href='/estudiante'">Estudiantes</button>
         </div>
-        <!--
         <div>
-            <a href="/docente">
-                <h2>Docente</h2>
-            </a>
+            <button type="button" class="btn btn-custom"
+                onclick="window.location.href='/docente'">Docentes</button>
         </div>
-        -->
     </div>
 </body>
 

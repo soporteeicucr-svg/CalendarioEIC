@@ -62,7 +62,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
                             <div class="card-footer">
                                 <ul class="list-group list-group-flush">
                                     <li class="list-group-item bg-transparent"><a href="administrar-solicitudes.php"
-                                            class="btn btn-primary">Ver solicitudes</a></li>
+                                            class="btn btn-primary">Administrar solicitudes</a></li>
                                     <li class="list-group-item bg-transparent"><a href="realizar-reserva.php"
                                             class="btn btn-primary">Realizar reservación</a></li>
                                 </ul>
