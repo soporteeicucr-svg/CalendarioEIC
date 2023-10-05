@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 22-09-2023 a las 19:55:56
+-- Tiempo de generación: 05-10-2023 a las 19:53:25
 -- Versión del servidor: 10.4.28-MariaDB
 -- Versión de PHP: 8.0.28
 
@@ -20,8 +20,6 @@ SET time_zone = "+00:00";
 --
 -- Base de datos: `sistema_reservas_eic`
 --
-CREATE DATABASE IF NOT EXISTS `sistema_reservas_eic` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
-USE `sistema_reservas_eic`;
 
 -- --------------------------------------------------------
 
@@ -39,55 +37,55 @@ CREATE TABLE `cursos` (
 --
 
 INSERT INTO `cursos` (`sigla_curso`, `nombre_curso`) VALUES
-('IC0101', 'Taller Introducción Ing.'),
-('IC0302', 'Diseño Gráfico'),
-('IC0401', 'Estática'),
-('IC0403', 'Comunicación Técnica'),
-('IC0410', 'Seminario de Ética'),
-('IC0502', 'Dinámica '),
-('IC0510', 'Mecánica Sólido 1'),
-('IC0516', 'Probab. Estad. Aplicada'),
-('IC0604', 'Materiales de Construcción'),
-('IC0605', 'Mecánica de Fluidos'),
-('IC0607', 'Taller Sistemas de Ing.'),
-('IC0610', 'Mecánica Sólido 2'),
-('IC0701', 'Análisis Estructural'),
-('IC0703', 'Mecánica de Suelos'),
-('IC0704', 'Métodos Constructivos 1'),
-('IC0709', 'Hidráulica General'),
-('IC0711', 'Transportes'),
-('IC0712', 'Fundamentos Ing. Amb.'),
-('IC0801', 'Concreto Reforzado'),
-('IC0804', 'Programación y Presupuestación'),
-('IC0808', 'Hidrología'),
-('IC0809', 'Ingeniería Geotecnica'),
-('IC0810', 'Diseño Vial'),
-('IC0811', 'Administración en Ing.'),
-('IC0904', 'Planificación Y Gestión de Proyectos'),
-('IC0905', 'Taller de Diseño'),
-('IC0911', 'Análisis Estructural Avanzado'),
-('IC0912', 'Diseño de Estructuras de Concreto'),
-('IC0913', 'Mecánica de Suelos Aplicada'),
-('IC0914', 'Hidrología Avanzada'),
-('IC0938', 'Seguridad Vial'),
-('IC0942', 'Métodos Constructivos 2'),
-('IC0944', 'Inspección de obras'),
-('IC0951', 'Conceptos Básicos de Ing. Estructural'),
-('IC1006', 'Análisis de Impacto Ambiental'),
-('IC1012', 'Diseño Estructuras Acero'),
-('IC1013', 'Ingeniería de Cimentaciones'),
-('IC1014', 'Diseño de Estructuras de Mampostería'),
-('IC1015', 'Análisis y diseño estructural de puentes'),
-('IC1017', 'Ingeniería Geoambiental'),
-('IC1018', 'Tópicos de Ingeniería Geotécnica'),
-('IC1024', 'Diseño de Acueductos y Alcantarillados Sanitarios'),
-('IC1026', 'Construcción Sostenible'),
-('IC1031', 'Introducción al Diseño de Pavimento'),
-('IC1041', 'Administración de Empresas Constructoras'),
-('IC1045', 'Avalúos Inmobiliarios'),
-('IC9500', 'Investigación Dirigida 1'),
-('IC9501', 'Investigación Dirigida 2'),
-('IC9502', 'Investigación Dirigida 3');
+('IC-0101', 'Taller Introducción Ing.'),
+('IC-0302', 'Diseño Gráfico'),
+('IC-0401', 'Estática'),
+('IC-0403', 'Comunicación Técnica'),
+('IC-0410', 'Seminario de Ética'),
+('IC-0502', 'Dinámica '),
+('IC-0510', 'Mecánica Sólido 1'),
+('IC-0516', 'Probab. Estad. Aplicada'),
+('IC-0604', 'Materiales de Construcción'),
+('IC-0605', 'Mecánica de Fluidos'),
+('IC-0607', 'Taller Sistemas de Ing.'),
+('IC-0610', 'Mecánica Sólido 2'),
+('IC-0701', 'Análisis Estructural'),
+('IC-0703', 'Mecánica de Suelos'),
+('IC-0704', 'Métodos Constructivos 1'),
+('IC-0709', 'Hidráulica General'),
+('IC-0711', 'Transportes'),
+('IC-0712', 'Fundamentos Ing. Amb.'),
+('IC-0801', 'Concreto Reforzado'),
+('IC-0804', 'Programación y Presupuestación'),
+('IC-0808', 'Hidrología'),
+('IC-0809', 'Ingeniería Geotecnica'),
+('IC-0810', 'Diseño Vial'),
+('IC-0811', 'Administración en Ing.'),
+('IC-0904', 'Planificación Y Gestión de Proyectos'),
+('IC-0905', 'Taller de Diseño'),
+('IC-0911', 'Análisis Estructural Avanzado'),
+('IC-0912', 'Diseño de Estructuras de Concreto'),
+('IC-0913', 'Mecánica de Suelos Aplicada'),
+('IC-0914', 'Hidrología Avanzada'),
+('IC-0938', 'Seguridad Vial'),
+('IC-0942', 'Métodos Constructivos 2'),
+('IC-0944', 'Inspección de obras'),
+('IC-0951', 'Conceptos Básicos de Ing. Estructural'),
+('IC-1006', 'Análisis de Impacto Ambiental'),
+('IC-1012', 'Diseño Estructuras Acero'),
+('IC-1013', 'Ingeniería de Cimentaciones'),
+('IC-1014', 'Diseño de Estructuras de Mampostería'),
+('IC-1015', 'Análisis y diseño estructural de puentes'),
+('IC-1017', 'Ingeniería Geoambiental'),
+('IC-1018', 'Tópicos de Ingeniería Geotécnica'),
+('IC-1024', 'Diseño de Acueductos y Alcantarillados Sanitarios'),
+('IC-1026', 'Construcción Sostenible'),
+('IC-1031', 'Introducción al Diseño de Pavimento'),
+('IC-1041', 'Administración de Empresas Constructoras'),
+('IC-1045', 'Avalúos Inmobiliarios'),
+('IC-9500', 'Investigación Dirigida 1'),
+('IC-9501', 'Investigación Dirigida 2'),
+('IC-9502', 'Investigación Dirigida 3');
 
 -- --------------------------------------------------------
 
@@ -111,30 +109,24 @@ CREATE TABLE `lista_horarios` (
 --
 
 INSERT INTO `lista_horarios` (`id`, `espacio`, `sigla_curso`, `nombre_curso`, `solicitante`, `hora_inicio`, `hora_fin`, `estado`) VALUES
-(23, 'Laboratorio 3', 'EI0001', 'Clase X', 'Andrés Azofeifa García', '2023-07-13 09:50:00', '2023-07-13 09:50:00', 'aprobado'),
-(26, 'Sala Interna', 'CIO1099 Profesor Z', 'Prueba', 'Gabriel Zúñiga', '2023-08-15 03:30:00', '2023-08-15 04:00:00', 'aprobado'),
-(30, 'Sala Interna', 'IC1234', 'Prueba 1', 'Gabriel Zúñiga', '2023-09-08 08:40:00', '2023-09-08 10:30:00', 'aprobado'),
-(32, 'Aula PEC', 'IC1234', 'Prueba 1', 'Gabriel Zúñiga', '2023-08-31 14:00:00', '2023-08-31 14:20:00', 'aprobado'),
-(33, 'Aula PEC', 'IC1234', 'Prueba 1', 'Gabriel Zúñiga', '2023-08-31 12:00:00', '2023-08-31 14:00:00', 'aprobado'),
-(34, 'Aula PEC', 'IC1234', 'Prueba 1', 'Gabriel Zúñiga', '2023-08-31 12:00:00', '2023-08-31 14:00:00', 'aprobado'),
-(35, 'Aula PEC', 'IC1234', 'Prueba 1', 'Gabriel Zúñiga', '2023-08-31 12:00:00', '2023-08-31 14:00:00', 'rechazado'),
-(36, 'Aula PEC', 'IC1234', 'Prueba 1', 'Gabriel Zúñiga', '2023-08-31 12:00:00', '2023-08-31 14:00:00', 'aprobado'),
-(38, 'Aula PEC', 'IC1234', 'Prueba 1', 'Gabriel Zúñiga', '2023-08-31 12:00:00', '2023-08-31 14:00:00', 'rechazado'),
-(39, 'Aula PEC', 'IC1234', 'Prueba 1', 'Gabriel Zúñiga', '2023-08-31 12:00:00', '2023-08-31 14:00:00', 'aprobado'),
-(40, 'Aula PEC', 'IC1234', 'Prueba 1', 'Gabriel Zúñiga', '2023-08-31 12:00:00', '2023-08-31 14:00:00', 'aprobado'),
-(41, 'Aula PEC', 'IC1234', 'Prueba 1', 'Gabriel Zúñiga', '2023-08-31 12:00:00', '2023-08-31 14:00:00', 'aprobado'),
-(42, 'Aula PEC', 'IC1234', 'Prueba 2', 'Gabriel Zúñiga', '2023-09-12 10:00:00', '2023-09-12 12:00:00', 'pendiente'),
-(43, 'Aula PEC', 'IC1234', 'Curso de prueba', 'Gabriel Zúñiga', '2023-09-12 09:00:00', '2023-09-12 12:00:00', 'pendiente'),
-(45, 'Laboratorio 1', 'IC0101', 'Taller Introducción Ing.', 'ZÚÑIGA OROZCO GABRIEL', '2023-09-13 13:30:00', '2023-09-13 15:30:00', 'rechazado'),
-(47, 'Laboratorio 1', 'IC1012', 'Diseño Estructuras Acero', 'daniela', '2023-09-14 12:00:00', '2023-09-14 12:50:00', 'pendiente'),
-(48, 'Aula PEC', 'IC0101', 'Taller Introducción Ing.', 'ZÚÑIGA OROZCO GABRIEL', '2023-09-18 12:00:00', '2023-09-18 18:00:00', 'aprobado'),
-(50, 'Laboratorio 3', 'IC0101', 'Taller Introducción Ing.', 'ZÚÑIGA OROZCO GABRIEL', '2023-09-18 21:00:00', '2023-09-18 22:00:00', 'aprobado'),
-(51, 'Laboratorio 1', 'IC0101', 'Taller Introducción Ing.', 'ZÚÑIGA OROZCO GABRIEL', '2023-09-19 12:00:00', '2023-09-19 14:00:00', 'aprobado'),
-(52, 'Laboratorio 2', 'IC0101', 'Taller Introducción Ing.', 'ZÚÑIGA OROZCO GABRIEL', '2023-09-19 16:00:00', '2023-09-19 18:00:00', 'aprobado'),
-(53, 'Laboratorio 1', 'IC0101', 'Taller Introducción Ing.', 'ZÚÑIGA OROZCO GABRIEL', '2023-09-19 14:00:00', '2023-09-19 16:00:00', 'aprobado'),
-(54, 'Laboratorio 1', 'IC0101', 'Taller Introducción Ing.', 'ZÚÑIGA OROZCO GABRIEL', '2023-09-22 18:00:00', '2023-09-22 19:00:00', 'aprobado'),
-(55, 'Laboratorio 1', 'IC0101', 'Taller Introducción Ing.', 'ZÚÑIGA OROZCO GABRIEL', '2023-09-22 19:00:00', '2023-09-22 19:30:00', 'aprobado'),
-(56, 'Aula PEC', 'IC0101', 'Taller Introducción Ing.', 'ZÚÑIGA OROZCO GABRIEL', '2023-09-22 21:00:00', '2023-09-22 22:00:00', 'aprobado');
+(45, 'Laboratorio 1', 'IC-0101', 'Taller Introducción Ing.', 'ZÚÑIGA OROZCO GABRIEL', '2023-09-13 13:30:00', '2023-09-13 15:30:00', 'rechazado'),
+(47, 'Laboratorio 1', 'IC-1012', 'Diseño Estructuras Acero', 'daniela', '2023-09-14 12:00:00', '2023-09-14 12:50:00', 'rechazado'),
+(48, 'Aula PEC', 'IC-0101', 'Taller Introducción Ing.', 'ZÚÑIGA OROZCO GABRIEL', '2023-09-18 12:00:00', '2023-09-18 18:00:00', 'aprobado'),
+(50, 'Laboratorio 3', 'IC-0101', 'Taller Introducción Ing.', 'ZÚÑIGA OROZCO GABRIEL', '2023-09-18 21:00:00', '2023-09-18 22:00:00', 'aprobado'),
+(52, 'Laboratorio 2', 'IC-0101', 'Taller Introducción Ing.', 'ZÚÑIGA OROZCO GABRIEL', '2023-09-19 16:00:00', '2023-09-19 18:00:00', 'aprobado'),
+(53, 'Laboratorio 1', 'IC-0101', 'Taller Introducción Ing.', 'ZÚÑIGA OROZCO GABRIEL', '2023-09-19 14:00:00', '2023-09-19 16:00:00', 'aprobado'),
+(55, 'Laboratorio 1', 'IC-0101', 'Taller Introducción Ing.', 'ZÚÑIGA OROZCO GABRIEL', '2023-09-22 19:00:00', '2023-09-22 19:30:00', 'aprobado'),
+(56, 'Aula PEC', 'IC-0101', 'Taller Introducción Ing.', 'ZÚÑIGA OROZCO GABRIEL', '2023-09-22 21:00:00', '2023-09-22 22:00:00', 'aprobado'),
+(58, 'Laboratorio 1', 'IC-0101', 'Taller Introducción Ing.', 'ZÚÑIGA OROZCO GABRIEL', '2023-09-25 12:00:00', '2023-09-25 18:00:00', 'aprobado'),
+(60, 'Laboratorio 2', 'IC-0101', 'Taller Introducción Ing.', 'ZÚÑIGA OROZCO GABRIEL', '2023-09-25 16:00:00', '2023-09-25 20:00:00', 'pendiente'),
+(62, 'Laboratorio 1', 'IC-0101', 'Taller Introducción Ing.', 'ZÚÑIGA OROZCO GABRIEL', '2023-09-26 14:00:00', '2023-09-26 20:00:00', 'pendiente'),
+(63, 'Laboratorio 2', 'IC-0101', 'Taller Introducción Ing.', 'ZÚÑIGA OROZCO GABRIEL', '2023-09-26 14:00:00', '2023-09-26 16:00:00', 'aprobado'),
+(64, 'Aula PEC', 'IC-0101', 'Taller Introducción Ing.', 'ZÚÑIGA OROZCO GABRIEL', '2023-09-29 12:00:00', '2023-09-29 16:00:00', 'aprobado'),
+(65, 'Laboratorio 3', 'IC-0101', 'Taller Introducción Ing.', 'ZÚÑIGA OROZCO GABRIEL', '2023-09-30 12:00:00', '2023-09-30 14:00:00', 'aprobado'),
+(66, 'Laboratorio 1', 'IC-0101', 'Taller Introducción Ing.', 'ZÚÑIGA OROZCO GABRIEL', '2023-10-03 10:00:00', '2023-10-03 12:00:00', 'rechazado'),
+(67, 'Laboratorio 2', 'IC-0101', 'Taller Introducción Ing.', 'ZÚÑIGA OROZCO GABRIEL', '2023-10-03 11:00:00', '2023-10-03 13:00:00', 'aprobado'),
+(68, 'Laboratorio 1', 'IC-0101', 'Taller Introducción Ing.', 'ZÚÑIGA OROZCO GABRIEL', '2023-10-03 12:00:00', '2023-10-03 14:00:00', 'aprobado'),
+(69, 'Laboratorio 1', 'IC-0101', 'Taller Introducción Ing.', 'ZÚÑIGA OROZCO GABRIEL', '2023-10-03 12:00:00', '2023-10-03 15:00:00', 'rechazado');
 
 -- --------------------------------------------------------
 
@@ -159,15 +151,9 @@ CREATE TABLE `registro_docente` (
 --
 
 INSERT INTO `registro_docente` (`id`, `nombre`, `correo`, `cedula`, `celular`, `sigla_curso`, `espacio`, `hdmi`, `fecha_ingreso`) VALUES
-(5, 'Ejemplo Correo', 'ANDRES.AZOFEIFAGARCIA@ucr.ac.cr', '111', '83042464', 'CI0172', 'Laboratorio 1', 'si', '2023-07-13 09:49:00'),
-(6, 'Gabriel Zúñiga', 'GABRIEL.ZUNIGAOROZCO@ucr.ac.cr', '3', '', 'IC1234', 'Laboratorio 1', 'si', '2023-08-25 10:08:21'),
-(7, 'Gabriel Zúñiga', 'GABRIEL.ZUNIGAOROZCO@ucr.ac.cr', '3', '', 'IC1234', 'Laboratorio 1', 'si', '2023-08-25 10:08:53'),
-(8, 'Gabriel Zúñiga', 'GABRIEL.ZUNIGAOROZCO@ucr.ac.cr', '3', '1234', 'IC1234', 'Laboratorio 2', 'si', '2023-08-25 10:09:42'),
-(9, 'Gabriel Zúñiga', 'GABRIEL.ZUNIGAOROZCO@ucr.ac.cr', '3', '54321', 'IC1234', 'Aula PEC', 'si', '2023-08-25 11:37:22'),
-(10, 'Gabriel Zúñiga', 'GABRIEL.ZUNIGAOROZCO@ucr.ac.cr', '116800871', '12345678', 'IC1234', 'Aula PEC', 'no', '2023-08-31 08:11:49'),
-(11, 'Gabriel Zúñiga', 'GABRIEL.ZUNIGAOROZCO@ucr.ac.cr', '116800871', '5555', 'IC1234', 'Aula PEC', 'no', '2023-09-01 08:20:05'),
-(12, 'daniela', 'daniela', '0', '', 'IC1012', 'Laboratorio 3', 'no', '2023-09-12 13:42:13'),
-(13, 'daniela', 'daniela', '0', '', 'IC1012', 'Laboratorio 2', 'no', '2023-09-14 10:42:23');
+(14, 'ZÚÑIGA OROZCO GABRIEL', 'GABRIEL.ZUNIGAOROZCO@ucr.ac.cr', '116800871', '', 'IC-0101', 'Laboratorio 1', 'no', '2023-09-29 11:25:02'),
+(15, 'ZÚÑIGA OROZCO GABRIEL', 'GABRIEL.ZUNIGAOROZCO@ucr.ac.cr', '116800871', '', 'IC-0101', 'Aula PEC', 'no', '2023-10-03 08:44:48'),
+(16, 'ZÚÑIGA OROZCO GABRIEL', 'GABRIEL.ZUNIGAOROZCO@ucr.ac.cr', '116800871', '', 'IC-0101', 'Laboratorio 2', 'no', '2023-10-03 08:48:32');
 
 -- --------------------------------------------------------
 
@@ -190,31 +176,11 @@ CREATE TABLE `registro_estudiante` (
 --
 
 INSERT INTO `registro_estudiante` (`id`, `nombre`, `correo`, `carnet`, `celular`, `laboratorio`, `fecha_ingreso`) VALUES
-(47, 'Gabriel Zúñiga Orozco', 'GABRIEL.ZUNIGAOROZCO@ucr.ac.cr', '2', '', '', '2023-08-18 10:48:30'),
-(48, 'Andres Azofeifa Garcia', 'ANDRES.AZOFEIFAGARCIA@ucr.ac.cr', '1', '', 'Laboratorio 1', '2023-08-18 10:49:46'),
-(49, 'Andres Azofeifa Garcia', 'ANDRES.AZOFEIFAGARCIA@ucr.ac.cr', '1', '', 'Laboratorio 1', '2023-08-18 11:01:31'),
-(50, 'Andres Azofeifa Garcia', 'ANDRES.AZOFEIFAGARCIA@ucr.ac.cr', 'B90837', '', 'Laboratorio 1', '2023-08-18 11:12:58'),
-(51, 'Gabriel Zúñiga Orozco', 'GABRIEL.ZUNIGAOROZCO@ucr.ac.cr', 'B98755', '', 'Laboratorio 1', '2023-08-22 10:00:45'),
-(52, 'Gabriel Zúñiga Orozco', 'GABRIEL.ZUNIGAOROZCO@ucr.ac.cr', 'B98755', '', 'Laboratorio 1', '2023-08-22 10:02:56'),
-(53, 'Andres Azofeifa Garcia', 'ANDRES.AZOFEIFAGARCIA@ucr.ac.cr', 'B90837', '', 'Laboratorio 1', '2023-08-22 10:04:38'),
-(54, 'Gabriel Zúñiga Orozco', 'GABRIEL.ZUNIGAOROZCO@ucr.ac.cr', 'B98755', '', 'Laboratorio 1', '2023-08-22 11:38:56'),
-(55, 'Gabriel Zúñiga Orozco', 'GABRIEL.ZUNIGAOROZCO@ucr.ac.cr', 'B98755', '', 'Laboratorio 1', '2023-08-22 11:40:07'),
-(56, 'Gabriel Zúñiga Orozco', 'GABRIEL.ZUNIGAOROZCO@ucr.ac.cr', 'B98755', '12345678', 'Laboratorio 1', '2023-08-25 08:06:56'),
-(57, 'Gabriel Zúñiga Orozco', 'GABRIEL.ZUNIGAOROZCO@ucr.ac.cr', 'B98755', '', 'Laboratorio 1', '2023-08-25 10:38:13'),
-(58, 'Gabriel Zúñiga Orozco', 'GABRIEL.ZUNIGAOROZCO@ucr.ac.cr', 'B98755', '', 'Laboratorio 1', '2023-08-25 10:47:10'),
-(59, 'Gabriel Zúñiga Orozco', 'GABRIEL.ZUNIGAOROZCO@ucr.ac.cr', 'B98755', '', 'Laboratorio 1', '2023-08-25 10:48:33'),
-(60, 'Gabriel Zúñiga Orozco', 'GABRIEL.ZUNIGAOROZCO@ucr.ac.cr', 'B98755', '', 'Laboratorio 1', '2023-08-25 10:56:15'),
-(61, 'Gabriel Zúñiga Orozco', 'GABRIEL.ZUNIGAOROZCO@ucr.ac.cr', 'B98755', '', 'Laboratorio 1', '2023-08-25 10:57:06'),
-(62, 'Gabriel Zúñiga Orozco', 'GABRIEL.ZUNIGAOROZCO@ucr.ac.cr', 'B98755', '12345678', 'Laboratorio 1', '2023-08-28 08:10:25'),
-(63, 'Gabriel Zúñiga Orozco', 'GABRIEL.ZUNIGAOROZCO@ucr.ac.cr', 'B98755', '12345678', 'Laboratorio 1', '2023-08-31 08:09:53'),
-(64, 'Andres Azofeifa Garcia', 'ANDRES.AZOFEIFAGARCIA@ucr.ac.cr', 'B90837', '', 'Laboratorio 1', '2023-09-01 08:18:59'),
-(65, 'Andres Azofeifa Garcia', 'ANDRES.AZOFEIFAGARCIA@ucr.ac.cr', 'B90837', '', 'Laboratorio 1', '2023-09-07 11:38:25'),
-(66, 'Gabriel Zúñiga Orozco', 'GABRIEL.ZUNIGAOROZCO@ucr.ac.cr', 'B98755', '', 'Laboratorio 1', '2023-09-11 08:55:46'),
-(67, 'SILVIA JIMENEZ VALVERDE', 'SILVIA.JIMENEZVALVERDE', 'B94111', '', 'Laboratorio 1', '2023-09-12 13:36:23'),
-(68, 'SILVIA JIMENEZ VALVERDE', 'SILVIA.JIMENEZVALVERDE', 'B94111', '', 'Laboratorio 1', '2023-09-14 10:41:06'),
-(69, 'Gabriel Zúñiga Orozco', 'GABRIEL.ZUNIGAOROZCO', 'B98755', '', 'Laboratorio 1', '2023-09-18 10:01:46'),
-(70, 'Gabriel Zúñiga Orozco', 'GABRIEL.ZUNIGAOROZCO', 'B98755', '', 'Laboratorio 1', '2023-09-18 10:10:43'),
-(71, 'Gabriel Zúñiga Orozco', 'GABRIEL.ZUNIGAOROZCO', 'B98755', '', 'Laboratorio 1', '2023-09-18 11:11:37');
+(72, 'SILVIA DANIELA JIMENEZ VALVERDE', 'silvia.jimenezvalverde@ucr.ac.cr', 'B94111', '86981906', 'Laboratorio 1', '2023-09-26 13:46:26'),
+(73, 'ZÚÑIGA OROZCO GABRIEL SANTIAGO', 'GABRIEL.ZUNIGAOROZCO@ucr.ac.cr', 'B98755', '', 'Laboratorio 1', '2023-09-29 10:17:20'),
+(74, 'ZÚÑIGA OROZCO GABRIEL SANTIAGO', 'GABRIEL.ZUNIGAOROZCO@ucr.ac.cr', 'B98755', '', 'Laboratorio 1', '2023-09-29 10:18:18'),
+(75, 'ZÚÑIGA OROZCO GABRIEL SANTIAGO', 'GABRIEL.ZUNIGAOROZCO@ucr.ac.cr', 'B98755', '', 'Laboratorio 1', '2023-09-29 10:18:43'),
+(76, 'ZÚÑIGA OROZCO GABRIEL SANTIAGO', 'GABRIEL.ZUNIGAOROZCO@ucr.ac.cr', 'B98755', '123ABC', 'Laboratorio 1', '2023-10-03 08:27:55');
 
 -- --------------------------------------------------------
 
@@ -235,7 +201,7 @@ CREATE TABLE `usuarios_administrativos` (
 
 INSERT INTO `usuarios_administrativos` (`cedula`, `usuario`, `contrasena`, `nombre`) VALUES
 (1, 'ANDRES.AZOFEIFAGARCIA@ucr.ac.cr', '1ng.c1v1/', 'Andrés Admin'),
-(2, 'GABRIEL.ZUNIGAOROZCO@ucr.ac.cr', '1234', 'Gabriel');
+(2, 'GABRIEL.ZUNIGAOROZCO', '1ng.c1v1/', 'Gabriel');
 
 -- --------------------------------------------------------
 
@@ -256,7 +222,6 @@ CREATE TABLE `usuarios_docentes` (
 --
 
 INSERT INTO `usuarios_docentes` (`cedula`, `usuario`, `contrasena`, `nombre`, `cambiar_contrasena`) VALUES
-(0, 'daniela', '123456', 'daniela', 'no'),
 (104580143, 'GUILLERMO.SANTANA', '1-0458Ac1', 'SANTANA BARBOZA GUILLERMO', 'no'),
 (105300882, 'RAMIRO.FONSECA', '1-0530Ac1', 'FONSECA MACRINI RAMIRO', 'no'),
 (105430654, 'ANTONIO.SANCHEZ', '1-0543Ac1', 'SÁNCHEZ FERNÁNDEZ ANTONIO', 'no'),
@@ -306,6 +271,7 @@ INSERT INTO `usuarios_docentes` (`cedula`, `usuario`, `contrasena`, `nombre`, `c
 (116050017, 'MAURICIO.CARMONAZUNIGA', '1-1605Ac1', 'CARMONA ZÚÑIGA MAURICIO', 'no'),
 (116140526, 'LAURA.BRENESGARCIA', '1-1614Ac1', 'BRENES GARCÍA LAURA', 'no'),
 (116800871, 'GABRIEL.ZUNIGAOROZCO', '1-1680Ac1', 'ZÚÑIGA OROZCO GABRIEL', 'no'),
+(117690027, 'SILVIA.JIEMENEZVALVERDE', '117690027', 'daniela', 'no'),
 (204880206, 'GERMAN.VALVERDE', '2-0488Ac1', 'VALVERDE GONZÁLEZ GERMAN', 'no'),
 (205140061, 'ALBERTO.SERRANO', '2-0514Ac1', 'SERRANO PACHECO ALBERTO', 'no'),
 (205230108, 'LUIS.SALAS', '2-0523Ac1', 'SALAS ALVARADO LUIS ALONSO', 'no'),
@@ -1039,7 +1005,7 @@ INSERT INTO `usuarios_estudiantes` (`carnet`, `usuario`, `contrasena`, `nombre`,
 ('B94016', 'FABRICIO.JIMENEZCHAVES', 'B94016', 'JIMENEZ CHAVES FABRICIO FABIAN', 'no'),
 ('B94034', 'DANIELANTONIO.JIMENEZ', 'B94034', 'JIMENEZ JIMENEZ DANIEL ANTONIO', 'no'),
 ('B94089', 'DANIELA.JIMENEZSALMERON', 'B94089', 'JIMENEZ SALMERON DANIELA MARIA', 'no'),
-('B94111', 'SILVIA.JIMENEZVALVERDE', 'B94111', 'SILVIA JIMENEZ VALVERDE', 'no'),
+('B94111', 'SILVIA.JIMENEZVALVERDE', 'B94111', 'JIMENEZ VALVERDE SILVIA DANIELA', 'no'),
 ('B94238', 'JAZMIN.LEON', 'B94238', 'LEON CASTRO JAZMIN', 'no'),
 ('B94285', 'MARILYN.LOAIZA', 'B94285', 'LOAIZA ARTAVIA MARILYN DANIELA', 'no'),
 ('B94429', 'ZHUOHANG.LYU', 'B94429', 'LYU --- ZHUOHANG', 'no'),
@@ -1105,7 +1071,7 @@ INSERT INTO `usuarios_estudiantes` (`carnet`, `usuario`, `contrasena`, `nombre`,
 ('B98570', 'FRANCELLA.VINCENTI', 'B98570', 'VINCENTI ROJAS FRANCELLA', 'no'),
 ('B98590', 'CARMEN.VIQUEZ', 'B98590', 'VIQUEZ ESPINACH CARMEN LIGIA', 'no'),
 ('B98691', 'DYLAN.ZEPEDA', 'B98691', 'ZEPEDA MORALES DYLAN STEVEN', 'no'),
-('B98755', 'GABRIEL.ZUNIGAOROZCO', '1-1680Ac1', 'Gabriel Zúñiga Orozco', 'no'),
+('B98755', 'GABRIEL.ZUNIGAOROZCO', 'B98755', 'ZÚÑIGA OROZCO GABRIEL SANTIAGO', 'no'),
 ('B98983', 'MARIA.GAMBOARIVERA', 'B98983', 'GAMBOA RIVERA MARIA FERNANDA', 'no'),
 ('B99120', 'LUIS.MORAMADRID', 'B99120', 'MORA MADRID LUIS ANDRES', 'no'),
 ('C00008', 'CARLOS.ABARCAFURNISS', 'C00008', 'ABARCA FURNISS CARLOS ANDRES', 'no'),
@@ -1623,9 +1589,9 @@ INSERT INTO `usuarios_estudiantes` (`carnet`, `usuario`, `contrasena`, `nombre`,
 ('C36131', 'SAMUEL.PORRAS', 'C36131', 'PORRAS TAMES SAMUEL YARED', 'no'),
 ('C36203', 'JOSE.QUESADADIAZ', 'C36203', 'QUESADA DIAZ JOSE JULIAN', 'no'),
 ('C36220', 'ANGEL.QUESADAJIMENEZ', 'C36220', 'QUESADA JIMENEZ ANGEL DE JESUS', 'no'),
-('C36231', 'ANDRES.QUESADAMESEN', 'C36231', 'QUESADA MESEN ANDRES', 'no'),
-('C36269', 'GENESIS.QUEVEDO', 'C36269', 'QUEVEDO MORA GENESIS VALERIA', 'no');
+('C36231', 'ANDRES.QUESADAMESEN', 'C36231', 'QUESADA MESEN ANDRES', 'no');
 INSERT INTO `usuarios_estudiantes` (`carnet`, `usuario`, `contrasena`, `nombre`, `cambiar_contrasena`) VALUES
+('C36269', 'GENESIS.QUEVEDO', 'C36269', 'QUEVEDO MORA GENESIS VALERIA', 'no'),
 ('C36324', 'PAMELA.QUIROSMORALES', 'C36324', 'QUIROS MORALES PAMELA', 'no'),
 ('C36333', 'YERIELL.QUIROS', 'C36333', 'QUIROS ROJAS YERIELL', 'no'),
 ('C36358', 'RAFAEL.RAMIREZABARCA', 'C36358', 'RAMIREZ ABARCA RAFAEL MARIA', 'no'),
@@ -1739,19 +1705,19 @@ ALTER TABLE `usuarios_estudiantes`
 -- AUTO_INCREMENT de la tabla `lista_horarios`
 --
 ALTER TABLE `lista_horarios`
-  MODIFY `id` int(30) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=58;
+  MODIFY `id` int(30) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=70;
 
 --
 -- AUTO_INCREMENT de la tabla `registro_docente`
 --
 ALTER TABLE `registro_docente`
-  MODIFY `id` int(30) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id` int(30) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT de la tabla `registro_estudiante`
 --
 ALTER TABLE `registro_estudiante`
-  MODIFY `id` int(30) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=72;
+  MODIFY `id` int(30) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=77;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

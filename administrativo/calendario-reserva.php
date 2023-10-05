@@ -5,6 +5,18 @@ include '../shared/utils/translate-date.php';
 session_start();
 
 if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
+    if (isset($_COOKIE['id'])) {
+        $id = $_COOKIE['id'];
+        unset($_COOKIE['id']);
+        echo '<script>document.cookie = "id=' . $id . '; expires=Thu, 01 Jan 1970 00:00:00 UTC";</script>';
+        $select = "UPDATE `lista_horarios` SET estado = 'rechazado' WHERE id = '$id'";
+        $result = mysqli_query($conn, $select);
+
+        echo '<script type = "text/javascript">';
+        echo 'window.location.href = "calendario-reserva.php";';
+        echo '</script>';
+        die(); //Stops PHP from further execution
+    }
     ?>
 
     <!DOCTYPE html>
@@ -108,7 +120,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
                         </div>
                         <div class="text-end">
                             <button type="button" class="btn btn-secondary btn-sm rounded-3"
-                                onclick="deleteEvent(event, document.getElementById('reserveID').innerHTML)"
+                                onclick="deleteEvent(document.getElementById('reserveID').innerHTML.split(': ')[1])"
                                 data-bs-dismiss="modal">Borrar</button>
                             <button type="button" class="btn btn-secondary btn-sm rounded-3"
                                 data-bs-dismiss="modal">Cerrar</button>
@@ -220,42 +232,18 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
             calendars[calendarNames.indexOf(calendarName)].render();
         }
 
-        function deleteEvent(evt, id) {
-            let form = document.createElement('form');
-            form.action = 'calendario-reserva.php';
-            form.method = 'POST';
-
-            form.innerHTML = '<input type="hidden" name="id" id=' + id + '><input name="borrar" value=borrar>';
-
-            // the form must be in the document to submit it
-            document.body.append(form);
-
-            form.submit();
+        function deleteEvent(id) {
+            if (confirm('Esto eliminará la reservación seleccionada, ¿desea continuar?')) {
+                document.cookie = "id = " + id;
+                alert("La reservación ha sido eliminada");
+                window.location.href = "calendario-reserva.php";
+            }
         }
 
         // Get the element with id="defaultOpen" and click on it
         document.getElementById("defaultOpen").click();
 
     </script>
-
-    <?php
-    if (isset($_POST['borrar'])) {
-        $id = $_POST['id'];
-
-        $select = "UPDATE `lista_horarios` SET estado = 'rechazado' WHERE id = '$id'";
-        $result = mysqli_query($conn, $select);
-
-        echo '<script type = "text/javascript">';
-        echo 'alert("Reservación eliminada");';
-        echo 'window.location.href = "calendario-reserva.php";';
-        echo '</script>';
-    }
-    ?>
-
-    <?php
-    if (isset($conn))
-        $conn->close();
-    ?>
 
     </html>
 
