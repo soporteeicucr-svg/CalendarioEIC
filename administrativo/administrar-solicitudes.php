@@ -106,7 +106,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
 
         $schedules = $conn->query("SELECT * FROM `lista_horarios` WHERE estado = 'pendiente'");
         foreach ($schedules->fetch_all(MYSQLI_ASSOC) as $row) {
-            if ($schedule['hora_inicio'] <= $row['hora_fin'] && $schedule['hora_fin'] >= $row['hora_inicio'] && $schedule['espacio'] == $row['espacio']) {
+            if ($schedule['hora_inicio'] < $row['hora_fin'] && $schedule['hora_fin'] > $row['hora_inicio'] && $schedule['espacio'] == $row['espacio']) {
                 $select = "UPDATE `lista_horarios` SET estado = 'rechazado' WHERE id = " . $row['id'];
                 $result = mysqli_query($conn, $select);
             }
