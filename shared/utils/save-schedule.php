@@ -34,9 +34,13 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
     }
     $save = $conn->query($sql);
     if ($save) {
-        echo "<script>alert('Solicitud de reserva enviada de forma exitosa');
-    location.replace('../../' + '" . $_SESSION['tipo'] . "' + '/inicio.php')
-    </script>";
+        if ($_SESSION['tipo'] == "docente") {
+            echo "<script>alert('Solicitud de reserva enviada de forma exitosa');";
+        } else if ($_SESSION['tipo'] == "administrativo") {
+            echo "<script>alert('Reservación creada de forma exitosa');";
+        }
+        echo "location.replace('../../' + '" . $_SESSION['tipo'] . "' + '/inicio.php')";
+        echo "</script>";
     } else {
         echo "<pre>";
         echo "An Error occurred.";

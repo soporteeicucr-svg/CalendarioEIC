@@ -80,13 +80,8 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
                                 </div>
                                 <img class="img-fluid" width="50%" src="../shared/img/Calendario.png" alt="Calendario">
                             </div>
-                            <div class="card-footer">
-                                <ul class="list-group list-group-flush">
-                                    <li class="list-group-item bg-transparent"><a href="reservas-aprobadas.php"
-                                            class="btn btn-primary">Reservaciones aprobadas</a></li>
-                                    <li class="list-group-item bg-transparent"><a href="calendario-reserva.php"
-                                            class="btn btn-primary">Ver calendario</a></li>
-                                </ul>
+                            <div class="card-footer" style="padding:43.5px">
+                                <a href="calendario-reserva.php" class="btn btn-primary">Ver calendario</a>
                             </div>
                         </div>
                     </div>

@@ -46,8 +46,8 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
                             1</button>
                         <button class="tablinks" onclick="openCalendar(event, 'Laboratorio 2')">Laboratorio 2</button>
                         <button class="tablinks" onclick="openCalendar(event, 'Laboratorio 3')">Laboratorio 3</button>
-                        <button class="tablinks" onclick="openCalendar(event, 'Aula PEC')">Aula PEC</button>
-                        <button class="tablinks" onclick="openCalendar(event, 'Sala Interna')">Sala Interna</button>
+                        <button class="tablinks" onclick="openCalendar(event, 'Aula PEC')">Aula PEC (visto bueno)</button>
+                        <button class="tablinks" onclick="openCalendar(event, 'Sala Interna')">Sala Interna (visto bueno)</button>
                         <button class="tablinks" onclick="openCalendar(event, 'Sala Externa')">Sala Externa</button>
                     </div>
 
