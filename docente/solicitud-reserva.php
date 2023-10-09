@@ -229,7 +229,12 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
         }
 
         function updateDate() {
-            validDate = true;
+            if (document.getElementById("fecha").value != "") {
+                validDate = true;
+            } else {
+                validDate = false;
+            }
+
             if (document.getElementById("hora_inicio").value != "") {
                 updateTime("hora_inicio");
             }

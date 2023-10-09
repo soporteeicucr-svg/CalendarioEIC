@@ -3,6 +3,8 @@ include '../shared/utils/db-conn.php';
 
 session_start();
 
+$schedules = [];
+
 if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
     if (isset($_POST['aprobar'])) {
         $id = $_POST['id'];
@@ -11,24 +13,8 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
         $result = mysqli_query($conn, $select);
         $schedule = mysqli_fetch_assoc($result);
 
-        $nonconcurrent = true;
-        $schedules = [];
-        $overlapping = [];
         $result = $conn->query("SELECT * FROM `lista_horarios` WHERE estado = 'pendiente' OR estado = 'aprobado'");
         foreach ($result->fetch_all(MYSQLI_ASSOC) as $row) {
-            $schedules[$row['id']] = $row;
-            if ($schedule['hora_inicio'] < $row['hora_fin'] && $schedule['hora_fin'] > $row['hora_inicio'] && $schedule['espacio'] == $row['espacio']) {
-                $overlapping[$row['id']] = $row;
-            }
-        }
-
-        if (!empty($overlapping)) {
-            $nonconcurrent = false;
-        }
-
-        // if ($nonconcurrent) {}
-
-        foreach ($schedules as $row) {
             if ($schedule['hora_inicio'] < $row['hora_fin'] && $schedule['hora_fin'] > $row['hora_inicio'] && $schedule['espacio'] == $row['espacio']) {
                 $select = "UPDATE `lista_horarios` SET estado = 'rechazado' WHERE id = " . $row['id'];
                 $result = mysqli_query($conn, $select);
@@ -69,6 +55,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
         <link rel="stylesheet" type="text/css" href="../shared/lib/bootstrap/bootstrap.min.css">
         <link rel="stylesheet" type="text/css" href="../shared/css/reserva.css">
         <link rel="stylesheet" type="text/css" href="../shared/css/tabs.css">
+        <script src="../shared/lib/jquery/jquery-3.6.0.min.js"></script>
     </head>
 
     <body class="bg-light">
@@ -119,6 +106,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
                                     $query = "SELECT * FROM `lista_horarios` WHERE estado = 'pendiente'";
                                     $result = mysqli_query($conn, $query);
                                     while ($row = mysqli_fetch_array($result)) {
+                                        $schedules[$row['id']] = $row;
                                         ?>
                                         <tr>
                                             <td>
@@ -143,7 +131,8 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
                                                 <?php echo $row['hora_fin']; ?>
                                             </td>
                                             <td>
-                                                <form action="administrar-solicitudes.php" method="POST">
+                                                <form action="administrar-solicitudes.php" method="POST"
+                                                    onsubmit="return validate(this);">
                                                     <input type="hidden" name="id" id="<?php echo $row['id']; ?>"
                                                         value="<?php echo $row['id']; ?>" />
                                                     <input type="submit" name="aprobar" value="Aprobar" />
@@ -180,6 +169,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
                                     $query = "SELECT * FROM `lista_horarios` WHERE estado = 'aprobado'";
                                     $result = $conn->query($query);
                                     while ($row = mysqli_fetch_array($result)) {
+                                        $schedules[$row['id']] = $row;
                                         ?>
                                         <tr>
                                             <td>
@@ -204,7 +194,8 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
                                                 <?php echo $row['hora_fin']; ?>
                                             </td>
                                             <td>
-                                                <form action="administrar-solicitudes.php" method="POST">
+                                                <form action="administrar-solicitudes.php" method="POST"
+                                                    onsubmit="return validate(this);">
                                                     <input type="hidden" name="id" id="<?php echo $row['id']; ?>"
                                                         value="<?php echo $row['id']; ?>" />
                                                     <input type="submit" name="rechazar" value="Rechazar" />
@@ -240,6 +231,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
                                     $query = "SELECT * FROM `lista_horarios` WHERE estado = 'rechazado'";
                                     $result = $conn->query($query);
                                     while ($row = mysqli_fetch_array($result)) {
+                                        $schedules[$row['id']] = $row;
                                         ?>
                                         <tr>
                                             <td>
@@ -264,7 +256,8 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
                                                 <?php echo $row['hora_fin']; ?>
                                             </td>
                                             <td>
-                                                <form action="administrar-solicitudes.php" method="POST">
+                                                <form action="administrar-solicitudes.php" method="POST"
+                                                    onsubmit="return validate(this);">
                                                     <input type="hidden" name="id" id="<?php echo $row['id']; ?>"
                                                         value="<?php echo $row['id']; ?>" />
                                                     <input type="submit" name="aprobar" value="Aprobar" />
@@ -303,6 +296,33 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
             // Show the current tab, and add an "active" class to the button that opened the tab
             document.getElementById(tabName).style.display = "block";
             evt.currentTarget.className += " active";
+        }
+
+        var scheds = $.parseJSON('<?= json_encode($schedules) ?>');
+
+        function validate(form) {
+            var schedule = scheds[form["id"].value];
+            var overlapping = [];
+
+            for (i in scheds) {
+                if (schedule['hora_inicio'] < scheds[i]['hora_fin'] && schedule['hora_fin'] > scheds[i]['hora_inicio'] && schedule['espacio'] == scheds[i]['espacio'] && schedule['id'] != scheds[i]['id'] && scheds[i]['estado'] != "rechazado") {
+                    overlapping.push(scheds[i]);
+                }
+            };
+
+            if (overlapping.length == 0) {
+                return true;
+            } else if (overlapping.length == 1) {
+                var overlappingId = overlapping[0]['id'];
+                return confirm('La reservación con ID ' + overlappingId + ' se cancelará, ¿desea continuar?');
+            } else {
+                var overlappingIds = "";
+                for (i in overlapping) {
+                    overlappingIds = overlappingIds + overlapping[i]['id'] + ", ";
+                };
+                overlappingIds = overlappingIds.substring(0, overlappingIds.length - 2);
+                return confirm('Las reservaciones con ID ' + overlappingIds + ' se cancelarán, ¿desea continuar?');
+            }
         }
 
         // Get the element with id="defaultOpen" and click on it
