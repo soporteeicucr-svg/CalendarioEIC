@@ -62,7 +62,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
             <p>Desde: <b>$horaInicio</b></p>
             <p>Hasta: <b>$horaFin</b></p>
             <p>Recuerde utilizar el sistema de registro y retiro de cartuchera antes de dirigirse a su reservación, gracias.</p>";
-            sendMail($correo, 'Su reservación a sido creada', $message);
+            sendMail($correo, 'Su reservación ha sido creada', $message);
 
             echo "<script>alert('Reservación creada de forma exitosa');";
         }
