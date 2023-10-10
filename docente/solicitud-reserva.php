@@ -50,6 +50,8 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
             <label for="solicitante">Nombre del solicitante</label>
             <input type="text" name="solicitante" id="solicitante" placeholder="Ingrese el nombre del solicitante"
                 value="<?php echo $_SESSION['nombre']; ?>" required>
+            <label for="correo">Correo institucional</label>
+            <input type="text" name="correo" id="correo" placeholder="Ingrese su correo institucional" value=<?php echo $_SESSION['usuario'] . "@ucr.ac.cr"; ?> readonly>
             <label for="fecha" class="control-label">Día</label>
             <input type="text" name="fecha" id="fecha" placeholder="Seleccione la hora de inicio" required
                 onchange="updateDate()">

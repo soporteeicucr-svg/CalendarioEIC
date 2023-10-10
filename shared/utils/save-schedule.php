@@ -1,5 +1,6 @@
 <?php
 include 'db-conn.php';
+include 'send-mail.php';
 
 session_start();
 
@@ -9,6 +10,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
     $siglaCurso = $_POST['sigla_curso'];
     $nombreCurso = $_POST['nombre_curso'];
     $solicitante = $_POST['solicitante'];
+    $correo = $_POST['correo'];
     $fecha = $_POST['fecha'];
     $horaInicio = $fecha . " " . $_POST['hora_inicio'];
     $horaFin = $fecha . " " . $_POST['hora_fin'];
@@ -25,12 +27,23 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
 
     if (empty($id)) {
         if ($_SESSION['tipo'] == "docente") {
-            $sql = "INSERT INTO `lista_horarios` (`espacio`,`sigla_curso`,`nombre_curso`,`solicitante`,`hora_inicio`,`hora_fin`, estado) VALUES ('$espacio','$siglaCurso','$nombreCurso','$solicitante','$horaInicio','$horaFin','pendiente')";
+            $sql = "INSERT INTO `lista_horarios` (`espacio`,`sigla_curso`,`nombre_curso`,`solicitante`,`correo`,`hora_inicio`,`hora_fin`, estado) VALUES ('$espacio','$siglaCurso','$nombreCurso','$solicitante','$correo','$horaInicio','$horaFin','pendiente')";
         } else if ($_SESSION['tipo'] == "administrativo") {
-            $sql = "INSERT INTO `lista_horarios` (`espacio`,`sigla_curso`,`nombre_curso`,`solicitante`,`hora_inicio`,`hora_fin`, estado) VALUES ('$espacio','$siglaCurso','$nombreCurso','$solicitante','$horaInicio','$horaFin','aprobado')";
+            $sql = "INSERT INTO `lista_horarios` (`espacio`,`sigla_curso`,`nombre_curso`,`solicitante`,`correo`,`hora_inicio`,`hora_fin`, estado) VALUES ('$espacio','$siglaCurso','$nombreCurso','$solicitante','$correo','$horaInicio','$horaFin','aprobado')";
+            $message = "<p>Su reservación ha sido creada satisfactoriamente, a continuación se muestran los detalles de la misma.</p>
+            <p>ID de reservación: <b>$id</b></p>
+            <p>Espacio reservado: <b>$espacio</b></p>
+            <p>Sigla del curso: <b>$siglaCurso</b></p>
+            <p>Nombre del curso: <b>$nombreCurso</b></p>
+            <p>Nombre del solicitante: <b>$solicitante</b></p>
+            <p>Correo del solicitante: <b>$correo</b></p>
+            <p>Desde: <b>$horaInicio</b></p>
+            <p>Hasta: <b>$horaFin</b></p>
+            <p>Recuerde utilizar el sistema de registro y retiro de cartuchera antes de dirigirse a su reservación, gracias.</p>";
+            sendMail($correo, 'Su reservación a sido creada', $message);
         }
     } else {
-        $sql = "UPDATE `lista_horarios` set `espacio` = '{$espacio}', `sigla_curso` = '{$siglaCurso}',`nombre_curso` = '{$nombreCurso}',`solicitante` = '{$solicitante}', `hora_inicio` = '{$horaInicio}', `hora_fin` = '{$horaFin}' where `id` = '{$id}'";
+        $sql = "UPDATE `lista_horarios` set `espacio` = '{$espacio}', `sigla_curso` = '{$siglaCurso}', `nombre_curso` = '{$nombreCurso}', `solicitante` = '{$solicitante}', `correo` = '{$correo}', `hora_inicio` = '{$horaInicio}', `hora_fin` = '{$horaFin}' where `id` = '{$id}'";
     }
     $save = $conn->query($sql);
     if ($save) {

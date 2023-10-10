@@ -49,6 +49,8 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
                 readonly>
             <label for="solicitante">Nombre del solicitante</label>
             <input type="text" name="solicitante" id="solicitante" placeholder="Ingrese el nombre del solicitante" required>
+            <label for="correo">Correo institucional</label>
+            <input type="text" name="correo" id="correo" placeholder="Ingrese el correo institucional del solicitante" required>
             <label for="fecha" class="control-label">Día</label>
             <input type="text" name="fecha" id="fecha" placeholder="Seleccione la hora de inicio" required
                 onchange="updateDate()">

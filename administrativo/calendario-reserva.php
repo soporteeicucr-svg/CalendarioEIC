@@ -1,6 +1,7 @@
 <?php
 include '../shared/utils/db-conn.php';
 include '../shared/utils/translate-date.php';
+include '../shared/utils/send-mail.php';
 
 session_start();
 
@@ -9,8 +10,34 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
         $id = $_COOKIE['id'];
         unset($_COOKIE['id']);
         echo '<script>document.cookie = "id=' . $id . '; expires=Thu, 01 Jan 1970 00:00:00 UTC";</script>';
+
+        $select = "SELECT * FROM `lista_horarios` WHERE id = '$id'";
+        $result = mysqli_query($conn, $select);
+        $schedule = mysqli_fetch_assoc($result);
+
         $select = "UPDATE `lista_horarios` SET estado = 'rechazado' WHERE id = '$id'";
         $result = mysqli_query($conn, $select);
+
+        $id = $schedule['id'];
+        $espacio = $schedule['espacio'];
+        $siglaCurso = $schedule['sigla_curso'];
+        $nombreCurso = $schedule['nombre_curso'];
+        $solicitante = $schedule['solicitante'];
+        $correo = $schedule['correo'];
+        $horaInicio = $schedule['hora_inicio'];
+        $horaFin = $schedule['hora_fin'];
+
+        $message = "<p>Su reservación ha sido cancelada, a continuación se muestran los detalles de la misma.</p>
+        <p>ID de reservación: <b>$id</b></p>
+        <p>Espacio reservado: <b>$espacio</b></p>
+        <p>Sigla del curso: <b>$siglaCurso</b></p>
+        <p>Nombre del curso: <b>$nombreCurso</b></p>
+        <p>Nombre del solicitante: <b>$solicitante</b></p>
+        <p>Correo del solicitante: <b>$correo</b></p>
+        <p>Desde: <b>$horaInicio</b></p>
+        <p>Hasta: <b>$horaFin</b></p>
+        <p>Si aún requiere de una reservación, por favor solicítela nuevamente o póngase en contacto con la dirección de la escuela, gracias.</p>";
+        sendMail($correo, 'Su reservación a sido cancelada', $message);
 
         echo '<script type = "text/javascript">';
         echo 'window.location.href = "calendario-reserva.php";';

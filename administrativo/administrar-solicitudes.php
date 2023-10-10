@@ -6,43 +6,6 @@ session_start();
 $schedules = [];
 
 if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
-    if (isset($_POST['aprobar'])) {
-        $id = $_POST['id'];
-
-        $select = "SELECT * FROM `lista_horarios` WHERE id = '$id'";
-        $result = mysqli_query($conn, $select);
-        $schedule = mysqli_fetch_assoc($result);
-
-        $result = $conn->query("SELECT * FROM `lista_horarios` WHERE estado = 'pendiente' OR estado = 'aprobado'");
-        foreach ($result->fetch_all(MYSQLI_ASSOC) as $row) {
-            if ($schedule['hora_inicio'] < $row['hora_fin'] && $schedule['hora_fin'] > $row['hora_inicio'] && $schedule['espacio'] == $row['espacio']) {
-                $select = "UPDATE `lista_horarios` SET estado = 'rechazado' WHERE id = " . $row['id'];
-                $result = mysqli_query($conn, $select);
-            }
-        }
-
-        $select = "UPDATE `lista_horarios` SET estado = 'aprobado' WHERE id = '$id'";
-        $result = mysqli_query($conn, $select);
-
-        echo '<script type = "text/javascript">';
-        echo 'alert("La reservación ha sido aprobada");';
-        echo 'window.location.href = "administrar-solicitudes.php";';
-        echo '</script>';
-        die(); //Stops PHP from further execution
-    }
-
-    if (isset($_POST['rechazar'])) {
-        $id = $_POST['id'];
-
-        $select = "UPDATE `lista_horarios` SET estado = 'rechazado' WHERE id = '$id'";
-        $result = mysqli_query($conn, $select);
-
-        echo '<script type = "text/javascript">';
-        echo 'alert("La reservación ha sido rechazada");';
-        echo 'window.location.href = "administrar-solicitudes.php";';
-        echo '</script>';
-        die(); //Stops PHP from further execution
-    }
     ?>
 
     <!DOCTYPE html>
@@ -131,7 +94,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
                                                 <?php echo $row['hora_fin']; ?>
                                             </td>
                                             <td>
-                                                <form action="administrar-solicitudes.php" method="POST"
+                                                <form action="../shared/utils/manage-schedule.php" method="POST"
                                                     onsubmit="return validate(this);">
                                                     <input type="hidden" name="id" id="<?php echo $row['id']; ?>"
                                                         value="<?php echo $row['id']; ?>" />
@@ -194,7 +157,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
                                                 <?php echo $row['hora_fin']; ?>
                                             </td>
                                             <td>
-                                                <form action="administrar-solicitudes.php" method="POST"
+                                                <form action="../shared/utils/manage-schedule.php" method="POST"
                                                     onsubmit="return validate(this);">
                                                     <input type="hidden" name="id" id="<?php echo $row['id']; ?>"
                                                         value="<?php echo $row['id']; ?>" />
@@ -256,7 +219,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
                                                 <?php echo $row['hora_fin']; ?>
                                             </td>
                                             <td>
-                                                <form action="administrar-solicitudes.php" method="POST"
+                                                <form action="../shared/utils/manage-schedule.php" method="POST"
                                                     onsubmit="return validate(this);">
                                                     <input type="hidden" name="id" id="<?php echo $row['id']; ?>"
                                                         value="<?php echo $row['id']; ?>" />
