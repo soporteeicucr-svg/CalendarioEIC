@@ -14,20 +14,26 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
 
         $result = $conn->query("SELECT * FROM `lista_horarios` WHERE estado = 'pendiente' OR estado = 'aprobado'");
         foreach ($result->fetch_all(MYSQLI_ASSOC) as $row) {
-            if ($schedule['hora_inicio'] < $row['hora_fin'] && $schedule['hora_fin'] > $row['hora_inicio'] && $schedule['espacio'] == $row['espacio']) {
+            if ($schedule['hora_inicio'] < $row['hora_fin'] && $schedule['hora_fin'] > $row['hora_inicio'] && $schedule['espacio'] == $row['espacio'] && $schedule['id'] != $row['id']) {
                 $select = "UPDATE `lista_horarios` SET estado = 'rechazado' WHERE id = " . $row['id'];
                 $result = mysqli_query($conn, $select);
 
-                $id = $schedule['id'];
-                $espacio = $schedule['espacio'];
-                $siglaCurso = $schedule['sigla_curso'];
-                $nombreCurso = $schedule['nombre_curso'];
-                $solicitante = $schedule['solicitante'];
-                $correo = $schedule['correo'];
-                $horaInicio = $schedule['hora_inicio'];
-                $horaFin = $schedule['hora_fin'];
+                $id = $row['id'];
+                $espacio = $row['espacio'];
+                $siglaCurso = $row['sigla_curso'];
+                $nombreCurso = $row['nombre_curso'];
+                $solicitante = $row['solicitante'];
+                $correo = $row['correo'];
+                $horaInicio = $row['hora_inicio'];
+                $horaFin = $row['hora_fin'];
 
-                $message = "<p>Su reservación ha sido rechazada, a continuación se muestran los detalles de la misma.</p>
+                if ($schedule['estado'] == 'pendiente') {
+                    $estado = 'rechazada';
+                } else {
+                    $estado = 'cancelada';
+                }
+
+                $message = "<p>Su reservación ha sido $estado, a continuación se muestran los detalles de la misma.</p>
                 <p>ID de reservación: <b>$id</b></p>
                 <p>Espacio reservado: <b>$espacio</b></p>
                 <p>Sigla del curso: <b>$siglaCurso</b></p>
@@ -37,7 +43,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
                 <p>Desde: <b>$horaInicio</b></p>
                 <p>Hasta: <b>$horaFin</b></p>
                 <p>Puede que otra reservación haya sido solicitada con anterioridad en el horario especificado, si aún requiere de una reservación, por favor solicítela nuevamente o póngase en contacto con la dirección de la escuela, gracias.</p>";
-                sendMail($correo, 'Su reservación a sido rechazada', $message);
+                sendMail($correo, "Su reservación a sido $estado", $message);
             }
         }
 

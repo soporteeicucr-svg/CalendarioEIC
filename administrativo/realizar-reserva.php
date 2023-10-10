@@ -103,7 +103,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
             -->
             <div class="selectContainer">
                 <select class="selectValue" name="hora_fin" id="hora_fin" onchange="updateTime('hora_fin')" required>
-                    <option value="">Seleccione la hora de inicio</option>
+                    <option value="">Seleccione la hora de finalización</option>
                     <option value="07:30">07:30</option>
                     <option value="08:00">08:00</option>
                     <option value="08:30">08:30</option>

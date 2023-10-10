@@ -276,15 +276,13 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
             if (overlapping.length == 0) {
                 return true;
             } else if (overlapping.length == 1) {
-                var overlappingId = overlapping[0]['id'];
-                return confirm('La reservación con ID ' + overlappingId + ' se cancelará, ¿desea continuar?');
+                return confirm('La reservación con ID ' + overlapping[0]['id'] + ' entre las horas ' + overlapping[0]['hora_inicio'] + ' y ' + overlapping[0]['hora_fin'] + ' será cancelada, ¿desea continuar?');
             } else {
-                var overlappingIds = "";
+                var overlappingMessage = "";
                 for (i in overlapping) {
-                    overlappingIds = overlappingIds + overlapping[i]['id'] + ", ";
+                    overlappingMessage = overlappingMessage + 'ID: ' + overlapping[i]['id'] + ', Inicio: ' +  overlapping[i]['hora_inicio'] + ', Finalización: ' + overlapping[i]['hora_fin'] + '\n';
                 };
-                overlappingIds = overlappingIds.substring(0, overlappingIds.length - 2);
-                return confirm('Las reservaciones con ID ' + overlappingIds + ' se cancelarán, ¿desea continuar?');
+                return confirm('Las reservaciones:\n' + overlappingMessage + 'serán canceladas, ¿desea continuar?');
             }
         }
 

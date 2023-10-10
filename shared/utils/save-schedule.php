@@ -30,6 +30,28 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
             $sql = "INSERT INTO `lista_horarios` (`espacio`,`sigla_curso`,`nombre_curso`,`solicitante`,`correo`,`hora_inicio`,`hora_fin`, estado) VALUES ('$espacio','$siglaCurso','$nombreCurso','$solicitante','$correo','$horaInicio','$horaFin','pendiente')";
         } else if ($_SESSION['tipo'] == "administrativo") {
             $sql = "INSERT INTO `lista_horarios` (`espacio`,`sigla_curso`,`nombre_curso`,`solicitante`,`correo`,`hora_inicio`,`hora_fin`, estado) VALUES ('$espacio','$siglaCurso','$nombreCurso','$solicitante','$correo','$horaInicio','$horaFin','aprobado')";
+        }
+    } else {
+        $sql = "UPDATE `lista_horarios` set `espacio` = '{$espacio}', `sigla_curso` = '{$siglaCurso}', `nombre_curso` = '{$nombreCurso}', `solicitante` = '{$solicitante}', `correo` = '{$correo}', `hora_inicio` = '{$horaInicio}', `hora_fin` = '{$horaFin}' where `id` = '{$id}'";
+    }
+    $save = $conn->query($sql);
+    if ($save) {
+        if ($_SESSION['tipo'] == "docente") {
+            echo "<script>alert('Solicitud de reserva enviada de forma exitosa');";
+        } else if ($_SESSION['tipo'] == "administrativo") {
+            $select = "SELECT * FROM `lista_horarios` WHERE `espacio` = '$espacio' AND `sigla_curso` = '$siglaCurso' AND `nombre_curso` = '$nombreCurso' AND `solicitante` = '$solicitante' AND `correo` = '$correo' AND `hora_inicio` = '$horaInicio' AND `hora_fin` = '$horaFin'";
+            $result = mysqli_query($conn, $select);
+            $schedule = mysqli_fetch_assoc($result);
+
+            $id = $schedule['id'];
+            $espacio = $schedule['espacio'];
+            $siglaCurso = $schedule['sigla_curso'];
+            $nombreCurso = $schedule['nombre_curso'];
+            $solicitante = $schedule['solicitante'];
+            $correo = $schedule['correo'];
+            $horaInicio = $schedule['hora_inicio'];
+            $horaFin = $schedule['hora_fin'];
+
             $message = "<p>Su reservación ha sido creada satisfactoriamente, a continuación se muestran los detalles de la misma.</p>
             <p>ID de reservación: <b>$id</b></p>
             <p>Espacio reservado: <b>$espacio</b></p>
@@ -41,15 +63,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
             <p>Hasta: <b>$horaFin</b></p>
             <p>Recuerde utilizar el sistema de registro y retiro de cartuchera antes de dirigirse a su reservación, gracias.</p>";
             sendMail($correo, 'Su reservación a sido creada', $message);
-        }
-    } else {
-        $sql = "UPDATE `lista_horarios` set `espacio` = '{$espacio}', `sigla_curso` = '{$siglaCurso}', `nombre_curso` = '{$nombreCurso}', `solicitante` = '{$solicitante}', `correo` = '{$correo}', `hora_inicio` = '{$horaInicio}', `hora_fin` = '{$horaFin}' where `id` = '{$id}'";
-    }
-    $save = $conn->query($sql);
-    if ($save) {
-        if ($_SESSION['tipo'] == "docente") {
-            echo "<script>alert('Solicitud de reserva enviada de forma exitosa');";
-        } else if ($_SESSION['tipo'] == "administrativo") {
+
             echo "<script>alert('Reservación creada de forma exitosa');";
         }
         echo "location.replace('../../' + '" . $_SESSION['tipo'] . "' + '/inicio.php')";
