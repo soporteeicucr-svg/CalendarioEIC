@@ -25,7 +25,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
 
             <!-- Use Bootstrap cards for the buttons -->
             <div class="container-fluid text-center">
-                <div class="row d-flex justify-content-center">
+                <div class="row d-flex justify-content-center px-5">
                     <div class="col-md-3">
                         <div class="card w-100 h-100">
                             <div class="card-header">
@@ -39,12 +39,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
                                 <img class="img-fluid" width="50%" src="../shared/img/Llave.png" alt="Llave">
                             </div>
                             <div class="card-footer">
-                                <ul class="list-group list-group-flush">
-                                    <li class="list-group-item bg-transparent"><a href="lista-docentes.php"
-                                            class="btn btn-primary">Docentes</a></li>
-                                    <li class="list-group-item bg-transparent"><a href="lista-estudiantes.php"
-                                            class="btn btn-primary">Estudiantes</a></li>
-                                </ul>
+                                <a href="registro-accesos.php" class="btn btn-primary">Ver lista</a>
                             </div>
                         </div>
                     </div>
@@ -60,27 +55,38 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
                                 <img class="img-fluid" width="50%" src="../shared/img/Formulario.png" alt="Formulario">
                             </div>
                             <div class="card-footer">
-                                <ul class="list-group list-group-flush">
-                                    <li class="list-group-item bg-transparent"><a href="administrar-solicitudes.php"
-                                            class="btn btn-primary">Administrar solicitudes</a></li>
-                                    <li class="list-group-item bg-transparent"><a href="realizar-reserva.php"
-                                            class="btn btn-primary">Realizar reservación</a></li>
-                                </ul>
+                                <a href="administrar-solicitudes.php" class="btn btn-primary">Administrar solicitudes</a>
                             </div>
                         </div>
                     </div>
                     <div class="col-md-3">
                         <div class="card w-100 h-100">
                             <div class="card-header">
-                                <h3 class="mb-0">Visualizar reservaciones</h3>
+                                <h3 class="mb-0">Creación de reserva</h3>
                             </div>
                             <div class="card-body card-body d-flex justify-content-center align-content-between flex-wrap">
                                 <div class="w-100">
-                                    <h4 class="card-title">Reservaciones aprobadas y calendario</h4>
+                                    <h4 class="card-title">Creación de reserva de espacio</h4>
+                                </div>
+                                <img class="img-fluid" width="50%" src="../shared/img/Formulario-mas.png" alt="Formulario">
+                            </div>
+                            <div class="card-footer">
+                                <a href="realizar-reserva.php" class="btn btn-primary">Realizar reservación</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card w-100 h-100">
+                            <div class="card-header">
+                                <h3 class="mb-0">Visualizar reservas</h3>
+                            </div>
+                            <div class="card-body card-body d-flex justify-content-center align-content-between flex-wrap">
+                                <div class="w-100">
+                                    <h4 class="card-title">Calendario de reservaciones aprobadas</h4>
                                 </div>
                                 <img class="img-fluid" width="50%" src="../shared/img/Calendario.png" alt="Calendario">
                             </div>
-                            <div class="card-footer" style="padding:43.5px">
+                            <div class="card-footer">
                                 <a href="calendario-reserva.php" class="btn btn-primary">Ver calendario</a>
                             </div>
                         </div>

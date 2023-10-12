@@ -280,7 +280,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
             } else {
                 var overlappingMessage = "";
                 for (i in overlapping) {
-                    overlappingMessage = overlappingMessage + 'ID: ' + overlapping[i]['id'] + ', Inicio: ' +  overlapping[i]['hora_inicio'] + ', Finalización: ' + overlapping[i]['hora_fin'] + '\n';
+                    overlappingMessage = overlappingMessage + 'ID: ' + overlapping[i]['id'] + ', Inicio: ' + overlapping[i]['hora_inicio'] + ', Finalización: ' + overlapping[i]['hora_fin'] + '\n';
                 };
                 return confirm('Las reservaciones:\n' + overlappingMessage + 'serán canceladas, ¿desea continuar?');
             }

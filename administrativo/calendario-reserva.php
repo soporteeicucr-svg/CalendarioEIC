@@ -86,7 +86,8 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
                         <button class="tablinks" onclick="openCalendar(event, 'Laboratorio 2')">Laboratorio 2</button>
                         <button class="tablinks" onclick="openCalendar(event, 'Laboratorio 3')">Laboratorio 3</button>
                         <button class="tablinks" onclick="openCalendar(event, 'Aula PEC')">Aula PEC (visto bueno)</button>
-                        <button class="tablinks" onclick="openCalendar(event, 'Sala Interna')">Sala Interna (visto bueno)</button>
+                        <button class="tablinks" onclick="openCalendar(event, 'Sala Interna')">Sala Interna (visto
+                            bueno)</button>
                         <button class="tablinks" onclick="openCalendar(event, 'Sala Externa')">Sala Externa</button>
                     </div>
 
@@ -130,9 +131,9 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
                             <dl>
                                 <dt class="text-muted">Información</dt>
                                 <dd id="title" class="fw-bold fs-4"></dd>
-                                <dt class="text-muted">Sigla y nombre del curso</dt>
+                                <dt class="text-muted" id="details"></dt>
                                 <dd id="description" class=""></dd>
-                                <dt class="text-muted">Nombre del docente</dt>
+                                <dt class="text-muted" id="reservedBy"></dt>
                                 <dd id="name" class=""></dd>
                                 <dt class="text-muted">Inicio</dt>
                                 <dd id="start" class=""></dd>
@@ -183,12 +184,21 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
                 Object.keys(scheds).map((k) => {
                     if (scheds[k].espacio == calendarNames[i]) {
                         var row = scheds[k];
-                        events.push({
-                            id: row.id,
-                            title: row.sigla_curso,
-                            start: row.hora_inicio,
-                            end: row.hora_fin,
-                        });
+                        if (row.sigla_curso != "NA") {
+                            events.push({
+                                id: row.id,
+                                title: row.sigla_curso,
+                                start: row.hora_inicio,
+                                end: row.hora_fin,
+                            });
+                        } else {
+                            events.push({
+                                id: row.id,
+                                title: row.nombre_curso,
+                                start: row.hora_inicio,
+                                end: row.hora_fin,
+                            });
+                        }
                     }
                 });
             }
@@ -217,7 +227,15 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
                     var id = info.event.id;
                     if (!!scheds[id]) {
                         _details.find("#title").text("Reserva de " + scheds[id].espacio);
-                        _details.find("#description").text(scheds[id].sigla_curso + ": " + scheds[id].nombre_curso);
+                        if (scheds[id].sigla_curso != "NA") {
+                            document.getElementById('details').innerHTML = "Sigla y nombre del curso";
+                            document.getElementById('reservedBy').innerHTML = "Nombre del docente";
+                            _details.find("#description").text(scheds[id].sigla_curso + ": " + scheds[id].nombre_curso);
+                        } else {
+                            document.getElementById('details').innerHTML = "Razón de la reserva";
+                            document.getElementById('reservedBy').innerHTML = "Reservado por";
+                            _details.find("#description").text(scheds[id].nombre_curso);
+                        }
                         _details.find("#name").text(scheds[id].solicitante);
                         _details.find("#start").text(scheds[id].sdate);
                         _details.find("#end").text(scheds[id].edate);
