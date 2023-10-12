@@ -28,18 +28,18 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
 
                 <label for="nombre">Nombre completo</label>
                 <input type="text" name="nombre" id="nombre" placeholder="Ingrese su nombre"
-                    value="<?php echo $_SESSION['nombre']; ?>" readonly>
+                    value="<?php echo $_SESSION['nombre']; ?>">
 
                 <label for="correo">Correo institucional</label>
-                <input type="text" name="correo" id="correo" placeholder="Ingrese su correo institucional" value=<?php echo $_SESSION['usuario'] . "@ucr.ac.cr"; ?> readonly>
+                <input type="text" name="correo" id="correo" placeholder="Ingrese su correo institucional" value=<?php echo $_SESSION['usuario'] . "@ucr.ac.cr"; ?>>
 
                 <label for="cedula">Cédula de identidad</label>
-                <input type="text" name="cedula" id="cedula" placeholder="Ingrese su cédula de identidad" value=<?php echo $_SESSION['id']; ?> readonly>
+                <input type="text" name="cedula" id="cedula" placeholder="Ingrese su cédula de identidad" value=<?php echo $_SESSION['id']; ?>>
 
                 <label for="celular">Número de teléfono</label>
                 <input type="text" name="celular" id="celular" placeholder="Ingrese su número de teléfono">
 
-                <h2 class="subDatos">Datos reserva</h2>
+                <h2 class="subDatos">Datos de reservación</h2>
 
                 <label for="sigla_curso">Sigla del curso</label>
                 <input type="text" name="sigla_curso" id="sigla_curso"
@@ -50,8 +50,8 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
                     readonly>
 
                 <label for="espacio">Espacio a utilizar</label>
-                <div class="selectOption">
-                    <select name="espacio" id="espacio" required>
+                <div class="selectContainer">
+                    <select class="selectValue" name="espacio" id="espacio" required>
                         <option value="">Seleccione un espacio</option>
                         <option value="Laboratorio 1">Laboratorio 1</option>
                         <option value="Laboratorio 2">Laboratorio 2</option>
@@ -61,8 +61,6 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
                         <option value="Sala Externa">Sala Externa</option>
                     </select>
                 </div>
-
-                <br>
 
                 <label for="fecha_ingreso">Fecha y hora de ingreso</label>
                 <p class="avisoHora">Si utiliza el laboratorio después de las 17:00, comuníquese con la recepción de la

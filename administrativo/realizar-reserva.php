@@ -24,7 +24,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
         <div>
             <div class="center">
                 <img src="../shared/img/logoEIC.png" alt="Logo Escuela de Ingeniería Civil UCR">
-                <h1>Sistema de reserva docente</h1>
+                <h1>Sistema de reserva administrativo</h1>
             </div>
         </div>
         <form action="../shared/utils/save-schedule.php" method="post" id="schedule-form">
@@ -43,14 +43,15 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
             </div>
             <label for="sigla_curso">Sigla del curso</label>
             <input type="text" name="sigla_curso" id="sigla_curso"
-                placeholder="Ingrese la sigla del curso (ejemplo: IC-0101)" oninput="searchCourse()">
+                placeholder="Ingrese la sigla del curso (ejemplo: IC-0101) o 'NA' si no aplica" oninput="searchCourse()">
             <label for="nombre_curso">Nombre del curso</label>
             <input type="text" name="nombre_curso" id="nombre_curso" placeholder="Ingrese la sigla del curso primero"
                 readonly>
             <label for="solicitante">Nombre del solicitante</label>
             <input type="text" name="solicitante" id="solicitante" placeholder="Ingrese el nombre del solicitante" required>
             <label for="correo">Correo institucional</label>
-            <input type="text" name="correo" id="correo" placeholder="Ingrese el correo institucional del solicitante" required>
+            <input type="text" name="correo" id="correo" placeholder="Ingrese el correo institucional del solicitante"
+                required>
             <label for="fecha" class="control-label">Día</label>
             <input type="text" name="fecha" id="fecha" placeholder="Seleccione la hora de inicio" required
                 onchange="updateDate()">
@@ -211,11 +212,21 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
 
             let curso = listaCursos.find((element) => element.sigla_curso == document.getElementById('sigla_curso').value);
             if (curso) {
-                document.getElementById('nombre_curso').setAttribute("value", curso.nombre_curso);
+                document.getElementById('nombre_curso').value = curso.nombre_curso;
                 foundCourse = true;
             } else {
-                document.getElementById('nombre_curso').setAttribute("value", "");
-                foundCourse = false;
+                if (document.getElementById('sigla_curso').value == "NA") {
+                    document.getElementById('nombre_curso').removeAttribute("readonly");
+                    document.getElementById('nombre_curso').setAttribute("required", "");
+                    document.getElementById('nombre_curso').setAttribute("placeholder", "Ingrese la razón para la reserva");
+                    foundCourse = true;
+                } else {
+                    document.getElementById('nombre_curso').value = "";
+                    document.getElementById('nombre_curso').setAttribute("readonly", "");
+                    document.getElementById('nombre_curso').removeAttribute("required");
+                    document.getElementById('nombre_curso').setAttribute("placeholder", "Ingrese la sigla del curso primero");
+                    foundCourse = false;
+                }
             }
             checkFilled();
         }

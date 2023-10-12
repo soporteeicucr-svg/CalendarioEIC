@@ -40,7 +40,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
                 <label for="celular">Número de teléfono</label>
                 <input type="text" name="celular" id="celular" placeholder="Ingrese el número de teléfono del docente">
 
-                <h2 class="subDatos">Datos reserva</h2>
+                <h2 class="subDatos">Datos de reservación</h2>
 
                 <label for="sigla_curso">Sigla del curso</label>
                 <input type="text" name="sigla_curso" id="sigla_curso"
@@ -51,8 +51,8 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
                     readonly>
 
                 <label for="espacio">¿Cual espacio desea reservar?</label>
-                <div class="selectOption">
-                    <select name="espacio" id="espacio">
+                <div class="selectContainer">
+                    <select class="selectValue" name="espacio" id="espacio">
                         <option value="Laboratorio 1">Laboratorio 1</option>
                         <option value="Laboratorio 2">Laboratorio 2</option>
                         <option value="Laboratorio 3">Laboratorio 3</option>
