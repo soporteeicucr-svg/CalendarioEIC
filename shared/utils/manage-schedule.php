@@ -69,7 +69,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
         <p>Desde: <b>$horaInicio</b></p>
         <p>Hasta: <b>$horaFin</b></p>
         <p>Recuerde utilizar el sistema de registro y retiro de cartuchera antes de dirigirse a su reservación, gracias.</p>";
-        sendMail($correo, 'Su reservación ha sido aprobada', $message);
+        sendMail($correo, "Su reservación ha sido aprobada", $message);
 
         echo '<script type = "text/javascript">';
         echo 'alert("La reservación ha sido aprobada");';
@@ -96,7 +96,13 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
         $horaInicio = $schedule['hora_inicio'];
         $horaFin = $schedule['hora_fin'];
 
-        $message = "<p>Su reservación ha sido rechazada, a continuación se muestran los detalles de la misma.</p>
+        if ($schedule['estado'] == 'pendiente') {
+            $estado = 'rechazada';
+        } else {
+            $estado = 'cancelada';
+        }
+
+        $message = "<p>Su reservación ha sido $estado, a continuación se muestran los detalles de la misma.</p>
         <p>ID de reservación: <b>$id</b></p>
         <p>Espacio reservado: <b>$espacio</b></p>
         <p>Sigla del curso: <b>$siglaCurso</b></p>
@@ -106,7 +112,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
         <p>Desde: <b>$horaInicio</b></p>
         <p>Hasta: <b>$horaFin</b></p>
         <p>Puede que otra reservación haya sido creada con anterioridad en el horario solicitado, si aún requiere de una reservación, por favor solicítela nuevamente o póngase en contacto con la dirección de la escuela, gracias.</p>";
-        sendMail($correo, 'Su reservación ha sido rechazada', $message);
+        sendMail($correo, "Su reservación ha sido $estado", $message);
 
         echo '<script type = "text/javascript">';
         echo 'alert("La reservación ha sido rechazada");';

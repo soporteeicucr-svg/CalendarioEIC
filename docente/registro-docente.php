@@ -51,7 +51,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
 
                 <label for="espacio">Espacio a utilizar</label>
                 <div class="selectContainer">
-                    <select class="selectValue" name="espacio" id="espacio" required>
+                    <select class="selectValue" name="espacio" id="espacio" onchange="updateSpace()" required>
                         <option value="">Seleccione un espacio</option>
                         <option value="Laboratorio 1">Laboratorio 1</option>
                         <option value="Laboratorio 2">Laboratorio 2</option>
@@ -66,7 +66,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
                 <p class="avisoHora">Si utiliza el laboratorio después de las 17:00, comuníquese con la recepción de la
                     escuela</p>
                 <input type="text" name="fecha_ingreso" id="fecha_ingreso" readonly />
-                <input type="submit" id="submit" value="Registrarse" disabled>
+                <input type="submit" id="submit" value="Registrar" disabled>
             </form>
 
             <div class="center">
@@ -76,8 +76,18 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
 
         <script>
             let listaCursos = <?php echo json_encode($courses); ?>;
-            let enableButton = false;
+            let spaceSelected = false;
+            let foundCourse = false;
+            let validTimeRange = false;
             let date = new Date();
+
+            function checkFilled() {
+                if (spaceSelected && foundCourse && validTimeRange) {
+                    document.getElementById('submit').disabled = false;
+                } else {
+                    document.getElementById('submit').disabled = true;
+                }
+            }
 
             function searchCourse() {
                 let p = document.getElementById('sigla_curso').selectionStart;
@@ -87,13 +97,21 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
                 let curso = listaCursos.find((element) => element.sigla_curso == document.getElementById('sigla_curso').value);
                 if (date.getHours() >= 7 && date.getHours() < 17 && curso) {
                     document.getElementById('nombre_curso').setAttribute("value", curso.nombre_curso);
-                    document.getElementById('submit').disabled = false;
-                    enableButton = true;
+                    foundCourse = true;
                 } else {
                     document.getElementById('nombre_curso').setAttribute("value", "");
-                    document.getElementById('submit').disabled = true;
-                    enableButton = false;
+                    foundCourse = false;
                 }
+                checkFilled();
+            }
+
+            function updateSpace() {
+                if (document.getElementById("espacio").value != "") {
+                    spaceSelected = true;
+                } else {
+                    spaceSelected = false;
+                }
+                checkFilled();
             }
 
             function getDate() {
@@ -106,11 +124,12 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
                     ('00' + date.getSeconds()).slice(-2);
                 document.getElementById('fecha_ingreso').setAttribute("value", dateString);
 
-                if (date.getHours() >= 7 && date.getHours() < 17 && enableButton) {
-                    document.getElementById('submit').disabled = false;
+                if (date.getHours() >= 7 && date.getHours() < 17) {
+                    validTimeRange = true;
                 } else {
-                    document.getElementById('submit').disabled = true;
+                    validTimeRange = false;
                 }
+                checkFilled();
             }
 
             getDate();

@@ -56,12 +56,20 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
         <link rel="stylesheet" type="text/css" href="../shared/lib/fontawesome/css/all.css">
         <link rel="stylesheet" type="text/css" href="../shared/lib/bootstrap/bootstrap.min.css">
         <link rel="stylesheet" type="text/css" href="../shared/lib/fullcalendar/lib/main.min.css">
+        <link rel='stylesheet' type="text/css" href='../shared/lib/alertify/css/alertify.css'>
+        <link rel='stylesheet' type="text/css" href='../shared/lib/alertify/css/themes/bootstrap.css'>
         <link rel="stylesheet" type="text/css" href="../shared/css/reserva.css">
         <link rel="stylesheet" type="text/css" href="../shared/css/tabs.css">
         <script src="../shared/lib/jquery/jquery-3.6.0.min.js"></script>
         <script src="../shared/lib/bootstrap/bootstrap.min.js"></script>
         <script src='../shared/lib/fullcalendar/index.global.min.js'></script>
         <script src="../shared/lib/fullcalendar/lib/main.min.js"></script>
+        <script src='../shared/lib/alertify/alertify.min.js'></script>
+        <style>
+            .ajs-cancel {
+                display: none;
+            }
+        </style>
     </head>
 
     <body class="bg-light">
@@ -242,7 +250,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
                         _details.find("#reserveID").text("ID de reserva: " + scheds[id].id);
                         _details.modal("show");
                     } else {
-                        alert("Evento sin parámetros");
+                        alertify.warning('Evento sin parámetros');
                     }
                 },
                 noEventsText: "No hay eventos",
@@ -280,8 +288,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
         function deleteEvent(id) {
             if (confirm('Esto eliminará la reservación seleccionada, ¿desea continuar?')) {
                 document.cookie = "id = " + id;
-                alert("La reservación ha sido eliminada");
-                window.location.href = "calendario-reserva.php";
+                alertify.confirm('La reservación ha sido eliminada', function () { window.location.href = 'calendario-reserva.php' }).setHeader('Mensaje').set({transition: 'zoom', 'labels': { ok: 'Aceptar', cancel: 'Cancelar' }}).autoOk(10);
             }
         }
 

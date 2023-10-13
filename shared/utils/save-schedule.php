@@ -36,8 +36,31 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
     }
     $save = $conn->query($sql);
     if ($save) {
+        ?>
+
+        <!DOCTYPE html>
+        <html>
+
+        <head>
+            <meta charset="UTF-8">
+            <meta http-equiv="X-UA-Compatible" content="ie=edge">
+            <title>Registro para uso de laboratorios para estudiantes</title>
+            <link rel='stylesheet' href='../lib/alertify/css/alertify.css'>
+            <link rel='stylesheet' href='../lib/alertify/css/themes/bootstrap.css'>
+            <script src='../lib/alertify/alertify.min.js'></script>
+        </head>
+
+        <?php
         if ($_SESSION['tipo'] == "docente") {
-            echo "<script>alert('Solicitud de reserva enviada de forma exitosa');";
+            ?>
+
+            <body>
+                <script>
+                    alertify.confirm('Mensaje', 'Solicitud de reserva enviada de manera exitosa, ¿desea cerrar la sesión?', function () { location.replace('../cerrar-sesion.php') }, function () { location.replace('../../' + '<?php echo $_SESSION['tipo'] ?>' + '/inicio.php') }).set({ transition: 'zoom', 'labels': { ok: 'Si', cancel: 'No' } }).autoOk(10);
+                </script>
+            </body>
+
+            <?php
         } else if ($_SESSION['tipo'] == "administrativo") {
             $select = "SELECT * FROM `lista_horarios` WHERE `espacio` = '$espacio' AND `sigla_curso` = '$siglaCurso' AND `nombre_curso` = '$nombreCurso' AND `solicitante` = '$solicitante' AND `correo` = '$correo' AND `hora_inicio` = '$horaInicio' AND `hora_fin` = '$horaFin'";
             $result = mysqli_query($conn, $select);
@@ -63,11 +86,16 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
             <p>Hasta: <b>$horaFin</b></p>
             <p>Recuerde utilizar el sistema de registro y retiro de cartuchera antes de dirigirse a su reservación, gracias.</p>";
             sendMail($correo, 'Su reservación ha sido creada', $message);
+            ?>
 
-            echo "<script>alert('Reservación creada de forma exitosa');";
+                <body>
+                    <script>
+                        alertify.confirm('Mensaje', 'Reservación creada de manera exitosa, ¿desea cerrar la sesión?', function () { location.replace('../cerrar-sesion.php') }, function () { location.replace('../../' + '<?php echo $_SESSION['tipo'] ?>' + '/inicio.php') }).set({ transition: 'zoom', 'labels': { ok: 'Si', cancel: 'No' } }).autoOk(10);
+                    </script>
+                </body>
+
+            <?php
         }
-        echo "location.replace('../../' + '" . $_SESSION['tipo'] . "' + '/inicio.php')";
-        echo "</script>";
     } else {
         echo "<pre>";
         echo "An Error occurred.";

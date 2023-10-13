@@ -161,7 +161,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
                                                     onsubmit="return validate(this);">
                                                     <input type="hidden" name="id" id="<?php echo $row['id']; ?>"
                                                         value="<?php echo $row['id']; ?>" />
-                                                    <input type="submit" name="rechazar" value="Rechazar" />
+                                                    <input type="submit" name="rechazar" value="Cancelar" />
                                                 </form>
                                             </td>
                                         </tr>

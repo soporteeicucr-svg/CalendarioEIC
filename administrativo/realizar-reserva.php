@@ -212,7 +212,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
 
             let curso = listaCursos.find((element) => element.sigla_curso == document.getElementById('sigla_curso').value);
             if (curso) {
-                document.getElementById('nombre_curso').value = curso.nombre_curso;
+                document.getElementById('nombre_curso').setAttribute("value", curso.nombre_curso);
                 foundCourse = true;
             } else {
                 if (document.getElementById('sigla_curso').value == "NA") {
@@ -221,7 +221,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
                     document.getElementById('nombre_curso').setAttribute("placeholder", "Ingrese la razón para la reserva");
                     foundCourse = true;
                 } else {
-                    document.getElementById('nombre_curso').value = "";
+                    document.getElementById('nombre_curso').setAttribute("value", "");
                     document.getElementById('nombre_curso').setAttribute("readonly", "");
                     document.getElementById('nombre_curso').removeAttribute("required");
                     document.getElementById('nombre_curso').setAttribute("placeholder", "Ingrese la sigla del curso primero");
