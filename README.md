@@ -9,7 +9,7 @@ El presente sistema de la Escuela de Ingeniería Civil fue desarrollado con el f
 ## Funcionalidad
 
 El sistema está dividido en tres módulos, cada uno con su sistema de autentificación
-y funcionalidades diferentes. El módulo de estudiantes y el módulo de docentes son accesibles a través de una página de inicio en la dirección http://localhost, la cual cuenta con botones que redirigen a los respectivos formularios de inicio de sesión, mientras que para el módulo de docentes es necesario ingresar la dirección http://localhost/administrativo en la barra de navegación, esto para que no sea visible a los otros tipos de usuarios. Las funcionalidades de cada módulo son:
+y funcionalidades diferentes. El módulo de estudiantes y el módulo de docentes son accesibles a través de una página de inicio en la dirección `http://localhost`, la cual cuenta con botones que redirigen a los respectivos formularios de inicio de sesión, mientras que para el módulo de docentes es necesario ingresar la dirección `http://localhost/administrativo` en la barra de navegación, esto para que no sea visible a los otros tipos de usuarios. Las funcionalidades de cada módulo son:
 
 ### Módulo de estudiantes
 
@@ -70,23 +70,23 @@ Dirigirse a la carpeta donde Xampp se encuentre instalado (generalmente C:\xampp
 Ejecutar xampp-control.
 Iniciar los módulos de Apache y MySQL.
 Ingresar al módulo del sistema deseado:
-Para la página de inicio: http://localhost.
-Para el módulo estudiante: http://localhost/estudiante.
-Para el módulo docente: http://localhost/docente.
-Para el módulo administrativo: http://localhost/administrativo.
+Para la página de inicio: `http://localhost`.
+Para el módulo estudiante: `http://localhost/estudiante`.
+Para el módulo docente: `http://localhost/docente`.
+Para el módulo administrativo: `http://localhost/administrativo`.
 
 ## Credenciales prueba
 
 Módulo estudiante:
-usuario: GABRIEL.ZUNIGAOROZCO@ucr.ac.cr
+usuario: `GABRIEL.ZUNIGAOROZCO@ucr.ac.cr`
 contraseña: B98755
 
 Módulo docente:
-usuario: GABRIEL.ZUNIGAOROZCO@ucr.ac.cr
+usuario: `GABRIEL.ZUNIGAOROZCO@ucr.ac.cr`
 contraseña: 1-1680Ac1
 
 Módulo administrativo:
-usuario: GABRIEL.ZUNIGAOROZCO@ucr.ac.cr
+usuario: `GABRIEL.ZUNIGAOROZCO@ucr.ac.cr`
 contraseña: 1ng.c1v1/
 
 ## Información relacionada al código fuente
@@ -94,18 +94,3 @@ contraseña: 1ng.c1v1/
 La totalidad del código se encuentra en la ruta C:\xampp\htdocs accesible a través del navegador de archivos. El sistema está compuesto por más de treinta archivos separados en cuatro carpetas, tres de estas nombradas ante el módulo que representan: “estudiante”, “docente” y “administrativo”, y la cuarta carpeta se denomina “shared”, la cual contiene código y archivos compartidos entre los módulos, como por ejemplo, la conexión con la base de datos, la autenticación de usuarios, imágenes y estilos utilizados en las páginas, y también librerías externas utilizadas, incluyendo “Bootstrap”, “Flatpickr”, “Font Awesome”, “FullCalendar”, “JQuery” y “PHPMailer”.
 
 Adicionalmente, las páginas Index (responsable de redirigir a la página principal del sistema) e inicio (donde se encuentran los botones para ingresar a los módulos estudiante y docente) están en la raíz de la carpeta htdocs, junto con otros archivos generados automáticamente y utilizados por Xampp.
-
-# To use AD DS:
-
-## 1. Make sure the path\to\xampp\php directory has the following files
-1. libeay32.dll
-2. libsasl.dll
-3. ssleay32.dll
-### Usually, you can find these files in path\to\xampp\sendmail - this library also uses them. But if not, try to search for them inside the xampp directory.
-
-## 2. Uncomment or add the ldap extension in the php.ini (path\to\xampp\php\php.ini) file
-extension=ldap
-
-## 3. Restart the server
-
-## 4. Make sure the path\to\xampp\php directory is set in the system environment variable PATH. To know how to do it, see this post.
