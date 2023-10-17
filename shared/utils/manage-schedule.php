@@ -72,7 +72,6 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
         sendMail($correo, "Su reservación ha sido aprobada", $message);
 
         echo '<script type = "text/javascript">';
-        echo 'alert("La reservación ha sido aprobada");';
         echo 'window.location.href = "../../administrativo/administrar-solicitudes.php";';
         echo '</script>';
     }
@@ -115,7 +114,6 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
         sendMail($correo, "Su reservación ha sido $estado", $message);
 
         echo '<script type = "text/javascript">';
-        echo 'alert("La reservación ha sido rechazada");';
         echo 'window.location.href = "../../administrativo/administrar-solicitudes.php";';
         echo '</script>';
     }

@@ -16,8 +16,12 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <title>Administración de solicitudes de reserva</title>
         <link rel="stylesheet" type="text/css" href="../shared/lib/bootstrap/bootstrap.min.css">
+        <link rel='stylesheet' type="text/css" href='../shared/lib/alertify/css/alertify.css'>
+        <link rel='stylesheet' type="text/css" href='../shared/lib/alertify/css/themes/bootstrap.css'>
         <link rel="stylesheet" type="text/css" href="../shared/css/reserva.css">
         <link rel="stylesheet" type="text/css" href="../shared/css/tabs.css">
+        <script src='../shared/lib/alertify/alertify.min.js'></script>
+
         <script src="../shared/lib/jquery/jquery-3.6.0.min.js"></script>
     </head>
 
@@ -93,13 +97,18 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
                                             <td>
                                                 <?php echo $row['hora_fin']; ?>
                                             </td>
-                                            <td>
-                                                <form action="../shared/utils/manage-schedule.php" method="POST"
-                                                    onsubmit="return validate(this);">
+                                            <td class="custom-td">
+                                                <form action="../shared/utils/manage-schedule.php" method="POST">
                                                     <input type="hidden" name="id" id="<?php echo $row['id']; ?>"
                                                         value="<?php echo $row['id']; ?>" />
-                                                    <input type="submit" name="aprobar" value="Aprobar" />
-                                                    <input type="submit" name="rechazar" value="Rechazar" />
+                                                    <input type="hidden" name="aprobar" value="aprobar" />
+                                                    <input type="button" value="Aprobar" onclick="validate(this.form);" />
+                                                </form>
+                                                <form action="../shared/utils/manage-schedule.php" method="POST">
+                                                    <input type="hidden" name="id" id="<?php echo $row['id']; ?>"
+                                                        value="<?php echo $row['id']; ?>" />
+                                                    <input type="hidden" name="rechazar" value="rechazar" />
+                                                    <input type="button" value="Rechazar" onclick="validate(this.form);" />
                                                 </form>
                                             </td>
                                         </tr>
@@ -157,11 +166,11 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
                                                 <?php echo $row['hora_fin']; ?>
                                             </td>
                                             <td>
-                                                <form action="../shared/utils/manage-schedule.php" method="POST"
-                                                    onsubmit="return validate(this);">
+                                                <form action="../shared/utils/manage-schedule.php" method="POST">
                                                     <input type="hidden" name="id" id="<?php echo $row['id']; ?>"
                                                         value="<?php echo $row['id']; ?>" />
-                                                    <input type="submit" name="rechazar" value="Cancelar" />
+                                                    <input type="hidden" name="rechazar" value="cancelar" />
+                                                    <input type="button" value="Cancelar" onclick="validate(this.form);" />
                                                 </form>
                                             </td>
                                         </tr>
@@ -219,11 +228,11 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
                                                 <?php echo $row['hora_fin']; ?>
                                             </td>
                                             <td>
-                                                <form action="../shared/utils/manage-schedule.php" method="POST"
-                                                    onsubmit="return validate(this);">
+                                                <form action="../shared/utils/manage-schedule.php" method="POST">
                                                     <input type="hidden" name="id" id="<?php echo $row['id']; ?>"
                                                         value="<?php echo $row['id']; ?>" />
-                                                    <input type="submit" name="aprobar" value="Aprobar" />
+                                                    <input type="hidden" name="aprobar" value="aprobar" />
+                                                    <input type="button" value="Aprobar" onclick="validate(this.form);" />
                                                 </form>
                                             </td>
                                         </tr>
@@ -274,15 +283,24 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
             };
 
             if (overlapping.length == 0) {
-                return true;
+                alertify.confirm('Mensaje',
+                    'La reservación ha sido aprobada',
+                    function () { form.submit() },
+                    function () { }).set({ transition: "zoom", "labels": { ok: "Aceptar", cancel: "Cancelar" } });
             } else if (overlapping.length == 1) {
-                return confirm('La reservación con ID ' + overlapping[0]['id'] + ' entre las horas ' + overlapping[0]['hora_inicio'] + ' y ' + overlapping[0]['hora_fin'] + ' será cancelada, ¿desea continuar?');
+                alertify.confirm('Mensaje',
+                    'La reservación con ID ' + overlapping[0]['id'] + ' entre las horas ' + overlapping[0]['hora_inicio'] + ' y ' + overlapping[0]['hora_fin'] + ' será cancelada, ¿desea continuar?',
+                    function () { alertify.alert("La reservación ha sido aprobada", function () { form.submit() }) },
+                    function () { }).set({ transition: "zoom", "labels": { ok: "Aceptar", cancel: "Cancelar" } });
             } else {
                 var overlappingMessage = "";
                 for (i in overlapping) {
                     overlappingMessage = overlappingMessage + 'ID: ' + overlapping[i]['id'] + ', Inicio: ' + overlapping[i]['hora_inicio'] + ', Finalización: ' + overlapping[i]['hora_fin'] + '\n';
                 };
-                return confirm('Las reservaciones:\n' + overlappingMessage + 'serán canceladas, ¿desea continuar?');
+                alertify.confirm('Mensaje',
+                    'Las reservaciones:\n' + overlappingMessage + 'serán canceladas, ¿desea continuar?',
+                    function () { alertify.confirm("La reservación ha sido aprobada", function () { form.submit() }).setHeader("Mensaje").set({ transition: "zoom", "labels": { ok: "Aceptar", cancel: "Cancelar" } }).autoOk(10); },
+                    function () { }).set({ transition: "zoom", "labels": { ok: "Aceptar", cancel: "Cancelar" } });
             }
         }
 
