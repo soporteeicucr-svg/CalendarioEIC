@@ -106,7 +106,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
                                                 <form action="../shared/utils/manage-schedule.php" method="POST">
                                                     <input type="hidden" name="id" id="<?php echo $row['id']; ?>"
                                                         value="<?php echo $row['id']; ?>" />
-                                                    <input type="hidden" name="rechazar" value="rechazar" />
+                                                    <input type="hidden" name="action" value="rechazar" />
                                                     <input type="button" value="Rechazar" onclick="sendForm(this.form);" />
                                                 </form>
                                             </td>
@@ -168,7 +168,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
                                                 <form action="../shared/utils/manage-schedule.php" method="POST">
                                                     <input type="hidden" name="id" id="<?php echo $row['id']; ?>"
                                                         value="<?php echo $row['id']; ?>" />
-                                                    <input type="hidden" name="rechazar" value="cancelar" />
+                                                    <input type="hidden" name="action" value="cancelar" />
                                                     <input type="button" value="Cancelar" onclick="sendForm(this.form);" />
                                                 </form>
                                             </td>
@@ -230,7 +230,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
                                                 <form action="../shared/utils/manage-schedule.php" method="POST">
                                                     <input type="hidden" name="id" id="<?php echo $row['id']; ?>"
                                                         value="<?php echo $row['id']; ?>" />
-                                                    <input type="hidden" name="aprobar" value="aprobar" />
+                                                    <input type="hidden" name="action" value="aprobar" />
                                                     <input type="button" value="Aprobar" onclick="sendForm(this.form);" />
                                                 </form>
                                             </td>
@@ -281,10 +281,28 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
                 }
             };
 
+            let action = "";
+            let result = "";
+            if (form["action"].value == "aprobar") {
+                action = "aprobará";
+                result = "aprobada"
+            } else if (form["action"].value == "cancelar") {
+                action = "cancelará";
+                result = "cancelada"
+            } else if (form["action"].value == "rechazar") {
+                action = "rechazará";
+                result = "rechazada"
+            }
+
             if (overlapping.length == 0) {
-                alertify.alert('Mensaje',
-                    'La reservación ha sido aprobada',
-                    function () { form.submit() }).set({ transition: 'zoom', closable: false, 'label': 'Aceptar' });
+                alertify.confirm('Mensaje',
+                'Esto ' + action + ' la reservación seleccionada, ¿desea continuar?',
+                function () {
+                    alertify.alert('Mensaje',
+                        'La reservación ha sido ' + result,
+                        function () { form.submit() }).set({ transition: 'zoom', closable: false, 'label': 'Aceptar' });
+                },
+                function () { }).set({ transition: "zoom", closable: false, labels: { ok: 'Si', cancel: 'No' } });
             } else if (overlapping.length == 1) {
                 alertify.confirm('Mensaje',
                     'La reservación con ID ' + overlapping[0]['id'] + ' entre las horas ' + overlapping[0]['hora_inicio'] + ' y ' + overlapping[0]['hora_fin'] + ' será cancelada, ¿desea continuar?',
