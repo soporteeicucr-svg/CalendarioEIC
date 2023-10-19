@@ -21,7 +21,6 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
         <link rel="stylesheet" type="text/css" href="../shared/css/reserva.css">
         <link rel="stylesheet" type="text/css" href="../shared/css/tabs.css">
         <script src='../shared/lib/alertify/alertify.min.js'></script>
-
         <script src="../shared/lib/jquery/jquery-3.6.0.min.js"></script>
     </head>
 
@@ -102,13 +101,13 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
                                                     <input type="hidden" name="id" id="<?php echo $row['id']; ?>"
                                                         value="<?php echo $row['id']; ?>" />
                                                     <input type="hidden" name="aprobar" value="aprobar" />
-                                                    <input type="button" value="Aprobar" onclick="validate(this.form);" />
+                                                    <input type="button" value="Aprobar" onclick="sendForm(this.form);" />
                                                 </form>
                                                 <form action="../shared/utils/manage-schedule.php" method="POST">
                                                     <input type="hidden" name="id" id="<?php echo $row['id']; ?>"
                                                         value="<?php echo $row['id']; ?>" />
                                                     <input type="hidden" name="rechazar" value="rechazar" />
-                                                    <input type="button" value="Rechazar" onclick="validate(this.form);" />
+                                                    <input type="button" value="Rechazar" onclick="sendForm(this.form);" />
                                                 </form>
                                             </td>
                                         </tr>
@@ -170,7 +169,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
                                                     <input type="hidden" name="id" id="<?php echo $row['id']; ?>"
                                                         value="<?php echo $row['id']; ?>" />
                                                     <input type="hidden" name="rechazar" value="cancelar" />
-                                                    <input type="button" value="Cancelar" onclick="validate(this.form);" />
+                                                    <input type="button" value="Cancelar" onclick="sendForm(this.form);" />
                                                 </form>
                                             </td>
                                         </tr>
@@ -232,7 +231,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
                                                     <input type="hidden" name="id" id="<?php echo $row['id']; ?>"
                                                         value="<?php echo $row['id']; ?>" />
                                                     <input type="hidden" name="aprobar" value="aprobar" />
-                                                    <input type="button" value="Aprobar" onclick="validate(this.form);" />
+                                                    <input type="button" value="Aprobar" onclick="sendForm(this.form);" />
                                                 </form>
                                             </td>
                                         </tr>
@@ -272,7 +271,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
 
         var scheds = $.parseJSON('<?= json_encode($schedules) ?>');
 
-        function validate(form) {
+        function sendForm(form) {
             var schedule = scheds[form["id"].value];
             var overlapping = [];
 
@@ -283,15 +282,18 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
             };
 
             if (overlapping.length == 0) {
-                alertify.confirm('Mensaje',
+                alertify.alert('Mensaje',
                     'La reservación ha sido aprobada',
-                    function () { form.submit() },
-                    function () { }).set({ transition: "zoom", "labels": { ok: "Aceptar", cancel: "Cancelar" } });
+                    function () { form.submit() }).set({ transition: 'zoom', closable: false, 'label': 'Aceptar' });
             } else if (overlapping.length == 1) {
                 alertify.confirm('Mensaje',
                     'La reservación con ID ' + overlapping[0]['id'] + ' entre las horas ' + overlapping[0]['hora_inicio'] + ' y ' + overlapping[0]['hora_fin'] + ' será cancelada, ¿desea continuar?',
-                    function () { alertify.alert("La reservación ha sido aprobada", function () { form.submit() }) },
-                    function () { }).set({ transition: "zoom", "labels": { ok: "Aceptar", cancel: "Cancelar" } });
+                    function () {
+                        alertify.alert('Mensaje',
+                            'La reservación ha sido aprobada',
+                            function () { form.submit() }).set({ transition: 'zoom', closable: false, 'label': 'Aceptar' });
+                    },
+                    function () { }).set({ transition: "zoom", closable: false, "labels": { ok: "Aceptar", cancel: "Cancelar" } });
             } else {
                 var overlappingMessage = "";
                 for (i in overlapping) {
@@ -299,8 +301,12 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
                 };
                 alertify.confirm('Mensaje',
                     'Las reservaciones:\n' + overlappingMessage + 'serán canceladas, ¿desea continuar?',
-                    function () { alertify.confirm("La reservación ha sido aprobada", function () { form.submit() }).setHeader("Mensaje").set({ transition: "zoom", "labels": { ok: "Aceptar", cancel: "Cancelar" } }).autoOk(10); },
-                    function () { }).set({ transition: "zoom", "labels": { ok: "Aceptar", cancel: "Cancelar" } });
+                    function () {
+                        alertify.alert('Mensaje',
+                            'La reservación ha sido aprobada',
+                            function () { form.submit() }).set({ transition: 'zoom', closable: false, 'label': 'Aceptar' });
+                    },
+                    function () { }).set({ transition: "zoom", closable: false, "labels": { ok: "Aceptar", cancel: "Cancelar" } });
             }
         }
 

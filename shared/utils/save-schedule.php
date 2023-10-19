@@ -16,7 +16,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
     $horaFin = $fecha . " " . $_POST['hora_fin'];
 
     if ($_SERVER['REQUEST_METHOD'] != 'POST') {
-        echo "<script>alert('Error: No hay datos para guardar'); location.replace('./')</script>";
+        echo "<script>alert('Error: No hay datos para guardar'); location.replace('../../index.php')</script>";
         $conn->close();
         exit;
     }
@@ -25,10 +25,12 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
 
     $sql = "";
 
+    $tipo = $_SESSION['tipo'];
+
     if (empty($id)) {
-        if ($_SESSION['tipo'] == "docente") {
+        if ($tipo == "docente") {
             $sql = "INSERT INTO `lista_horarios` (`espacio`,`sigla_curso`,`nombre_curso`,`solicitante`,`correo`,`hora_inicio`,`hora_fin`, estado) VALUES ('$espacio','$siglaCurso','$nombreCurso','$solicitante','$correo','$horaInicio','$horaFin','pendiente')";
-        } else if ($_SESSION['tipo'] == "administrativo") {
+        } else if ($tipo == "administrativo") {
             $sql = "INSERT INTO `lista_horarios` (`espacio`,`sigla_curso`,`nombre_curso`,`solicitante`,`correo`,`hora_inicio`,`hora_fin`, estado) VALUES ('$espacio','$siglaCurso','$nombreCurso','$solicitante','$correo','$horaInicio','$horaFin','aprobado')";
         }
     } else {
@@ -36,32 +38,14 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
     }
     $save = $conn->query($sql);
     if ($save) {
-        ?>
-
-        <!DOCTYPE html>
-        <html>
-
-        <head>
-            <meta charset="UTF-8">
-            <meta http-equiv="X-UA-Compatible" content="ie=edge">
-            <title>Registro para uso de laboratorios para estudiantes</title>
-            <link rel='stylesheet' href='../lib/alertify/css/alertify.css'>
-            <link rel='stylesheet' href='../lib/alertify/css/themes/bootstrap.css'>
-            <script src='../lib/alertify/alertify.min.js'></script>
-        </head>
-
-        <?php
-        if ($_SESSION['tipo'] == "docente") {
-            ?>
-
-            <body>
-                <script>
-                    alertify.confirm('Mensaje', 'Solicitud de reserva enviada de manera exitosa, ¿desea cerrar la sesión?', function () { location.replace('../cerrar-sesion.php') }, function () { location.replace('../../' + '<?php echo $_SESSION['tipo'] ?>' + '/inicio.php') }).set({ transition: 'zoom', 'labels': { ok: 'Si', cancel: 'No' } }).autoOk(10);
-                </script>
-            </body>
-
-            <?php
-        } else if ($_SESSION['tipo'] == "administrativo") {
+        if ($tipo == "docente") {
+            if ($_POST['continue'] == 'yes') {
+                header("Location: ../../$tipo/inicio.php");
+            } else {
+                header("Location: ../cerrar-sesion.php");
+            }
+            exit();
+        } else if ($tipo == "administrativo") {
             $select = "SELECT * FROM `lista_horarios` WHERE `espacio` = '$espacio' AND `sigla_curso` = '$siglaCurso' AND `nombre_curso` = '$nombreCurso' AND `solicitante` = '$solicitante' AND `correo` = '$correo' AND `hora_inicio` = '$horaInicio' AND `hora_fin` = '$horaFin'";
             $result = mysqli_query($conn, $select);
             $schedule = mysqli_fetch_assoc($result);
@@ -86,15 +70,12 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
             <p>Hasta: <b>$horaFin</b></p>
             <p>Recuerde utilizar el sistema de registro y retiro de cartuchera antes de dirigirse a su reservación, gracias.</p>";
             sendMail($correo, 'Su reservación ha sido creada', $message);
-            ?>
-
-                <body>
-                    <script>
-                        alertify.confirm('Mensaje', 'Reservación creada de manera exitosa, ¿desea cerrar la sesión?', function () { location.replace('../cerrar-sesion.php') }, function () { location.replace('../../' + '<?php echo $_SESSION['tipo'] ?>' + '/inicio.php') }).set({ transition: 'zoom', 'labels': { ok: 'Si', cancel: 'No' } }).autoOk(10);
-                    </script>
-                </body>
-
-            <?php
+            if ($_POST['continue'] == 'yes') {
+                header("Location: ../../$tipo/inicio.php");
+            } else {
+                header("Location: ../cerrar-sesion.php");
+            }
+            exit();
         }
     } else {
         echo "<pre>";

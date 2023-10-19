@@ -4,7 +4,6 @@ include '../shared/utils/get-courses.php';
 session_start();
 
 if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
-
     ?>
     <!DOCTYPE html>
     <html>
@@ -13,7 +12,10 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
         <title>Registro para uso de laboratorios para docentes</title>
+        <link rel='stylesheet' href='../../shared/lib/alertify/css/alertify.css'>
+        <link rel='stylesheet' href='../../shared/lib/alertify/css/themes/bootstrap.css'>
         <link rel="stylesheet" type="text/css" href="../shared/css/formulario.css">
+        <script src='../../shared/lib/alertify/alertify.min.js'></script>
     </head>
 
     <body>
@@ -66,7 +68,8 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
                 <p class="avisoHora">Si utiliza el laboratorio después de las 17:00, comuníquese con la recepción de la
                     escuela</p>
                 <input type="text" name="fecha_ingreso" id="fecha_ingreso" readonly />
-                <input type="submit" id="submit" value="Registrar" disabled>
+                <input type="hidden" name="continue" id="continue" value="no" />
+                <input type="button" id="btnSubmit" value="Registrar" onclick="sendForm(this.form);" />
             </form>
 
             <div class="center">
@@ -83,9 +86,9 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
 
             function checkFilled() {
                 if (spaceSelected && foundCourse && validTimeRange) {
-                    document.getElementById('submit').disabled = false;
+                    document.getElementById('btnSubmit').disabled = false;
                 } else {
-                    document.getElementById('submit').disabled = true;
+                    document.getElementById('btnSubmit').disabled = true;
                 }
             }
 
@@ -95,7 +98,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
                 document.getElementById('sigla_curso').setSelectionRange(p, p);
 
                 let curso = listaCursos.find((element) => element.sigla_curso == document.getElementById('sigla_curso').value);
-                if (date.getHours() >= 7 && date.getHours() < 17 && curso) {
+                if (curso) {
                     document.getElementById('nombre_curso').setAttribute("value", curso.nombre_curso);
                     foundCourse = true;
                 } else {
@@ -130,6 +133,16 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
                     validTimeRange = false;
                 }
                 checkFilled();
+            }
+
+            function sendForm(form) {
+                alertify.confirm('Mensaje',
+                    'Formulario enviado de manera exitosa, ¿desea cerrar la sesión?',
+                    function () { form.submit() },
+                    function () {
+                        document.getElementById("continue").setAttribute("value", "yes");
+                        form.submit();
+                    }).set({ transition: "zoom", closable: false, labels: { ok: 'Si', cancel: 'No' } }).autoOk(10);
             }
 
             getDate();

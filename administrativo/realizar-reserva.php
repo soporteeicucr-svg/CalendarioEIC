@@ -14,9 +14,11 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <title>Crear reserva</title>
         <link rel="stylesheet" type="text/css" href="../shared/lib/fontawesome/css/all.css">
-        <link rel="stylesheet" type="text/css" href="../shared/css/formulario.css">
-        <!-- Date and time picker -->
+        <link rel='stylesheet' type="text/css" href='../shared/lib/alertify/css/alertify.css'>
+        <link rel='stylesheet' type="text/css" href='../shared/lib/alertify/css/themes/bootstrap.css'>
         <link rel="stylesheet" type="text/css" href="../shared/lib/flatpickr/flatpickr.min.css">
+        <link rel="stylesheet" type="text/css" href="../shared/css/formulario.css">
+        <script src='../shared/lib/alertify/alertify.min.js'></script>
         <script src="../shared/lib/flatpickr/flatpickr.js"></script>
     </head>
 
@@ -140,7 +142,8 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
             <div id="error_hora_fin"></div>
             <div id="hora_fin_mayor"></div>
             <div id="error_reserva_concurrente"></div>
-            <input type="submit" id="submit" value="Enviar solicitud" disabled>
+            <input type="hidden" name="continue" id="continue" value="no" />
+            <input type="button" id="btnSubmit" value="Enviar solicitud" onclick="sendForm(this.form);" disabled />
         </form>
 
         <div class="center">
@@ -199,9 +202,9 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
 
         function checkFilled() {
             if (spaceSelected && foundCourse && validDate && validStartTime && validEndTime && validStartEndTime && validTimeRange) {
-                document.getElementById('submit').disabled = false;
+                document.getElementById('btnSubmit').disabled = false;
             } else {
-                document.getElementById('submit').disabled = true;
+                document.getElementById('btnSubmit').disabled = true;
             }
         }
 
@@ -376,6 +379,16 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
                 }
             }
             checkFilled();
+        }
+
+        function sendForm(form) {
+            alertify.confirm('Mensaje',
+                'Reservación creada de manera exitosa, ¿desea cerrar la sesión?',
+                function () { form.submit() },
+                function () {
+                    document.getElementById("continue").setAttribute("value", "yes");
+                    form.submit();
+                }).set({ transition: "zoom", closable: false, labels: { ok: 'Si', cancel: 'No' } }).autoOk(10);
         }
     </script>
 

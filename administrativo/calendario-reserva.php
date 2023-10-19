@@ -65,11 +65,6 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
         <script src='../shared/lib/fullcalendar/index.global.min.js'></script>
         <script src="../shared/lib/fullcalendar/lib/main.min.js"></script>
         <script src='../shared/lib/alertify/alertify.min.js'></script>
-        <style>
-            .ajs-cancel {
-                display: none;
-            }
-        </style>
     </head>
 
     <body class="bg-light">
@@ -286,10 +281,15 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
         }
 
         function deleteEvent(id) {
-            if (confirm('Esto eliminará la reservación seleccionada, ¿desea continuar?')) {
-                document.cookie = "id = " + id;
-                alertify.confirm('La reservación ha sido eliminada', function () { window.location.href = 'calendario-reserva.php' }).setHeader('Mensaje').set({transition: 'zoom', 'labels': { ok: 'Aceptar', cancel: 'Cancelar' }}).autoOk(10);
-            }
+            alertify.confirm('Mensaje',
+                'Esto eliminará la reservación seleccionada, ¿desea continuar?',
+                function () {
+                    document.cookie = "id = " + id;
+                    alertify.alert('Mensaje',
+                        'La reservación ha sido eliminada',
+                        function () { window.location.href = 'calendario-reserva.php' }).set({ transition: 'zoom', closable: false, 'label': 'Aceptar' });
+                },
+                function () { }).set({ transition: "zoom", closable: false, labels: { ok: 'Si', cancel: 'No' } });
         }
 
         // Get the element with id="defaultOpen" and click on it

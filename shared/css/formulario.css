@@ -75,7 +75,7 @@ input[type="datetime-local"] {
   border: 1px solid #ccc;
 }
 
-input[type="submit"] {
+#btnSubmit {
   background-color: #4caf50;
   color: #fff;
   padding: 15px 25px;
@@ -90,15 +90,15 @@ input[type="submit"] {
   font-size: 15px;
 }
 
-input[type="submit"]:disabled {
+#btnSubmit:disabled {
   background-color: rgb(170, 170, 170);
 }
 
-input[type="submit"]:disabled:hover {
+#btnSubmit:disabled:hover {
   background-color: rgb(170, 170, 170);
 }
 
-input[type="submit"]:hover {
+#btnSubmit:hover {
   background-color: #48964c;
 }
 
