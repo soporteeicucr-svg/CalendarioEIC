@@ -96,11 +96,11 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
                                             <td>
                                                 <?php echo $row['hora_fin']; ?>
                                             </td>
-                                            <td class="custom-td">
+                                            <td class="d-flex align-items-center justify-content-center">
                                                 <form action="../shared/utils/manage-schedule.php" method="POST">
                                                     <input type="hidden" name="id" id="<?php echo $row['id']; ?>"
                                                         value="<?php echo $row['id']; ?>" />
-                                                    <input type="hidden" name="aprobar" value="aprobar" />
+                                                    <input type="hidden" name="action" value="aprobar" />
                                                     <input type="button" value="Aprobar" onclick="sendForm(this.form);" />
                                                 </form>
                                                 <form action="../shared/utils/manage-schedule.php" method="POST">
@@ -164,7 +164,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
                                             <td>
                                                 <?php echo $row['hora_fin']; ?>
                                             </td>
-                                            <td>
+                                            <td class="d-flex align-items-center justify-content-center">
                                                 <form action="../shared/utils/manage-schedule.php" method="POST">
                                                     <input type="hidden" name="id" id="<?php echo $row['id']; ?>"
                                                         value="<?php echo $row['id']; ?>" />
@@ -226,7 +226,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
                                             <td>
                                                 <?php echo $row['hora_fin']; ?>
                                             </td>
-                                            <td>
+                                            <td class="d-flex align-items-center justify-content-center">
                                                 <form action="../shared/utils/manage-schedule.php" method="POST">
                                                     <input type="hidden" name="id" id="<?php echo $row['id']; ?>"
                                                         value="<?php echo $row['id']; ?>" />
@@ -248,6 +248,8 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
         </div>
     </body>
     <script>
+        let activeTab = "";
+
         function openTab(evt, tabName) {
             // Declare all variables
             var i, tabcontent, tablinks;
@@ -267,6 +269,8 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
             // Show the current tab, and add an "active" class to the button that opened the tab
             document.getElementById(tabName).style.display = "block";
             evt.currentTarget.className += " active";
+
+            activeTab = tabName;
         }
 
         var scheds = $.parseJSON('<?= json_encode($schedules) ?>');
@@ -295,36 +299,93 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
             }
 
             if (overlapping.length == 0) {
+
                 alertify.confirm('Mensaje',
-                'Esto ' + action + ' la reservación seleccionada, ¿desea continuar?',
-                function () {
-                    alertify.alert('Mensaje',
-                        'La reservación ha sido ' + result,
-                        function () { form.submit() }).set({ transition: 'zoom', closable: false, 'label': 'Aceptar' });
-                },
-                function () { }).set({ transition: "zoom", closable: false, labels: { ok: 'Si', cancel: 'No' } });
-            } else if (overlapping.length == 1) {
-                alertify.confirm('Mensaje',
-                    'La reservación con ID ' + overlapping[0]['id'] + ' entre las horas ' + overlapping[0]['hora_inicio'] + ' y ' + overlapping[0]['hora_fin'] + ' será cancelada, ¿desea continuar?',
+                    'Esto ' + action + ' la reservación seleccionada, ¿desea continuar?',
                     function () {
+                        /*
+                        alertify.alert('Mensaje',
+                            'La reservación ha sido ' + result,
+                            function () { form.submit() }
+                        ).set({ transition: 'zoom', closable: false, 'label': 'Aceptar' });
+                        */
+                        var style = document.createElement("style");
+                        style.textContent = ".ajs-cancel { display: none; }";
+                        document.head.appendChild(style);
+                        setTimeout(function () {
+                            alertify.confirm('Mensaje',
+                            'La reservación ha sido ' + result,
+                            function () { form.submit() },
+                            function () { }
+                        ).set({ transition: "zoom", closable: false, labels: { ok: 'Aceptar', cancel: 'Cancelar' } }).autoOk(5);
+                        }, 100);
+                    },
+                    function () { }
+                ).set({ transition: "zoom", closable: false, labels: { ok: 'Si', cancel: 'No' } });
+
+            } else if (overlapping.length == 1) {
+
+                if (activeTab == "Pendientes") {
+                    result = "rechazada"
+                } else if (activeTab == "Rechazadas") {
+                    result = "cancelada"
+                }
+                alertify.confirm('Mensaje',
+                    'La reservación con ID ' + overlapping[0]['id'] + ' entre las horas ' + overlapping[0]['hora_inicio'] + ' y ' + overlapping[0]['hora_fin'] + ' será ' + result + ', ¿desea continuar?',
+                    function () {
+                        /*
                         alertify.alert('Mensaje',
                             'La reservación ha sido aprobada',
-                            function () { form.submit() }).set({ transition: 'zoom', closable: false, 'label': 'Aceptar' });
+                            function () { form.submit() }
+                        ).set({ transition: 'zoom', closable: false, 'label': 'Aceptar' });
+                        */
+                        var style = document.createElement("style");
+                        style.textContent = ".ajs-cancel { display: none; }";
+                        document.head.appendChild(style);
+                        setTimeout(function () {
+                            alertify.confirm('Mensaje',
+                            'La reservación ha sido aprobada',
+                            function () { form.submit() },
+                            function () { }
+                        ).set({ transition: "zoom", closable: false, labels: { ok: 'Aceptar', cancel: 'Cancelar' } }).autoOk(5);
+                        }, 100);
                     },
-                    function () { }).set({ transition: "zoom", closable: false, "labels": { ok: "Aceptar", cancel: "Cancelar" } });
+                    function () { }
+                ).set({ transition: "zoom", closable: false, "labels": { ok: "Aceptar", cancel: "Cancelar" } });
+
             } else {
+
+                if (activeTab == "Pendientes") {
+                    result = "rechazadas"
+                } else if (activeTab == "Rechazadas") {
+                    result = "canceladas"
+                }
                 var overlappingMessage = "";
                 for (i in overlapping) {
-                    overlappingMessage = overlappingMessage + 'ID: ' + overlapping[i]['id'] + ', Inicio: ' + overlapping[i]['hora_inicio'] + ', Finalización: ' + overlapping[i]['hora_fin'] + '\n';
+                    overlappingMessage = overlappingMessage + 'ID: ' + overlapping[i]['id'] + ', Inicio: ' + overlapping[i]['hora_inicio'] + ', Finalización: ' + overlapping[i]['hora_fin'] + '<br>';
                 };
                 alertify.confirm('Mensaje',
-                    'Las reservaciones:\n' + overlappingMessage + 'serán canceladas, ¿desea continuar?',
+                    'Las reservaciones:<br>' + overlappingMessage + 'serán ' + result + ', ¿desea continuar?',
                     function () {
+                        /*
                         alertify.alert('Mensaje',
                             'La reservación ha sido aprobada',
-                            function () { form.submit() }).set({ transition: 'zoom', closable: false, 'label': 'Aceptar' });
+                            function () { form.submit() }
+                        ).set({ transition: 'zoom', closable: false, 'label': 'Aceptar' });
+                        */
+                        var style = document.createElement("style");
+                        style.textContent = ".ajs-cancel { display: none; }";
+                        document.head.appendChild(style);
+                        setTimeout(function () {
+                            alertify.confirm('Mensaje',
+                            'La reservación ha sido aprobada',
+                            function () { form.submit() },
+                            function () { }
+                        ).set({ transition: "zoom", closable: false, labels: { ok: 'Aceptar', cancel: 'Cancelar' } }).autoOk(5);
+                        }, 100);
                     },
-                    function () { }).set({ transition: "zoom", closable: false, "labels": { ok: "Aceptar", cancel: "Cancelar" } });
+                    function () { }
+                ).set({ transition: "zoom", closable: false, "labels": { ok: "Aceptar", cancel: "Cancelar" } });
             }
         }
 

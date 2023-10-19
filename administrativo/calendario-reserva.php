@@ -285,11 +285,26 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
                 'Esto eliminará la reservación seleccionada, ¿desea continuar?',
                 function () {
                     document.cookie = "id = " + id;
+                    /*
                     alertify.alert('Mensaje',
                         'La reservación ha sido eliminada',
-                        function () { window.location.href = 'calendario-reserva.php' }).set({ transition: 'zoom', closable: false, 'label': 'Aceptar' });
+                        function () { window.location.href = 'calendario-reserva.php' }
+                    ).set({ transition: 'zoom', closable: false, 'label': 'Aceptar' });
+                    */
+                    var style = document.createElement("style");
+                    style.textContent = ".ajs-cancel { display: none; }";
+                    document.head.appendChild(style);
+                    setTimeout(function () {
+                        alertify.confirm('Mensaje',
+                            'La reservación ha sido eliminada',
+                            function () { window.location.href = 'calendario-reserva.php' },
+                            function () { }
+                        ).set({ transition: "zoom", closable: false, labels: { ok: 'Aceptar', cancel: 'Cancelar' } }).autoOk(5);
+                    }, 100);
+
                 },
-                function () { }).set({ transition: "zoom", closable: false, labels: { ok: 'Si', cancel: 'No' } });
+                function () { }
+            ).set({ transition: "zoom", closable: false, labels: { ok: 'Si', cancel: 'No' } });
         }
 
         // Get the element with id="defaultOpen" and click on it

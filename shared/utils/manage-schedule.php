@@ -49,9 +49,6 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
                 }
             }
 
-            $select = "UPDATE `lista_horarios` SET estado = 'aprobado' WHERE id = '$id'";
-            $result = mysqli_query($conn, $select);
-
             $id = $schedule['id'];
             $espacio = $schedule['espacio'];
             $siglaCurso = $schedule['sigla_curso'];
@@ -60,6 +57,9 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
             $correo = $schedule['correo'];
             $horaInicio = $schedule['hora_inicio'];
             $horaFin = $schedule['hora_fin'];
+
+            $select = "UPDATE `lista_horarios` SET estado = 'aprobado' WHERE id = '$id'";
+            $result = mysqli_query($conn, $select);
 
             $message = "<p>Su reservación ha sido aprobada, a continuación se muestran los detalles de la misma.</p>
             <p>ID de reservación: <b>$id</b></p>
@@ -82,9 +82,6 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
             $result = mysqli_query($conn, $select);
             $schedule = mysqli_fetch_assoc($result);
 
-            $select = "UPDATE `lista_horarios` SET estado = 'rechazado' WHERE id = '$id'";
-            $result = mysqli_query($conn, $select);
-
             $id = $schedule['id'];
             $espacio = $schedule['espacio'];
             $siglaCurso = $schedule['sigla_curso'];
@@ -93,6 +90,9 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
             $correo = $schedule['correo'];
             $horaInicio = $schedule['hora_inicio'];
             $horaFin = $schedule['hora_fin'];
+
+            $select = "UPDATE `lista_horarios` SET estado = 'rechazado' WHERE id = '$id'";
+            $result = mysqli_query($conn, $select);
 
             if ($schedule['estado'] == 'pendiente') {
                 $estado = 'rechazada';

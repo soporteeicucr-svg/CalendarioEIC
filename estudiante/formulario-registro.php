@@ -91,7 +91,8 @@ si se desea implementar simplemente descomentar:
                 alertify.confirm('Mensaje',
                     'Formulario enviado de manera exitosa, saliendo...',
                     function () { form.submit() },
-                    function () { }).set({ transition: "zoom", closable: false, labels: { ok: "Aceptar", cancel: "Cancelar" } }).autoOk(10);
+                    function () { }
+                ).set({ transition: "zoom", closable: false, labels: { ok: "Aceptar", cancel: "Cancelar" } }).autoOk(10);
             }
 
             getDate();

@@ -378,7 +378,8 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
                 function () {
                     document.getElementById("continue").setAttribute("value", "yes");
                     form.submit();
-                }).set({ transition: "zoom", closable: false, labels: { ok: 'Si', cancel: 'No' } }).autoOk(10);
+                }
+            ).set({ transition: "zoom", closable: false, labels: { ok: 'Si', cancel: 'No' } }).autoOk(10);
         }
     </script>
 
