@@ -14,8 +14,10 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <title>Registro de accesos a salas y espacios</title>
         <link rel="stylesheet" type="text/css" href="../shared/lib/bootstrap/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css" href="../shared/lib/fontawesome/css/all.css">
         <link rel="stylesheet" type="text/css" href="../shared/css/reserva.css">
         <link rel="stylesheet" type="text/css" href="../shared/css/tabs.css">
+        <script src="../shared/lib/jquery/jquery-3.6.0.min.js"></script>
     </head>
 
     <body class="bg-light">
@@ -48,6 +50,11 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
                     <div id="Estudiantes" class="tabcontent">
                         <div id="tab Estudiantes">
 
+                            <div class="d-flex align-items-center justify-content-center mb-1">
+                                <input class="form-control" id="searchStudent" type="text" placeholder="Buscar...">
+                                <img class="img-fluid px-2" src="../shared/img/file-excel-solid.svg" width="40" height="40">
+                                <img class="img-fluid px-2" src="../shared/img/file-pdf-solid.svg" width="48" height="40">
+                            </div>
                             <table class="table" style="margin-bottom: 0;">
                                 <thead>
                                     <tr>
@@ -61,7 +68,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
                                     </tr>
                                 </thead>
 
-                                <tbody>
+                                <tbody id="tableStudents">
                                     <?php
                                     $query = "SELECT * FROM registro_estudiante ORDER BY id DESC";
                                     $result = $conn->query($query);
@@ -100,7 +107,10 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
 
                     <div id="Docentes" class="tabcontent">
                         <div id="tab Docentes">
-                            <table class="table">
+
+                            <input class="form-control mb-1" id="searchProfessor" type="text" placeholder="Buscar...">
+
+                            <table class="table" style="margin-bottom: 0;">
                                 <thead>
                                     <tr>
                                         <th>ID</th>
@@ -114,7 +124,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
                                     </tr>
                                 </thead>
 
-                                <tbody>
+                                <tbody id="tableProfessors">
                                     <?php
                                     $query = "SELECT * FROM registro_docente ORDER BY id DESC";
                                     $result = $conn->query($query);
@@ -181,6 +191,23 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
 
         // Get the element with id="defaultOpen" and click on it
         document.getElementById("defaultOpen").click();
+
+        $(document).ready(function () {
+            $("#searchStudent").on("keyup", function () {
+                var value = $(this).val().toLowerCase();
+                $("#tableStudents tr").filter(function () {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                });
+            });
+        });
+        $(document).ready(function () {
+            $("#searchProfessor").on("keyup", function () {
+                var value = $(this).val().toLowerCase();
+                $("#tableProfessors tr").filter(function () {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                });
+            });
+        });
     </script>
 
     </html>
