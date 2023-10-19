@@ -63,7 +63,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
 
                                 <tbody>
                                     <?php
-                                    $query = "SELECT * FROM registro_estudiante";
+                                    $query = "SELECT * FROM registro_estudiante ORDER BY id DESC";
                                     $result = $conn->query($query);
                                     while ($row = mysqli_fetch_array($result)) {
                                         ?>
@@ -116,7 +116,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
 
                                 <tbody>
                                     <?php
-                                    $query = "SELECT * FROM registro_docente";
+                                    $query = "SELECT * FROM registro_docente ORDER BY id DESC";
                                     $result = $conn->query($query);
                                     while ($row = mysqli_fetch_array($result)) {
                                         ?>

@@ -213,8 +213,17 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
             document.getElementById('sigla_curso').value = document.getElementById('sigla_curso').value.toUpperCase();
             document.getElementById('sigla_curso').setSelectionRange(p, p);
 
-            let curso = listaCursos.find((element) => element.sigla_curso == document.getElementById('sigla_curso').value);
+            let regex = /[A-Z][A-Z]-[0-9][0-9][0-9][0-9]/;
+            let input = document.getElementById('sigla_curso').value;
+            if (!regex.test(input)) {
+                 regex = /[A-Z][A-Z][0-9][0-9][0-9][0-9]/;
+                if (regex.test(input)) {
+                    input = input.slice(0, 2) + "-" + input.slice(2);
+                }
+            }
+            let curso = listaCursos.find((element) => element.sigla_curso == input);
             if (curso) {
+                document.getElementById('sigla_curso').value = curso.sigla_curso;
                 document.getElementById('nombre_curso').setAttribute("value", curso.nombre_curso);
                 foundCourse = true;
             } else {

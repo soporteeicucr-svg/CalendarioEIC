@@ -69,7 +69,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
 
                                 <tbody>
                                     <?php
-                                    $query = "SELECT * FROM `lista_horarios` WHERE estado = 'pendiente'";
+                                    $query = "SELECT * FROM `lista_horarios` WHERE estado = 'pendiente' ORDER BY id DESC";
                                     $result = mysqli_query($conn, $query);
                                     while ($row = mysqli_fetch_array($result)) {
                                         $schedules[$row['id']] = $row;
@@ -137,7 +137,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
 
                                 <tbody>
                                     <?php
-                                    $query = "SELECT * FROM `lista_horarios` WHERE estado = 'aprobado'";
+                                    $query = "SELECT * FROM `lista_horarios` WHERE estado = 'aprobado' ORDER BY id DESC";
                                     $result = $conn->query($query);
                                     while ($row = mysqli_fetch_array($result)) {
                                         $schedules[$row['id']] = $row;
@@ -199,7 +199,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
 
                                 <tbody>
                                     <?php
-                                    $query = "SELECT * FROM `lista_horarios` WHERE estado = 'rechazado'";
+                                    $query = "SELECT * FROM `lista_horarios` WHERE estado = 'rechazado' ORDER BY id DESC";
                                     $result = $conn->query($query);
                                     while ($row = mysqli_fetch_array($result)) {
                                         $schedules[$row['id']] = $row;
