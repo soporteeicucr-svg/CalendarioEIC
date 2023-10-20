@@ -18,6 +18,9 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
         <link rel="stylesheet" type="text/css" href="../shared/css/reserva.css">
         <link rel="stylesheet" type="text/css" href="../shared/css/tabs.css">
         <script src="../shared/lib/jquery/jquery-3.6.0.min.js"></script>
+        <script src="../shared/lib/sheetjs/xlsx.full.min.js"></script>
+        <script src="../shared/lib/pdfmake/pdfmake.min.js"></script>
+        <script src="../shared/lib/pdfmake/vfs_fonts.js"></script>
     </head>
 
     <body class="bg-light">
@@ -50,12 +53,17 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
                     <div id="Estudiantes" class="tabcontent">
                         <div id="tab Estudiantes">
 
-                            <div class="d-flex align-items-center justify-content-center mb-1">
+                            <div class="d-flex align-items-center justify-content-center mb-1 gap-3">
                                 <input class="form-control" id="searchStudent" type="text" placeholder="Buscar...">
-                                <img class="img-fluid px-2" src="../shared/img/file-excel-solid.svg" width="40" height="40">
-                                <img class="img-fluid px-2" src="../shared/img/file-pdf-solid.svg" width="48" height="40">
+                                <p class="h4 mb-0">Descargar:</p>
+                                <button type="button" class="btn download-excel-btn" id="exportToExcel"
+                                    onclick="exportToExcel('tableStudents')">
+                                </button>
+                                <button type="button" class="btn download-pdf-btn" id="exportToPDF" onclick="exportToPDF('tableStudents')">
+                                </button>
                             </div>
-                            <table class="table" style="margin-bottom: 0;">
+
+                            <table class="table" id="tableStudents" style="margin-bottom: 0;">
                                 <thead>
                                     <tr>
                                         <th>ID</th>
@@ -68,13 +76,13 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
                                     </tr>
                                 </thead>
 
-                                <tbody id="tableStudents">
+                                <tbody id="tableStudentsBody">
                                     <?php
                                     $query = "SELECT * FROM registro_estudiante ORDER BY id DESC";
                                     $result = $conn->query($query);
                                     while ($row = mysqli_fetch_array($result)) {
                                         ?>
-                                        <tr>
+                                        <tr class="filter-row">
                                             <td>
                                                 <?php echo $row['id']; ?>
                                             </td>
@@ -108,9 +116,17 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
                     <div id="Docentes" class="tabcontent">
                         <div id="tab Docentes">
 
-                            <input class="form-control mb-1" id="searchProfessor" type="text" placeholder="Buscar...">
+                            <div class="d-flex align-items-center justify-content-center mb-1 gap-3">
+                                <input class="form-control" id="searchProfessor" type="text" placeholder="Buscar...">
+                                <p class="h4 mb-0">Descargar:</p>
+                                <button type="button" class="btn download-excel-btn" id="exportToExcel"
+                                    onclick="exportToExcel('tableProfessors')">
+                                </button>
+                                <button type="button" class="btn download-pdf-btn" id="exportToPDF" onclick="exportToPDF('tableProfessors')">
+                                </button>
+                            </div>
 
-                            <table class="table" style="margin-bottom: 0;">
+                            <table class="table" id="tableProfessors" style="margin-bottom: 0;">
                                 <thead>
                                     <tr>
                                         <th>ID</th>
@@ -124,13 +140,13 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
                                     </tr>
                                 </thead>
 
-                                <tbody id="tableProfessors">
+                                <tbody id="tableProfessorsBody">
                                     <?php
                                     $query = "SELECT * FROM registro_docente ORDER BY id DESC";
                                     $result = $conn->query($query);
                                     while ($row = mysqli_fetch_array($result)) {
                                         ?>
-                                        <tr>
+                                        <tr class="filter-row">
                                             <td>
                                                 <?php echo $row['id']; ?>
                                             </td>
@@ -195,19 +211,101 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
         $(document).ready(function () {
             $("#searchStudent").on("keyup", function () {
                 var value = $(this).val().toLowerCase();
-                $("#tableStudents tr").filter(function () {
-                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                $("#tableStudentsBody tr").each(function () {
+                    // Check if the row matches the filter criteria
+                    var match = $(this).text().toLowerCase().indexOf(value) > -1;
+
+                    // Add or remove the "filter-row" class based on the match
+                    if (match) {
+                        $(this).addClass("filter-row");
+                    } else {
+                        $(this).removeClass("filter-row");
+                    }
+
+                    $(this).toggle(match);
                 });
             });
         });
         $(document).ready(function () {
             $("#searchProfessor").on("keyup", function () {
                 var value = $(this).val().toLowerCase();
-                $("#tableProfessors tr").filter(function () {
-                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                $("#tableProfessorsBody tr").each(function () {
+                    // Check if the row matches the filter criteria
+                    var match = $(this).text().toLowerCase().indexOf(value) > -1;
+
+                    // Add or remove the "filter-row" class based on the match
+                    if (match) {
+                        $(this).addClass("filter-row");
+                    } else {
+                        $(this).removeClass("filter-row");
+                    }
+
+                    $(this).toggle(match);
                 });
             });
         });
+
+        // Add JavaScript to handle exporting to Excel
+        function exportToExcel(tableName) {
+            var table = document.getElementById(tableName);
+            var ws = XLSX.utils.table_to_sheet(table);
+            var wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, ws, 'Table Data');
+            XLSX.writeFile(wb, 'table_data.xlsx');
+        }
+
+        // Add JavaScript to handle exporting to PDF
+        function exportToPDF(tableName) {
+            var table = document.getElementById(tableName);
+            var tableData = [];
+
+            // Filter the visible rows with class "filter-row"
+            var visibleRows = Array.from(table.getElementsByClassName('filter-row'));
+
+            // Extract the table header row
+            var tableHeader = table.querySelector('thead tr');
+
+            if (tableHeader) {
+                var headerRow = Array.from(tableHeader.cells).map(function (cell) {
+                    return cell.textContent;
+                });
+            } else {
+                console.warn("Table header row not found.");
+                var headerRow = [];
+            }
+
+            // Convert the visible rows to an array of arrays (rows and cells)
+            var data = visibleRows.map(function (row) {
+                return Array.from(row.cells).map(function (cell) {
+                    return cell.textContent;
+                });
+            });
+
+            // Combine header and data arrays
+            var tableData = [headerRow].concat(data);
+
+            // Calculate page size based on the table content
+            var pageSize = 'A4'; // Default page size
+
+            var docDefinition = {
+                content: [
+                    {
+                        layout: 'noBorders',
+                        table: {
+                            body: tableData
+                        }
+                    }
+                ],
+                pageOrientation: 'landscape', // Use landscape orientation
+                pageSize: pageSize, // Set the calculated page size
+                defaultStyle: {
+                    fontSize: 10 // Set the font size (adjust as needed)
+                },
+                pageMargins: [80, 40, 80, 40], // Adjust page margins for centering
+            };
+
+            pdfMake.createPdf(docDefinition).download('table_data.pdf');
+        }
     </script>
 
     </html>

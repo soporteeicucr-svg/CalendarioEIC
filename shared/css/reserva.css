@@ -45,3 +45,23 @@ tr {
   display: flex;
   flex: 1;
 }
+
+.download-excel-btn {
+  background: url("../img/download-excel.png");
+  background-repeat: no-repeat;
+  background-position: center; 
+  background-size: 40px 40px;
+  height: 40px;
+  width: 50px;
+  cursor: pointer;
+}
+
+.download-pdf-btn {
+  background: url("../img/download-pdf.png");
+  background-repeat: no-repeat;
+  background-position: center; 
+  background-size: 40px 40px;
+  height: 40px;
+  width: 50px;
+  cursor: pointer;
+}
