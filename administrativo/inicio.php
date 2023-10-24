@@ -36,7 +36,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
                                     <h4 class="card-title">Lista de registros para uso de salas
                                     </h4>
                                 </div>
-                                <img class="img-fluid" width="50%" src="../shared/img/Llave.png" alt="Llave">
+                                <img class="img-fluid" width="50%" src="../shared/img/llave.png" alt="Llave">
                             </div>
                             <div class="card-footer">
                                 <a href="registro-accesos.php" class="btn btn-primary">Ver lista</a>
@@ -52,7 +52,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
                                 <div class="w-100">
                                     <h4 class="card-title">Solicitudes de reserva de espacio</h4>
                                 </div>
-                                <img class="img-fluid" width="50%" src="../shared/img/Formulario.png" alt="Formulario">
+                                <img class="img-fluid" width="50%" src="../shared/img/formulario.png" alt="Formulario">
                             </div>
                             <div class="card-footer">
                                 <a href="administrar-solicitudes.php" class="btn btn-primary">Administrar solicitudes</a>
@@ -68,7 +68,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
                                 <div class="w-100">
                                     <h4 class="card-title">Creación de reserva de espacio</h4>
                                 </div>
-                                <img class="img-fluid" width="50%" src="../shared/img/Mas.png" alt="Formulario">
+                                <img class="img-fluid" width="50%" src="../shared/img/mas.png" alt="Formulario">
                             </div>
                             <div class="card-footer">
                                 <a href="realizar-reserva.php" class="btn btn-primary">Realizar reservación</a>
@@ -84,7 +84,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
                                 <div class="w-100">
                                     <h4 class="card-title">Calendario de reservaciones aprobadas</h4>
                                 </div>
-                                <img class="img-fluid" width="50%" src="../shared/img/Calendario.png" alt="Calendario">
+                                <img class="img-fluid" width="50%" src="../shared/img/calendario.png" alt="Calendario">
                             </div>
                             <div class="card-footer">
                                 <a href="calendario-reserva.php" class="btn btn-primary">Ver calendario</a>

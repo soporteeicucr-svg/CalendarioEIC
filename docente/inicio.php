@@ -36,7 +36,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
                                     <h4 class="card-title">Registro y retiro de cartuchera para espacio reservado
                                     </h4>
                                 </div>
-                                <img class="img-fluid" width="50%" src="../shared/img/Llave.png" alt="Llave">
+                                <img class="img-fluid" width="50%" src="../shared/img/llave.png" alt="Llave">
                             </div>
                             <div class="card-footer">
                                 <a href="registro-docente.php" class="btn btn-primary">Realizar
@@ -53,7 +53,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
                                 <div class="w-100">
                                     <h4 class="card-title">Solicitud de reserva de espacio</h4>
                                 </div>
-                                <img class="img-fluid" width="50%" src="../shared/img/Formulario.png" alt="Formulario">
+                                <img class="img-fluid" width="50%" src="../shared/img/formulario.png" alt="Formulario">
                             </div>
                             <div class="card-footer">
                                 <a href="solicitud-reserva.php" class="btn btn-primary">Solicitar</a>
@@ -69,7 +69,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
                                 <div class="w-100">
                                     <h4 class="card-title">Calendario de reservaciones</h4>
                                 </div>
-                                <img class="img-fluid" width="50%" src="../shared/img/Calendario.png" alt="Calendario">
+                                <img class="img-fluid" width="50%" src="../shared/img/calendario.png" alt="Calendario">
                             </div>
                             <div class="card-footer">
                                 <a href="calendario-reserva.php" class="btn btn-primary">Ver calendario</a>
