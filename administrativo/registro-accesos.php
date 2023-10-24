@@ -250,8 +250,8 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
             var table = document.getElementById(tableName);
             var ws = XLSX.utils.table_to_sheet(table);
             var wb = XLSX.utils.book_new();
-            XLSX.utils.book_append_sheet(wb, ws, 'Table Data');
-            XLSX.writeFile(wb, 'table_data.xlsx');
+            XLSX.utils.book_append_sheet(wb, ws, 'Lista de accesos');
+            XLSX.writeFile(wb, 'Lista de accesos.xlsx');
         }
 
         // Add JavaScript to handle exporting to PDF
@@ -304,7 +304,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
                 pageMargins: [80, 40, 80, 40], // Adjust page margins for centering
             };
 
-            pdfMake.createPdf(docDefinition).download('table_data.pdf');
+            pdfMake.createPdf(docDefinition).download('Lista de accesos.pdf');
         }
     </script>
 
