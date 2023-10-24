@@ -116,5 +116,4 @@ Algunas de las imágenes utilizadas fueron obtenidas de fuentes externas, más e
 
 El resto de imágenes fueron obtenidas de manera local o creadas utilizando las anteriormente mencionadas como base.
 
-
 Adicionalmente, las páginas Index (responsable de redirigir a la página principal del sistema) e inicio (donde se encuentran los botones para ingresar a los módulos estudiante y docente) están en la raíz de la carpeta htdocs, junto con otros archivos generados automáticamente y utilizados por Xampp.
