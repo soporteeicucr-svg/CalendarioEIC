@@ -117,3 +117,21 @@ Algunas de las imágenes utilizadas fueron obtenidas de fuentes externas, más e
 El resto de imágenes fueron obtenidas de manera local o creadas utilizando las anteriormente mencionadas como base.
 
 Adicionalmente, las páginas Index (responsable de redirigir a la página principal del sistema) e inicio (donde se encuentran los botones para ingresar a los módulos estudiante y docente) están en la raíz de la carpeta htdocs, junto con otros archivos generados automáticamente y utilizados por Xampp.
+
+## To use AD DS
+
+### 1. Make sure the path\to\xampp\php directory has the following files
+
+1. `libeay32.dll`
+2. `libsasl.dll`
+3. `ssleay32.dll`
+
+### Usually, you can find these files in path\to\xampp\sendmail - this library also uses them. But if not, try to search for them inside the xampp directory
+
+### 2. Uncomment or add the ldap extension in the php.ini (path\to\xampp\php\php.ini) file
+
+`extension=ldap`
+
+### 3. Restart the server
+
+### 4. Make sure the path\to\xampp\php directory is set in the system environment variable PATH
