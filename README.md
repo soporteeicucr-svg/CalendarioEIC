@@ -17,7 +17,7 @@ y funcionalidades diferentes. El módulo de estudiantes y el módulo de docentes
 2. Registro del formulario para el uso de un laboratorio por parte de un estudiante.
 3. Cerrar sesión.
 
-![Formulario de registro para estudiantes](/shared/img/módulo-estudiante.png)
+![Foto de formulario de registro para estudiantes](/shared/img/módulo-estudiante.png)
 Formulario de registro para estudiantes.
 
 ### Módulo de docentes
@@ -28,16 +28,16 @@ Formulario de registro para estudiantes.
 4. Visualización del calendario con las reservas activas de toda la escuela (sin mostrar datos detallados sobre la reservación o la persona que la hizo, simplemente se indica que dicho espacio ya está reservado).
 5. Cerrar sesión
 
-![Página de inicio para docentes](/shared/img/módulo-docente-inicio.png)
+![Foto de página de inicio para docentes](/shared/img/módulo-docente-inicio.png)
 Página de inicio para docentes.
 
-![Formulario de registro para docentes](/shared/img/módulo-docente-registro.png)
+![Foto de formulario de registro para docentes](/shared/img/módulo-docente-registro.png)
 Formulario de registro para docentes.
 
-![Formulario de reserva para docentes](/shared/img/módulo-docente-reserva.png)
+![Foto de formulario de reserva para docentes](/shared/img/módulo-docente-reserva.png)
 Formulario de reserva para docentes.
 
-![Calendario para docentes](/shared/img/módulo-docente-calendario.png)
+![Foto de calendario para docentes](/shared/img/módulo-docente-calendario.png)
 Calendario para docentes.
 
 ### Módulo administrativo
@@ -49,19 +49,19 @@ Calendario para docentes.
 5. Visualización del calendario con las reservas activas de toda la escuela (con detalles de quién la solicitó y con qué razón).
 6. Cerrar sesión.
 
-![Página de inicio para administrativos](/shared/img/módulo-administrativo-inicio.png)
+![Foto de página de inicio para administrativos](/shared/img/módulo-administrativo-inicio.png)
 Página de inicio para administrativos.
 
-![Lista de registro de accesos por parte de estudiantes y docentes](/shared/img/módulo-administrativo-registros.png)
+![Foto de lista de registro de accesos por parte de estudiantes y docentes](/shared/img/módulo-administrativo-registros.png)
 Lista de registro de accesos por parte de estudiantes y docentes.
 
-![Lista de solicitudes de reserva](/shared/img/módulo-administrativo-solicitudes.png)
+![Foto de lista de solicitudes de reserva](/shared/img/módulo-administrativo-solicitudes.png)
 Lista de solicitudes de reserva.
 
-![Formulario de reserva para administrativos](/shared/img/módulo-administrativo-reserva.png)
+![Foto de formulario de reserva para administrativos](/shared/img/módulo-administrativo-reserva.png)
 Formulario de reserva para administrativos.
 
-![Calendario para administrativos](/shared/img/módulo-administrativo-calendario.png)
+![Foto de calendario para administrativos](/shared/img/módulo-administrativo-calendario.png)
 Calendario para administrativos.
 
 ## Información relacionada a la ejecución de los módulos
@@ -126,7 +126,7 @@ Adicionalmente, las páginas Index (responsable de redirigir a la página princi
 2. libsasl.dll
 3. ssleay32.dll
 
-### Por lo general, se pueden encontrar en la ruta\a\xampp\sendmail; esta biblioteca también los usa. Pero si no, intente buscarlos dentro del directorio xampp.
+Por lo general, se pueden encontrar en la ruta\a\xampp\sendmail; esta biblioteca también los usa. Pero si no, intente buscarlos dentro del directorio xampp.
 
 ### 2. Descomente o agregue la extensión ldap en el archivo php.ini (ruta\a\xampp\php\php.ini)
 
