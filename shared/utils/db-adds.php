@@ -2,19 +2,16 @@
 $ldapconn = ldap_connect("serverlic.eic.ucr.ac.cr") or die("Couldn't connect to AD!");
 ldap_set_option($ldapconn, LDAP_OPT_REFERRALS, 0);
 ldap_set_option($ldapconn, LDAP_OPT_PROTOCOL_VERSION, 3);
-$ldapbind = ldap_bind($ldapconn, "EIC\Administrador", "Silvia2020.");
+// $ldapbind = ldap_bind($ldapconn, "EIC\Administrador", "Silvia2020.");
 $OU = "LaboratoriosEIC";
 $DN = "DC=eic,DC=ucr,DC=ac,DC=cr";
 
-// Administrador.WIN-BOQLBIQ0LEK
-
+/*
 if ($ldapbind) {
-    $filter= "(sAMAccountName=MIGUEL.ARANGUREN)";
+    $filter= "(sAMAccountName=GABRIEL.ZUNIGAOROZCO)";
     $result = ldap_search($ldapconn, $DN, $filter);
-    echo $result;
     if (FALSE !== $result) {
         $entries = ldap_get_entries($ldapconn, $result);
-        echo '<pre>'; print_r($entries); echo '</pre>';
         if ($entries['count'] > 0) {
             $odd = 0;
             foreach ($entries[0] as $key => $value) {
@@ -63,4 +60,5 @@ if ($ldapbind) {
     }
 }
 ldap_unbind($ldapconn);
+*/
 ?>

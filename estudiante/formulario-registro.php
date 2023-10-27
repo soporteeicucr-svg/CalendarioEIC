@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
+if (isset($_SESSION['usuario'])) {
     ?>
     <!DOCTYPE html>
     <html>
@@ -33,13 +33,15 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
 
                 <label for="nombre">Nombre completo</label>
                 <input type="text" name="nombre" id="nombre" placeholder="Ingrese su nombre"
-                    value="<?php echo $_SESSION['nombre']; ?>">
+                    value="<?php echo $_SESSION['nombre']; ?>" oninput="checkFilled()">
 
                 <label for="correo">Correo institucional</label>
-                <input type="text" name="correo" id="correo" placeholder="Ingrese su correo institucional" value=<?php echo $_SESSION['usuario'] . "@ucr.ac.cr"; ?>>
+                <input type="text" name="correo" id="correo" placeholder="Ingrese su correo institucional"
+                    value="<?php echo $_SESSION['usuario'] . '@ucr.ac.cr'; ?>" oninput="checkFilled()">
 
                 <label for="carnet">Carnet</label>
-                <input type="text" name="carnet" id="carnet" placeholder="Ingrese su carnet institucional" value=<?php echo $_SESSION['id']; ?>>
+                <input type="text" name="carnet" id="carnet" placeholder="Ingrese su carnet institucional"
+                    value="<?php if (isset($_SESSION['id'])) { echo $_SESSION['id']; } ?>" oninput="checkFilled()">
 
                 <label for="celular">Número de teléfono</label>
                 <input type="text" name="celular" id="celular" placeholder="Ingrese su número de teléfono">
@@ -56,20 +58,30 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
                 <p class="avisoHora">Si utiliza el laboratorio después de las 17:00, comuníquese con la recepción de la
                     escuela</p>
                 <input type="text" name="fecha_ingreso" id="fecha_ingreso" readonly />
-                <input type="button" id="btnSubmit" value="Registrar" onclick="sendForm(this.form);" />
+                <input type="button" id="btnSubmit" value="Registrar" onclick="sendForm(this.form);" disabled />
             </form>
 
             <div class="center">
                 <button id="btn3" onclick="location.href='../shared/cerrar-sesion.php'">Cerrar sesión</button>
                 <!--
-Botón para cambiar contraseña, la funcionalidad ya existe,
-si se desea implementar simplemente descomentar:
-<button id="btn5" onclick="location.href='../shared/cambiar-contrasena.php'">Cambiar contraseña</button>
--->
+                Botón para cambiar contraseña, la funcionalidad ya existe,
+                si se desea implementar simplemente descomentar:
+                <button id="btn5" onclick="location.href='../shared/cambiar-contrasena.php'">Cambiar contraseña</button>
+                -->
             </div>
         </div>
 
         <script>
+            validDateTime = false;
+
+            function checkFilled() {
+                if (document.getElementById('nombre').value != "" && document.getElementById('correo').value != "" && document.getElementById('carnet').value != "" && validDateTime) {
+                    document.getElementById('btnSubmit').disabled = false;
+                } else {
+                    document.getElementById('btnSubmit').disabled = true;
+                }
+            }
+
             function getDate() {
                 let date = new Date();
                 dateString = date.getFullYear() + '-' +
@@ -81,10 +93,11 @@ si se desea implementar simplemente descomentar:
                 document.getElementById('fecha_ingreso').setAttribute("value", dateString);
 
                 if (date.getHours() >= 7 && date.getHours() < 17) {
-                    document.getElementById('btnSubmit').disabled = false;
+                    validDateTime = true;
                 } else {
-                    document.getElementById('btnSubmit').disabled = true;
+                    validDateTime = false;
                 }
+                checkFilled();
             }
 
             function sendForm(form) {

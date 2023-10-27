@@ -3,7 +3,7 @@ include "../../shared/utils/db-conn.php";
 
 session_start();
 
-if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
+if (isset($_SESSION['usuario'])) {
     $nombre = $_POST['nombre'];
     $correo = $_POST['correo'];
     $cedula = $_POST['cedula'];

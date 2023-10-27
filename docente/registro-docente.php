@@ -3,7 +3,7 @@ include '../shared/utils/get-courses.php';
 
 session_start();
 
-if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
+if (isset($_SESSION['usuario'])) {
     ?>
     <!DOCTYPE html>
     <html>
@@ -30,13 +30,15 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
 
                 <label for="nombre">Nombre completo</label>
                 <input type="text" name="nombre" id="nombre" placeholder="Ingrese su nombre"
-                    value="<?php echo $_SESSION['nombre']; ?>">
+                    value="<?php echo $_SESSION['nombre']; ?>" oninput="checkFilled()">
 
                 <label for="correo">Correo institucional</label>
-                <input type="text" name="correo" id="correo" placeholder="Ingrese su correo institucional" value=<?php echo $_SESSION['usuario'] . "@ucr.ac.cr"; ?>>
+                <input type="text" name="correo" id="correo" placeholder="Ingrese su correo institucional"
+                    value="<?php echo $_SESSION['usuario'] . '@ucr.ac.cr'; ?>" oninput="checkFilled()">
 
                 <label for="cedula">Cédula de identidad</label>
-                <input type="text" name="cedula" id="cedula" placeholder="Ingrese su cédula de identidad" value=<?php echo $_SESSION['id']; ?>>
+                <input type="text" name="cedula" id="cedula" placeholder="Ingrese su cédula de identidad"
+                    value="<?php echo $_SESSION['id']; ?>" oninput="checkFilled()">
 
                 <label for="celular">Número de teléfono</label>
                 <input type="text" name="celular" id="celular" placeholder="Ingrese su número de teléfono">
@@ -85,7 +87,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
             let date = new Date();
 
             function checkFilled() {
-                if (spaceSelected && foundCourse && validTimeRange) {
+                if (document.getElementById('nombre').value != "" && document.getElementById('correo').value != "" && document.getElementById('cedula').value != "" && spaceSelected && foundCourse && validTimeRange) {
                     document.getElementById('btnSubmit').disabled = false;
                 } else {
                     document.getElementById('btnSubmit').disabled = true;
