@@ -45,7 +45,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
             </div>
             <label for="sigla_curso">Sigla del curso</label>
             <input type="text" name="sigla_curso" id="sigla_curso"
-                placeholder="Ingrese la sigla del curso (ejemplo: IC-0101) o 'NA' si no aplica" oninput="searchCourse()">
+                placeholder="Sigla del curso (ejemplos: IC-0101, IC9500) o 'NA' si no aplica" oninput="searchCourse()">
             <label for="nombre_curso">Nombre del curso</label>
             <input type="text" name="nombre_curso" id="nombre_curso" placeholder="Ingrese la sigla del curso primero"
                 readonly>

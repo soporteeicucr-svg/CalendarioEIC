@@ -45,7 +45,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
             </div>
             <label for="sigla_curso">Sigla del curso</label>
             <input type="text" name="sigla_curso" id="sigla_curso"
-                placeholder="Ingrese la sigla del curso (ejemplo: IC-0101)" oninput="searchCourse()">
+                placeholder="Ingrese la sigla del curso (ejemplos: IC-0101, IC9500)" oninput="searchCourse()">
             <label for="nombre_curso">Nombre del curso</label>
             <input type="text" name="nombre_curso" id="nombre_curso" placeholder="Ingrese la sigla del curso primero"
                 readonly>
@@ -212,6 +212,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
             let p = document.getElementById('sigla_curso').selectionStart;
             document.getElementById('sigla_curso').value = document.getElementById('sigla_curso').value.toUpperCase();
             document.getElementById('sigla_curso').setSelectionRange(p, p);
+            
             let regex = /[A-Z][A-Z]-[0-9][0-9][0-9][0-9]/;
             let input = document.getElementById('sigla_curso').value;
             if (!regex.test(input)) {
@@ -222,7 +223,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['usuario'])) {
             }
             let curso = listaCursos.find((element) => element.sigla_curso == input);
             if (curso) {
-                document.getElementById('sigla_curso').setAttribute("value", curso.sigla_curso);
+                document.getElementById('sigla_curso').value = curso.sigla_curso;
                 document.getElementById('nombre_curso').setAttribute("value", curso.nombre_curso);
                 foundCourse = true;
             } else {

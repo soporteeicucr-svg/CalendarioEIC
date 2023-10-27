@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 05-10-2023 a las 19:53:25
+-- Tiempo de generación: 27-10-2023 a las 17:43:31
 -- Versión del servidor: 10.4.28-MariaDB
 -- Versión de PHP: 8.0.28
 
@@ -99,34 +99,11 @@ CREATE TABLE `lista_horarios` (
   `sigla_curso` varchar(255) NOT NULL,
   `nombre_curso` varchar(255) NOT NULL,
   `solicitante` varchar(255) NOT NULL,
+  `correo` varchar(255) NOT NULL,
   `hora_inicio` datetime NOT NULL,
   `hora_fin` datetime DEFAULT NULL,
   `estado` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Volcado de datos para la tabla `lista_horarios`
---
-
-INSERT INTO `lista_horarios` (`id`, `espacio`, `sigla_curso`, `nombre_curso`, `solicitante`, `hora_inicio`, `hora_fin`, `estado`) VALUES
-(45, 'Laboratorio 1', 'IC-0101', 'Taller Introducción Ing.', 'ZÚÑIGA OROZCO GABRIEL', '2023-09-13 13:30:00', '2023-09-13 15:30:00', 'rechazado'),
-(47, 'Laboratorio 1', 'IC-1012', 'Diseño Estructuras Acero', 'daniela', '2023-09-14 12:00:00', '2023-09-14 12:50:00', 'rechazado'),
-(48, 'Aula PEC', 'IC-0101', 'Taller Introducción Ing.', 'ZÚÑIGA OROZCO GABRIEL', '2023-09-18 12:00:00', '2023-09-18 18:00:00', 'aprobado'),
-(50, 'Laboratorio 3', 'IC-0101', 'Taller Introducción Ing.', 'ZÚÑIGA OROZCO GABRIEL', '2023-09-18 21:00:00', '2023-09-18 22:00:00', 'aprobado'),
-(52, 'Laboratorio 2', 'IC-0101', 'Taller Introducción Ing.', 'ZÚÑIGA OROZCO GABRIEL', '2023-09-19 16:00:00', '2023-09-19 18:00:00', 'aprobado'),
-(53, 'Laboratorio 1', 'IC-0101', 'Taller Introducción Ing.', 'ZÚÑIGA OROZCO GABRIEL', '2023-09-19 14:00:00', '2023-09-19 16:00:00', 'aprobado'),
-(55, 'Laboratorio 1', 'IC-0101', 'Taller Introducción Ing.', 'ZÚÑIGA OROZCO GABRIEL', '2023-09-22 19:00:00', '2023-09-22 19:30:00', 'aprobado'),
-(56, 'Aula PEC', 'IC-0101', 'Taller Introducción Ing.', 'ZÚÑIGA OROZCO GABRIEL', '2023-09-22 21:00:00', '2023-09-22 22:00:00', 'aprobado'),
-(58, 'Laboratorio 1', 'IC-0101', 'Taller Introducción Ing.', 'ZÚÑIGA OROZCO GABRIEL', '2023-09-25 12:00:00', '2023-09-25 18:00:00', 'aprobado'),
-(60, 'Laboratorio 2', 'IC-0101', 'Taller Introducción Ing.', 'ZÚÑIGA OROZCO GABRIEL', '2023-09-25 16:00:00', '2023-09-25 20:00:00', 'pendiente'),
-(62, 'Laboratorio 1', 'IC-0101', 'Taller Introducción Ing.', 'ZÚÑIGA OROZCO GABRIEL', '2023-09-26 14:00:00', '2023-09-26 20:00:00', 'pendiente'),
-(63, 'Laboratorio 2', 'IC-0101', 'Taller Introducción Ing.', 'ZÚÑIGA OROZCO GABRIEL', '2023-09-26 14:00:00', '2023-09-26 16:00:00', 'aprobado'),
-(64, 'Aula PEC', 'IC-0101', 'Taller Introducción Ing.', 'ZÚÑIGA OROZCO GABRIEL', '2023-09-29 12:00:00', '2023-09-29 16:00:00', 'aprobado'),
-(65, 'Laboratorio 3', 'IC-0101', 'Taller Introducción Ing.', 'ZÚÑIGA OROZCO GABRIEL', '2023-09-30 12:00:00', '2023-09-30 14:00:00', 'aprobado'),
-(66, 'Laboratorio 1', 'IC-0101', 'Taller Introducción Ing.', 'ZÚÑIGA OROZCO GABRIEL', '2023-10-03 10:00:00', '2023-10-03 12:00:00', 'rechazado'),
-(67, 'Laboratorio 2', 'IC-0101', 'Taller Introducción Ing.', 'ZÚÑIGA OROZCO GABRIEL', '2023-10-03 11:00:00', '2023-10-03 13:00:00', 'aprobado'),
-(68, 'Laboratorio 1', 'IC-0101', 'Taller Introducción Ing.', 'ZÚÑIGA OROZCO GABRIEL', '2023-10-03 12:00:00', '2023-10-03 14:00:00', 'aprobado'),
-(69, 'Laboratorio 1', 'IC-0101', 'Taller Introducción Ing.', 'ZÚÑIGA OROZCO GABRIEL', '2023-10-03 12:00:00', '2023-10-03 15:00:00', 'rechazado');
 
 -- --------------------------------------------------------
 
@@ -142,18 +119,8 @@ CREATE TABLE `registro_docente` (
   `celular` varchar(255) NOT NULL,
   `sigla_curso` varchar(255) NOT NULL,
   `espacio` varchar(255) NOT NULL,
-  `hdmi` enum('si','no') NOT NULL DEFAULT 'no',
   `fecha_ingreso` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Volcado de datos para la tabla `registro_docente`
---
-
-INSERT INTO `registro_docente` (`id`, `nombre`, `correo`, `cedula`, `celular`, `sigla_curso`, `espacio`, `hdmi`, `fecha_ingreso`) VALUES
-(14, 'ZÚÑIGA OROZCO GABRIEL', 'GABRIEL.ZUNIGAOROZCO@ucr.ac.cr', '116800871', '', 'IC-0101', 'Laboratorio 1', 'no', '2023-09-29 11:25:02'),
-(15, 'ZÚÑIGA OROZCO GABRIEL', 'GABRIEL.ZUNIGAOROZCO@ucr.ac.cr', '116800871', '', 'IC-0101', 'Aula PEC', 'no', '2023-10-03 08:44:48'),
-(16, 'ZÚÑIGA OROZCO GABRIEL', 'GABRIEL.ZUNIGAOROZCO@ucr.ac.cr', '116800871', '', 'IC-0101', 'Laboratorio 2', 'no', '2023-10-03 08:48:32');
 
 -- --------------------------------------------------------
 
@@ -166,21 +133,10 @@ CREATE TABLE `registro_estudiante` (
   `nombre` varchar(255) NOT NULL,
   `correo` varchar(255) NOT NULL,
   `carnet` varchar(255) NOT NULL,
-  `celular` varchar(255) DEFAULT NULL,
-  `laboratorio` enum('Laboratorio 1','Laboratorio 2','Laboratorio 3''') NOT NULL,
+  `celular` varchar(255) NOT NULL,
+  `laboratorio` varchar(255) NOT NULL,
   `fecha_ingreso` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Volcado de datos para la tabla `registro_estudiante`
---
-
-INSERT INTO `registro_estudiante` (`id`, `nombre`, `correo`, `carnet`, `celular`, `laboratorio`, `fecha_ingreso`) VALUES
-(72, 'SILVIA DANIELA JIMENEZ VALVERDE', 'silvia.jimenezvalverde@ucr.ac.cr', 'B94111', '86981906', 'Laboratorio 1', '2023-09-26 13:46:26'),
-(73, 'ZÚÑIGA OROZCO GABRIEL SANTIAGO', 'GABRIEL.ZUNIGAOROZCO@ucr.ac.cr', 'B98755', '', 'Laboratorio 1', '2023-09-29 10:17:20'),
-(74, 'ZÚÑIGA OROZCO GABRIEL SANTIAGO', 'GABRIEL.ZUNIGAOROZCO@ucr.ac.cr', 'B98755', '', 'Laboratorio 1', '2023-09-29 10:18:18'),
-(75, 'ZÚÑIGA OROZCO GABRIEL SANTIAGO', 'GABRIEL.ZUNIGAOROZCO@ucr.ac.cr', 'B98755', '', 'Laboratorio 1', '2023-09-29 10:18:43'),
-(76, 'ZÚÑIGA OROZCO GABRIEL SANTIAGO', 'GABRIEL.ZUNIGAOROZCO@ucr.ac.cr', 'B98755', '123ABC', 'Laboratorio 1', '2023-10-03 08:27:55');
 
 -- --------------------------------------------------------
 
@@ -200,8 +156,8 @@ CREATE TABLE `usuarios_administrativos` (
 --
 
 INSERT INTO `usuarios_administrativos` (`cedula`, `usuario`, `contrasena`, `nombre`) VALUES
-(1, 'ANDRES.AZOFEIFAGARCIA@ucr.ac.cr', '1ng.c1v1/', 'Andrés Admin'),
-(2, 'GABRIEL.ZUNIGAOROZCO', '1ng.c1v1/', 'Gabriel');
+(116800871, 'GABRIEL.ZUNIGAOROZCO', '1ng.c1v1/', 'ZÚÑIGA OROZCO GABRIEL SANTIAGO'),
+(118180582, 'ANDRES.AZOFEIFAGARCIA', '1ng.c1v1/', 'AZOFEIFA GARCIA ANDRÉS');
 
 -- --------------------------------------------------------
 
@@ -271,7 +227,7 @@ INSERT INTO `usuarios_docentes` (`cedula`, `usuario`, `contrasena`, `nombre`, `c
 (116050017, 'MAURICIO.CARMONAZUNIGA', '1-1605Ac1', 'CARMONA ZÚÑIGA MAURICIO', 'no'),
 (116140526, 'LAURA.BRENESGARCIA', '1-1614Ac1', 'BRENES GARCÍA LAURA', 'no'),
 (116800871, 'GABRIEL.ZUNIGAOROZCO', '1-1680Ac1', 'ZÚÑIGA OROZCO GABRIEL', 'no'),
-(117690027, 'SILVIA.JIEMENEZVALVERDE', '117690027', 'daniela', 'no'),
+(117690027, 'SILVIA.JIMENEZVALVERDE', '117690027', 'JIMÉNEZ VALVERDE SILVIA DANIELA', 'no'),
 (204880206, 'GERMAN.VALVERDE', '2-0488Ac1', 'VALVERDE GONZÁLEZ GERMAN', 'no'),
 (205140061, 'ALBERTO.SERRANO', '2-0514Ac1', 'SERRANO PACHECO ALBERTO', 'no'),
 (205230108, 'LUIS.SALAS', '2-0523Ac1', 'SALAS ALVARADO LUIS ALONSO', 'no'),
@@ -1705,19 +1661,19 @@ ALTER TABLE `usuarios_estudiantes`
 -- AUTO_INCREMENT de la tabla `lista_horarios`
 --
 ALTER TABLE `lista_horarios`
-  MODIFY `id` int(30) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=70;
+  MODIFY `id` int(30) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `registro_docente`
 --
 ALTER TABLE `registro_docente`
-  MODIFY `id` int(30) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `id` int(30) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `registro_estudiante`
 --
 ALTER TABLE `registro_estudiante`
-  MODIFY `id` int(30) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=77;
+  MODIFY `id` int(30) NOT NULL AUTO_INCREMENT;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
