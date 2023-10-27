@@ -75,11 +75,11 @@ Para el módulo estudiante: `http://localhost/estudiante`.
 Para el módulo docente: `http://localhost/docente`.
 Para el módulo administrativo: `http://localhost/administrativo`.
 
-## Credenciales prueba
+## Credenciales de prueba
 
 Módulo estudiante:
 usuario: `GABRIEL.ZUNIGAOROZCO@ucr.ac.cr`
-contraseña: B98755
+contraseña: 1ng.c1v1/
 
 Módulo docente:
 usuario: `GABRIEL.ZUNIGAOROZCO@ucr.ac.cr`
@@ -118,20 +118,20 @@ El resto de imágenes fueron obtenidas de manera local o creadas utilizando las 
 
 Adicionalmente, las páginas Index (responsable de redirigir a la página principal del sistema) e inicio (donde se encuentran los botones para ingresar a los módulos estudiante y docente) están en la raíz de la carpeta htdocs, junto con otros archivos generados automáticamente y utilizados por Xampp.
 
-## To use AD DS
+## Para utilizar AD DS
 
-### 1. Make sure the path\to\xampp\php directory has the following files
+### 1. Asegúrese de que el directorio ruta\a\xampp\php tenga los siguientes archivos
 
-1. `libeay32.dll`
-2. `libsasl.dll`
-3. `ssleay32.dll`
+1. libeay32.dll
+2. libsasl.dll
+3. ssleay32.dll
 
-### Usually, you can find these files in path\to\xampp\sendmail - this library also uses them. But if not, try to search for them inside the xampp directory
+### Por lo general, se pueden encontrar en la ruta\a\xampp\sendmail; esta biblioteca también los usa. Pero si no, intente buscarlos dentro del directorio xampp.
 
-### 2. Uncomment or add the ldap extension in the php.ini (path\to\xampp\php\php.ini) file
+### 2. Descomente o agregue la extensión ldap en el archivo php.ini (ruta\a\xampp\php\php.ini)
 
-`extension=ldap`
+`extensión=ldap`
 
-### 3. Restart the server
+### 3. Reinicie el servidor
 
-### 4. Make sure the path\to\xampp\php directory is set in the system environment variable PATH
+### 4. Asegúrese de que el directorio ruta\a\xampp\php esté configurado en la variable de entorno del sistema PATH
