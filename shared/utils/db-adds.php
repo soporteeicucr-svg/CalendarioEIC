@@ -1,14 +1,18 @@
 <?php
-$ldapconn = ldap_connect("serverlic.eic.ucr.ac.cr") or die("Couldn't connect to AD!");
+$ldapconn = ldap_connect("serverlic.eic.ucr.ac.cr") or die("Couldn't connect to AD, please check host and port");
 ldap_set_option($ldapconn, LDAP_OPT_REFERRALS, 0);
 ldap_set_option($ldapconn, LDAP_OPT_PROTOCOL_VERSION, 3);
-// $ldapbind = ldap_bind($ldapconn, "EIC\Administrador", "Silvia2020.");
-$OU = "LaboratoriosEIC";
-$DN = "DC=eic,DC=ucr,DC=ac,DC=cr";
+$OUStudents = "LaboratoriosEIC";
+$OUProfessors = "ProfesoresEIC";
+$OUAdministrators = "AdministrativosEIC";
+$DNStudents = "OU=$OUStudents,DC=eic,DC=ucr,DC=ac,DC=cr";
+$DNProfessors = "OU=$OUProfessors,DC=eic,DC=ucr,DC=ac,DC=cr";
+$DNAdministrators = "OU=$OUAdministrators,DC=eic,DC=ucr,DC=ac,DC=cr";
 
-/*
+/* Test
+// $ldapbind = ldap_bind($ldapconn, "EIC\Administrador", "Silvia2020.");
 if ($ldapbind) {
-    $filter= "(sAMAccountName=GABRIEL.ZUNIGAOROZCO)";
+    $filter= "(userprincipalname=gabriel.zunigaorozco@ucr.ac.cr)";
     $result = ldap_search($ldapconn, $DN, $filter);
     if (FALSE !== $result) {
         $entries = ldap_get_entries($ldapconn, $result);

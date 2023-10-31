@@ -17,24 +17,40 @@ if (isset($_POST['usuario']) && isset($_POST['contrasena'])) {
         header("Location: index.php?error=Contraseña obligatorio");
         exit();
     } else {
+        /* Inicio de sesión usando SamAccountName
+        // if (ldap_bind($ldapconn, "EIC\$usuario", $contrasena)) {
+        */
 
-        if (ldap_bind($ldapconn, "EIC\\$usuario", $contrasena)) {
-            $filter = "(sAMAccountName=$usuario)";
+        // Inicio de sesión usando userprincipalname
+        $usuario = $usuario . "@ucr.ac.cr";
+        $DN = '';
+        if ($tipo == 'estudiante') {
+            $DN = $DNStudents;
+        } else if ($tipo == 'docente') {
+            $DN = $DNProfessors;
+        } else if ($tipo == 'administrativo') {
+            $DN = $DNAdministrators;
+        }
+        if (ldap_bind($ldapconn, $usuario, $contrasena)) {
+            $filter = "(userprincipalname=$usuario)";
             $result = ldap_search($ldapconn, $DN, $filter);
             $entries = ldap_get_entries($ldapconn, $result);
-            $_SESSION['usuario'] = $entries[0]['samaccountname'][0];
-            $_SESSION['nombre'] = $entries[0]['cn'][0];
-            $_SESSION['tipo'] = $tipo;
-            if ($tipo == 'estudiante' || $tipo == 'docente') {
+            if (!empty($entries[0])) {
+                $_SESSION['usuario'] = $entries[0]['userprincipalname'][0];
+                $_SESSION['nombre'] = $entries[0]['cn'][0];
+                $_SESSION['tipo'] = $tipo;
                 if ($tipo == 'estudiante') {
                     header('Location: ' . '../' . $tipo . '/formulario-registro.php');
-                } else {
+                } else if ($tipo == 'docente') {
+                    header('Location: ' . '../' . $tipo . '/inicio.php');
+                } else if ($tipo == 'administrativo') {
                     header('Location: ' . '../' . $tipo . '/inicio.php');
                 }
+                exit();
             } else {
-                header('Location: ' . '../' . $tipo . '/inicio.php');
+                header('Location: ' . '../' . $tipo . '/index.php?error=Credenciales incorrectas');
+                exit();
             }
-            exit();
         } else {
             header('Location: ' . '../' . $tipo . '/index.php?error=Credenciales incorrectas');
             exit();

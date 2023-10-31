@@ -34,11 +34,11 @@ if (isset($_SESSION['usuario'])) {
 
                 <label for="correo">Correo institucional</label>
                 <input type="text" name="correo" id="correo" placeholder="Ingrese su correo institucional"
-                    value="<?php echo $_SESSION['usuario'] . '@ucr.ac.cr'; ?>" oninput="checkFilled()">
+                    value="<?php echo $_SESSION['usuario']; ?>" oninput="checkFilled()">
 
                 <label for="cedula">Cédula de identidad</label>
                 <input type="text" name="cedula" id="cedula" placeholder="Ingrese su cédula de identidad"
-                    value="<?php echo $_SESSION['id']; ?>" oninput="checkFilled()">
+                    value="<?php if (isset($_SESSION['id'])) { echo $_SESSION['id']; } ?>" oninput="checkFilled()">
 
                 <label for="celular">Número de teléfono</label>
                 <input type="text" name="celular" id="celular" placeholder="Ingrese su número de teléfono">

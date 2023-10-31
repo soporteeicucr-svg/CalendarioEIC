@@ -37,7 +37,7 @@ if (isset($_SESSION['usuario'])) {
 
                 <label for="correo">Correo institucional</label>
                 <input type="text" name="correo" id="correo" placeholder="Ingrese su correo institucional"
-                    value="<?php echo $_SESSION['usuario'] . '@ucr.ac.cr'; ?>" oninput="checkFilled()">
+                    value="<?php echo $_SESSION['usuario']; ?>" oninput="checkFilled()">
 
                 <label for="carnet">Carnet</label>
                 <input type="text" name="carnet" id="carnet" placeholder="Ingrese su carnet institucional"
