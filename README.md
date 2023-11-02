@@ -91,7 +91,7 @@ contraseña: 1ng.c1v1/
 
 ## Información relacionada al código fuente
 
-La totalidad del código se encuentra en la ruta C:\xampp\htdocs accesible a través del navegador de archivos, y se desarrolló utilizando el editor Visual Studio Code. El sistema está compuesto por más de treinta archivos en formato PHP, e incluyen los lenguages PHP, JavaScript y HTML. Estos archivos se encuentran separados en cuatro carpetas, tres de estas nombradas ante el módulo que representan: “estudiante”, “docente” y “administrativo”, y la cuarta carpeta se denomina “shared”, la cual contiene código y archivos compartidos entre los módulos, como por ejemplo, la conexión con la base de datos, la autenticación de usuarios, imágenes y estilos utilizados en las páginas, y también librerías externas utilizadas.
+La totalidad del código se encuentra en la ruta C:\xampp\htdocs accesible a través del navegador de archivos, y se desarrolló utilizando el editor Visual Studio Code. El sistema está compuesto por más de treinta archivos en formato PHP, e incluyen los lenguajes PHP, JavaScript y HTML. Estos archivos se encuentran separados en cuatro carpetas, tres de estas nombradas ante el módulo que representan: “estudiante”, “docente” y “administrativo”, y la cuarta carpeta se denomina “shared”, la cual contiene código y archivos compartidos entre los módulos, como por ejemplo, la conexión con la base de datos, la autenticación de usuarios, imágenes y estilos utilizados en las páginas, y también librerías externas utilizadas.
 
 Las librerías externas utilizadas son:
 
