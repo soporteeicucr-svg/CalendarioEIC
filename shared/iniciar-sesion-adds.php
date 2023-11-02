@@ -17,11 +17,6 @@ if (isset($_POST['usuario']) && isset($_POST['contrasena'])) {
         header("Location: index.php?error=Contraseña obligatorio");
         exit();
     } else {
-        /* Inicio de sesión usando SamAccountName
-        // if (ldap_bind($ldapconn, "EIC\$usuario", $contrasena)) {
-        */
-
-        // Inicio de sesión usando userprincipalname
         $usuario = $usuario . "@ucr.ac.cr";
         $DN = '';
         if ($tipo == 'estudiante') {
@@ -31,6 +26,12 @@ if (isset($_POST['usuario']) && isset($_POST['contrasena'])) {
         } else if ($tipo == 'administrativo') {
             $DN = $DNAdministrators;
         }
+
+        /* Inicio de sesión usando SamAccountName
+        // if (ldap_bind($ldapconn, "EIC\$usuario", $contrasena)) {
+        */
+
+        // Inicio de sesión usando userprincipalname
         if (ldap_bind($ldapconn, $usuario, $contrasena)) {
             $filter = "(userprincipalname=$usuario)";
             $result = ldap_search($ldapconn, $DN, $filter);

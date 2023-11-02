@@ -1,85 +1,113 @@
 <?php
 session_start();
 
-if (isset($_SESSION['usuario'])) {
-    ?>
-    <!DOCTYPE html>
-    <html>
+if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
+    if ($_SESSION['tipo'] == 'estudiante') {
+        ?>
+        <!DOCTYPE html>
+        <html>
 
-    <head>
-        <meta charset="UTF-8">
-        <meta http-equiv="X-UA-Compatible" content="ie=edge">
-        <title>Registro para uso de laboratorios para estudiantes</title>
-        <link rel='stylesheet' href='../../shared/lib/alertify/css/alertify.css'>
-        <link rel='stylesheet' href='../../shared/lib/alertify/css/themes/bootstrap.css'>
-        <link rel="stylesheet" type="text/css" href="../shared/css/formulario.css">
-        <script src='../../shared/lib/alertify/alertify.min.js'></script>
-        <style>
-            .ajs-cancel {
-                display: none;
-            }
-        </style>
-    </head>
+        <head>
+            <meta charset="UTF-8">
+            <meta http-equiv="X-UA-Compatible" content="ie=edge">
+            <title>Registro para uso de laboratorios para estudiantes</title>
+            <link rel='stylesheet' href='../../shared/lib/alertify/css/alertify.css'>
+            <link rel='stylesheet' href='../../shared/lib/alertify/css/themes/bootstrap.css'>
+            <link rel="stylesheet" type="text/css" href="../shared/css/formulario.css">
+            <script src='../../shared/lib/alertify/alertify.min.js'></script>
+            <style>
+                .ajs-cancel {
+                    display: none;
+                }
+            </style>
+        </head>
 
-    <body>
-        <div>
-            <div class="center">
-                <img src="../shared/img/logoEIC.png" alt="Logo Escuela de Ingeniería Civil UCR">
-                <h1>Registro para uso de laboratorios</h1>
-            </div>
-
-            <form action="utils/db-registro-estudiante.php" method="post">
-                <h2 class="subDatos">Datos personales</h2>
-
-                <label for="nombre">Nombre completo</label>
-                <input type="text" name="nombre" id="nombre" placeholder="Ingrese su nombre"
-                    value="<?php echo $_SESSION['nombre']; ?>" oninput="checkFilled()">
-
-                <label for="correo">Correo institucional</label>
-                <input type="text" name="correo" id="correo" placeholder="Ingrese su correo institucional"
-                    value="<?php echo $_SESSION['usuario']; ?>" oninput="checkFilled()">
-
-                <label for="carnet">Carnet</label>
-                <input type="text" name="carnet" id="carnet" placeholder="Ingrese su carnet institucional"
-                    value="<?php if (isset($_SESSION['id'])) { echo $_SESSION['id']; } ?>" oninput="checkFilled()">
-
-                <label for="celular">Número de teléfono</label>
-                <input type="text" name="celular" id="celular" placeholder="Ingrese su número de teléfono">
-
-                <h2 class="subDatos">Datos reserva</h2>
-
-                <label>¿A cuál laboratorio desea asistir?</label>
-                <div class="selectorForm">
-                    <label for="Laboratorio 1"><input type="radio" name="laboratorio" value="Laboratorio 1"
-                            id="Laboratorio 1" checked="checked"> Laboratorio 1 </label>
+        <body>
+            <div>
+                <div class="center">
+                    <img src="../shared/img/logoEIC.png" alt="Logo Escuela de Ingeniería Civil UCR">
+                    <h1>Registro para uso de laboratorios</h1>
                 </div>
 
-                <label for="fecha_ingreso">Fecha y hora de ingreso</label>
-                <p class="avisoHora">Si utiliza el laboratorio después de las 17:00, comuníquese con la recepción de la
-                    escuela</p>
-                <input type="text" name="fecha_ingreso" id="fecha_ingreso" readonly />
-                <input type="button" id="btnSubmit" value="Registrar" onclick="sendForm(this.form);" disabled />
-            </form>
+                <form action="utils/db-registro-estudiante.php" method="post">
+                    <h2 class="subDatos">Datos personales</h2>
 
-            <div class="center">
-                <button id="btn3" onclick="location.href='../shared/cerrar-sesion.php'">Cerrar sesión</button>
-                <!--
-                Botón para cambiar contraseña, la funcionalidad ya existe,
-                si se desea implementar simplemente descomentar:
-                <button id="btn5" onclick="location.href='../shared/cambiar-contrasena.php'">Cambiar contraseña</button>
-                -->
+                    <label for="nombre">Nombre completo</label>
+                    <input type="text" name="nombre" id="nombre" placeholder="Ingrese su nombre"
+                        value="<?php echo $_SESSION['nombre']; ?>" oninput="checkFilled()">
+
+                    <label for="correo">Correo institucional</label>
+                    <input type="text" name="correo" id="correo" placeholder="Ingrese su correo institucional"
+                        value="<?php echo $_SESSION['usuario']; ?>" oninput="checkMail()">
+
+                    <label for="carnet">Carnet</label>
+                    <input type="text" name="carnet" id="carnet" placeholder="Ingrese su carnet institucional" value="<?php if (isset($_SESSION['id'])) {
+                        echo $_SESSION['id'];
+                    } ?>" oninput="checkId()">
+
+                    <label for="celular">Número de teléfono</label>
+                    <input type="text" name="celular" id="celular" placeholder="Ingrese su número de teléfono">
+
+                    <h2 class="subDatos">Datos reserva</h2>
+
+                    <label>¿A cuál laboratorio desea asistir?</label>
+                    <div class="selectorForm">
+                        <label for="Laboratorio 1"><input type="radio" name="laboratorio" value="Laboratorio 1"
+                                id="Laboratorio 1" checked="checked"> Laboratorio 1 </label>
+                    </div>
+
+                    <label for="fecha_ingreso">Fecha y hora de ingreso</label>
+                    <p class="avisoHora">Si utiliza el laboratorio después de las 17:00, comuníquese con la recepción de la
+                        escuela</p>
+                    <input type="text" name="fecha_ingreso" id="fecha_ingreso" readonly />
+                    <input type="button" id="btnSubmit" value="Registrar" onclick="sendForm(this.form);" disabled />
+                </form>
+
+                <div class="center">
+                    <button id="btn3" onclick="location.href='../shared/cerrar-sesion.php'">Cerrar sesión</button>
+                </div>
             </div>
-        </div>
-
+        </body>
         <script>
-            validDateTime = false;
+            let validDateTime = false;
+            let validMail = false;
+            let validId = false;
 
+            // Revisa que todos los campos estén correctos y activa el botón para enviar los datos
             function checkFilled() {
-                if (document.getElementById('nombre').value != "" && document.getElementById('correo').value != "" && document.getElementById('carnet').value != "" && validDateTime) {
+                if (document.getElementById('nombre').value != "" && validMail && validId && validDateTime) {
                     document.getElementById('btnSubmit').disabled = false;
                 } else {
                     document.getElementById('btnSubmit').disabled = true;
                 }
+            }
+
+            function checkMail() {
+                if (document.getElementById('correo').value.toUpperCase().endsWith("@UCR.AC.CR")) {
+                    validMail = true;
+                } else {
+                    validMail = false;
+                }
+                checkFilled();
+            }
+
+            function checkId() {
+                let p = document.getElementById('carnet').selectionStart;
+                document.getElementById('carnet').value = document.getElementById('carnet').value.toUpperCase();
+                document.getElementById('carnet').setSelectionRange(p, p);
+
+                let regex = /[A-Z][0-9][0-9][0-9][0-9][0-9]/;
+                let input = document.getElementById('carnet').value;
+                if (input.length == 6) {
+                    if (regex.test(input)) {
+                        validId = true;
+                    } else {
+                        validId = false;
+                    }
+                } else {
+                    validId = false;
+                }
+                checkFilled();
             }
 
             function getDate() {
@@ -100,6 +128,7 @@ if (isset($_SESSION['usuario'])) {
                 checkFilled();
             }
 
+            // Función para enviar la información al servidor
             function sendForm(form) {
                 alertify.confirm('Mensaje',
                     'Formulario enviado de manera exitosa, saliendo...',
@@ -108,14 +137,19 @@ if (isset($_SESSION['usuario'])) {
                 ).set({ transition: "zoom", closable: false, labels: { ok: "Aceptar", cancel: "Cancelar" } }).autoOk(10);
             }
 
+            checkMail();
+            checkId();
             getDate();
             let refreshDate = setInterval(getDate, 1000);
         </script>
-    </body>
 
-    </html>
+        </html>
 
-    <?php
+        <?php
+    } else {
+        header("Location: ../index.php");
+        exit();
+    }
 } else {
     header("Location: ../index.php");
     exit();

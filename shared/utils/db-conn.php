@@ -1,8 +1,5 @@
 <?php
-$host = 'localhost';
-$username = 'root';
-$password = '';
-$dbname = 'sistema_reservas_eic';
+include 'variables.php';
 
 $conn = new mysqli($host, $username, $password, $dbname);
 if (!$conn) {

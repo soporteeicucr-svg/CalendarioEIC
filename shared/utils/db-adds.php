@@ -9,8 +9,9 @@ $DNStudents = "OU=$OUStudents,DC=eic,DC=ucr,DC=ac,DC=cr";
 $DNProfessors = "OU=$OUProfessors,DC=eic,DC=ucr,DC=ac,DC=cr";
 $DNAdministrators = "OU=$OUAdministrators,DC=eic,DC=ucr,DC=ac,DC=cr";
 
-/* Test
-// $ldapbind = ldap_bind($ldapconn, "EIC\Administrador", "Silvia2020.");
+/* Ejemplo de lectura de datos
+include 'variables.php';
+$ldapbind = ldap_bind($ldapconn, $adminUser, $adminPassword);
 if ($ldapbind) {
     $filter= "(userprincipalname=gabriel.zunigaorozco@ucr.ac.cr)";
     $result = ldap_search($ldapconn, $DN, $filter);

@@ -3,104 +3,133 @@ include '../shared/utils/get-courses.php';
 
 session_start();
 
-if (isset($_SESSION['usuario'])) {
-    ?>
-    <!DOCTYPE html>
-    <html>
+if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
+    if ($_SESSION['tipo'] == 'docente') {
+        ?>
 
-    <head>
-        <meta charset="UTF-8">
-        <meta http-equiv="X-UA-Compatible" content="ie=edge">
-        <title>Registro para uso de laboratorios para docentes</title>
-        <link rel='stylesheet' href='../../shared/lib/alertify/css/alertify.css'>
-        <link rel='stylesheet' href='../../shared/lib/alertify/css/themes/bootstrap.css'>
-        <link rel="stylesheet" type="text/css" href="../shared/css/formulario.css">
-        <script src='../../shared/lib/alertify/alertify.min.js'></script>
-    </head>
+        <!DOCTYPE html>
+        <html>
 
-    <body>
-        <div>
-            <div class="center">
-                <img src="../shared/img/logoEIC.png" alt="Logo Escuela de Ingeniería Civil UCR">
-                <h1>Sistema de registro y retiro de cartuchera</h1>
-            </div>
+        <head>
+            <meta charset="UTF-8">
+            <meta http-equiv="X-UA-Compatible" content="ie=edge">
+            <title>Registro para uso de laboratorios para docentes</title>
+            <link rel='stylesheet' href='../../shared/lib/alertify/css/alertify.css'>
+            <link rel='stylesheet' href='../../shared/lib/alertify/css/themes/bootstrap.css'>
+            <link rel="stylesheet" type="text/css" href="../shared/css/formulario.css">
+            <script src='../../shared/lib/alertify/alertify.min.js'></script>
+        </head>
 
-            <form action="utils/db-registro-docente.php" method="post">
-                <h2 class="subDatos">Datos personales</h2>
-
-                <label for="nombre">Nombre completo</label>
-                <input type="text" name="nombre" id="nombre" placeholder="Ingrese su nombre"
-                    value="<?php echo $_SESSION['nombre']; ?>" oninput="checkFilled()">
-
-                <label for="correo">Correo institucional</label>
-                <input type="text" name="correo" id="correo" placeholder="Ingrese su correo institucional"
-                    value="<?php echo $_SESSION['usuario']; ?>" oninput="checkFilled()">
-
-                <label for="cedula">Cédula de identidad</label>
-                <input type="text" name="cedula" id="cedula" placeholder="Ingrese su cédula de identidad"
-                    value="<?php if (isset($_SESSION['id'])) { echo $_SESSION['id']; } ?>" oninput="checkFilled()">
-
-                <label for="celular">Número de teléfono</label>
-                <input type="text" name="celular" id="celular" placeholder="Ingrese su número de teléfono">
-
-                <h2 class="subDatos">Datos de reservación</h2>
-
-                <label for="sigla_curso">Sigla del curso</label>
-                <input type="text" name="sigla_curso" id="sigla_curso"
-                    placeholder="Ingrese la sigla del curso (ejemplo: IC-0101)" oninput="searchCourse()">
-
-                <label for="nombre_curso">Nombre del curso</label>
-                <input type="text" name="nombre_curso" id="nombre_curso" placeholder="Ingrese la sigla del curso primero"
-                    readonly>
-
-                <label for="espacio">Espacio a utilizar</label>
-                <div class="selectContainer">
-                    <select class="selectValue" name="espacio" id="espacio" onchange="updateSpace()" required>
-                        <option value="">Seleccione un espacio</option>
-                        <option value="Laboratorio 1">Laboratorio 1</option>
-                        <option value="Laboratorio 2">Laboratorio 2</option>
-                        <option value="Laboratorio 3">Laboratorio 3</option>
-                        <option value="Aula PEC">Aula PEC (Requiere visto bueno de la dirección)</option>
-                        <option value="Sala Interna">Sala Interna (Requiere visto bueno de la dirección)</option>
-                        <option value="Sala Externa">Sala Externa</option>
-                    </select>
+        <body>
+            <div>
+                <div class="center">
+                    <img src="../shared/img/logoEIC.png" alt="Logo Escuela de Ingeniería Civil UCR">
+                    <h1>Sistema de registro y retiro de cartuchera</h1>
                 </div>
 
-                <label for="fecha_ingreso">Fecha y hora de ingreso</label>
-                <p class="avisoHora">Si utiliza el laboratorio después de las 17:00, comuníquese con la recepción de la
-                    escuela</p>
-                <input type="text" name="fecha_ingreso" id="fecha_ingreso" readonly />
-                <input type="hidden" name="continue" id="continue" value="no" />
-                <input type="button" id="btnSubmit" value="Registrar" onclick="sendForm(this.form);" />
-            </form>
+                <form action="utils/db-registro-docente.php" method="post">
+                    <h2 class="subDatos">Datos personales</h2>
 
-            <div class="center">
-                <button id="btn5" onclick="location.href='inicio.php'">Cancelar</button>
+                    <label for="nombre">Nombre completo</label>
+                    <input type="text" name="nombre" id="nombre" placeholder="Ingrese su nombre"
+                        value="<?php echo $_SESSION['nombre']; ?>" oninput="checkFilled()">
+
+                    <label for="correo">Correo institucional</label>
+                    <input type="text" name="correo" id="correo" placeholder="Ingrese su correo institucional"
+                        value="<?php echo $_SESSION['usuario']; ?>" oninput="checkMail()">
+
+                    <label for="cedula">Cédula de identidad</label>
+                    <input type="text" name="cedula" id="cedula" placeholder="Ingrese su cédula de identidad" value="<?php if (isset($_SESSION['id'])) {
+                        echo $_SESSION['id'];
+                    } ?>" oninput="checkFilled()">
+
+                    <label for="celular">Número de teléfono</label>
+                    <input type="text" name="celular" id="celular" placeholder="Ingrese su número de teléfono">
+
+                    <h2 class="subDatos">Datos de reservación</h2>
+
+                    <label for="sigla_curso">Sigla del curso</label>
+                    <input type="text" name="sigla_curso" id="sigla_curso"
+                        placeholder="Ingrese la sigla del curso (ejemplos: IC-0101, IC9500)" oninput="searchCourse()">
+
+                    <label for="nombre_curso">Nombre del curso</label>
+                    <input type="text" name="nombre_curso" id="nombre_curso" placeholder="Ingrese la sigla del curso primero"
+                        readonly>
+
+                    <label for="espacio">Espacio a utilizar</label>
+                    <div class="selectContainer">
+                        <select class="selectValue" name="espacio" id="espacio" onchange="updateSpace()" required>
+                            <option value="">Seleccione un espacio</option>
+                            <option value="Laboratorio 1">Laboratorio 1</option>
+                            <option value="Laboratorio 2">Laboratorio 2</option>
+                            <option value="Laboratorio 3">Laboratorio 3</option>
+                            <option value="Aula PEC">Aula PEC (Requiere visto bueno de la dirección)</option>
+                            <option value="Sala Interna">Sala Interna (Requiere visto bueno de la dirección)</option>
+                            <option value="Sala Externa">Sala Externa</option>
+                        </select>
+                    </div>
+
+                    <label for="fecha_ingreso">Fecha y hora de ingreso</label>
+                    <p class="avisoHora">Si utiliza el laboratorio después de las 17:00, comuníquese con la recepción de la
+                        escuela</p>
+                    <input type="text" name="fecha_ingreso" id="fecha_ingreso" readonly />
+                    <input type="hidden" name="continue" id="continue" value="no" />
+                    <input type="button" id="btnSubmit" value="Registrar" onclick="sendForm(this.form);" />
+                </form>
+
+                <div class="center">
+                    <button id="btn5" onclick="location.href='inicio.php'">Cancelar</button>
+                </div>
             </div>
-        </div>
-
+        </body>
         <script>
             let listaCursos = <?php echo json_encode($courses); ?>;
+            let validMail = false;
             let spaceSelected = false;
             let foundCourse = false;
             let validTimeRange = false;
             let date = new Date();
 
+            // Revisa que todos los campos estén correctos y activa el botón para enviar los datos
             function checkFilled() {
-                if (document.getElementById('nombre').value != "" && document.getElementById('correo').value != "" && document.getElementById('cedula').value != "" && spaceSelected && foundCourse && validTimeRange) {
+                if (document.getElementById('nombre').value != "" && validMail && document.getElementById('cedula').value != "" && spaceSelected && foundCourse && validTimeRange) {
                     document.getElementById('btnSubmit').disabled = false;
                 } else {
                     document.getElementById('btnSubmit').disabled = true;
                 }
             }
 
+            function checkMail() {
+                if (document.getElementById('correo').value.toUpperCase().endsWith("@UCR.AC.CR")) {
+                    validMail = true;
+                } else {
+                    validMail = false;
+                }
+                checkFilled();
+            }
+
+            // Compara el código introducido por el usuario con los códigos de los cursos en la base de datos y rellena el campo de nombre si encuentra un match
             function searchCourse() {
                 let p = document.getElementById('sigla_curso').selectionStart;
                 document.getElementById('sigla_curso').value = document.getElementById('sigla_curso').value.toUpperCase();
                 document.getElementById('sigla_curso').setSelectionRange(p, p);
 
-                let curso = listaCursos.find((element) => element.sigla_curso == document.getElementById('sigla_curso').value);
+                // Asegura que el formato sea [Letra][Letra]-[Número][Número][Número][Número]
+                let regex = /[A-Z][A-Z]-[0-9][0-9][0-9][0-9]/;
+                let input = document.getElementById('sigla_curso').value;
+                if (!regex.test(input)) {
+
+                    // Agrega el guión si el usuario no lo introduce manualmente
+                    regex = /[A-Z][A-Z][0-9][0-9][0-9][0-9]/;
+                    if (regex.test(input)) {
+                        input = input.slice(0, 2) + "-" + input.slice(2);
+                    }
+                }
+                let curso = listaCursos.find((element) => element.sigla_curso == input);
+
+                // Si encuentra el curso obtiene el nombre
                 if (curso) {
+                    document.getElementById('sigla_curso').value = curso.sigla_curso;
                     document.getElementById('nombre_curso').setAttribute("value", curso.nombre_curso);
                     foundCourse = true;
                 } else {
@@ -137,6 +166,7 @@ if (isset($_SESSION['usuario'])) {
                 checkFilled();
             }
 
+            // Función para enviar la información al servidor
             function sendForm(form) {
                 alertify.confirm('Mensaje',
                     'Formulario enviado de manera exitosa, ¿desea cerrar la sesión?',
@@ -148,14 +178,18 @@ if (isset($_SESSION['usuario'])) {
                 ).set({ transition: "zoom", closable: false, labels: { ok: 'Si', cancel: 'No' } }).autoOk(10);
             }
 
+            checkMail();
             getDate();
             let refreshDate = setInterval(getDate, 1000);
         </script>
-    </body>
 
-    </html>
+        </html>
 
-    <?php
+        <?php
+    } else {
+        header("Location: ../index.php");
+        exit();
+    }
 } else {
     header("Location: ../index.php");
     exit();
