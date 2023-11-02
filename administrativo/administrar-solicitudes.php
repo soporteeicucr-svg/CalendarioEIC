@@ -321,7 +321,7 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
                         function () { }
                     ).set({ transition: "zoom", closable: false, labels: { ok: 'Si', cancel: 'No' } });
 
-                    // Caso de que una reserva choque con la elegida
+                // Caso de que una reserva choque con la elegida
                 } else if (overlapping.length == 1) {
                     if (activeTab == "Pendientes") {
                         result = "rechazada"
@@ -345,7 +345,7 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
                         function () { }
                     ).set({ transition: "zoom", closable: false, "labels": { ok: "Aceptar", cancel: "Cancelar" } });
 
-                    // Caso de que varias reservas choquen con la elegida
+                // Caso de que varias reservas choquen con la elegida
                 } else {
                     if (activeTab == "Pendientes") {
                         result = "rechazadas"
