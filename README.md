@@ -82,18 +82,18 @@ usuario: `GABRIEL.ZUNIGAOROZCO@ucr.ac.cr`
 contraseña: 1ng.c1v1/
 
 Módulo docente:
-usuario: `GABRIEL.ZUNIGAOROZCO@ucr.ac.cr`
-contraseña: 1-1680Ac1
+usuario: `GABRIEL.ZUNIGA1@ucr.ac.cr`
+contraseña: 1ng.c1v1/
 
 Módulo administrativo:
-usuario: `GABRIEL.ZUNIGAOROZCO@ucr.ac.cr`
+usuario: `GABRIEL.ZUNIGA2@ucr.ac.cr`
 contraseña: 1ng.c1v1/
 
 ## Información relacionada al código fuente
 
-La totalidad del código se encuentra en la ruta C:\xampp\htdocs accesible a través del navegador de archivos, y se desarrolló utilizando el editor Visual Studio Code. El sistema está compuesto por más de treinta archivos separados en cuatro carpetas, tres de estas nombradas ante el módulo que representan: “estudiante”, “docente” y “administrativo”, y la cuarta carpeta se denomina “shared”, la cual contiene código y archivos compartidos entre los módulos, como por ejemplo, la conexión con la base de datos, la autenticación de usuarios, imágenes y estilos utilizados en las páginas, y también librerías externas utilizadas.
+La totalidad del código se encuentra en la ruta C:\xampp\htdocs accesible a través del navegador de archivos, y se desarrolló utilizando el editor Visual Studio Code. El sistema está compuesto por más de treinta archivos en formato PHP, e incluyen los lenguages PHP, JavaScript y HTML. Estos archivos se encuentran separados en cuatro carpetas, tres de estas nombradas ante el módulo que representan: “estudiante”, “docente” y “administrativo”, y la cuarta carpeta se denomina “shared”, la cual contiene código y archivos compartidos entre los módulos, como por ejemplo, la conexión con la base de datos, la autenticación de usuarios, imágenes y estilos utilizados en las páginas, y también librerías externas utilizadas.
 
-Las librerías externas utilizadas son: 
+Las librerías externas utilizadas son:
 
 1. Alertify
 2. Bootstrap
@@ -120,7 +120,7 @@ Adicionalmente, las páginas Index (responsable de redirigir a la página princi
 
 ## Para utilizar AD DS
 
-### 1. Asegúrese de que el directorio ruta\a\xampp\php tenga los siguientes archivos
+#### 1. Asegúrese de que el directorio ruta\a\xampp\php tenga los siguientes archivos
 
 1. libeay32.dll
 2. libsasl.dll
@@ -128,10 +128,43 @@ Adicionalmente, las páginas Index (responsable de redirigir a la página princi
 
 Por lo general, se pueden encontrar en la ruta\a\xampp\sendmail; esta biblioteca también los usa. Pero si no, intente buscarlos dentro del directorio xampp.
 
-### 2. Descomente o agregue la extensión ldap en el archivo php.ini (ruta\a\xampp\php\php.ini)
+#### 2. Descomente o agregue la extensión ldap en el archivo php.ini (ruta\a\xampp\php\php.ini)
 
 `extensión=ldap`
 
-### 3. Reinicie el servidor
+#### 3. Reinicie el servidor
 
-### 4. Asegúrese de que el directorio ruta\a\xampp\php esté configurado en la variable de entorno del sistema PATH
+#### 4. Asegúrese de que el directorio ruta\a\xampp\php esté configurado en la variable de entorno del sistema PATH
+
+## Configuración
+
+Para fácil manejo de credenciales y configuración, las variables del sistema se pueden establecer en el archivo `shared/utils/variables.php`, dichas variables son:
+
+### Variables de Active Directory
+
+1. `$servidor`: establece el nombre del servidor de Active Directory.
+2. `$adminUser`: usuario administrador de Active Directory.
+3. `$adminPassword`: contraseña del administrador de Active Directory.
+
+### Variables de la base de datos phpMyAdmin
+
+4. `$host`: Dirección IP de la base de datos.
+5. `$username`: Nombre de usuario de la base de datos.
+6. `$password`: Contraseña del usuario de la base de datos.
+7. `$dbname`: Nombre de la base de datos.
+
+### Cuenta de correo:
+
+8. `$mailUser`: Dirección de correo para enviar notificaciones.
+9. `$mailPassword`: Contraseña de la cuenta de correo.
+
+### OUs (Organizational Unit) y DNs (Distinguished names) para datos de Active Directory
+
+DNs utilizan DCs (Domain Component) para la búsqueda
+
+10. `$OUStudents`: Nombre de la unidad organizacional que contiene las cuentas de los estudiantes.
+11. `$OUProfessors`: Nombre de la unidad organizacional que contiene las cuentas de los profesores.
+12. `$OUAdministrators`: Nombre de la unidad organizacional que contiene las cuentas de los administradores.
+13. `$DNStudents`: Nombre distinguido para acceder a los datos de los estudiantes.
+14. `$DNProfessors`: Nombre distinguido para acceder a los datos de los profesores.
+15. `$DNAdministrators`: Nombre distinguido para acceder a los datos de los administradores.
