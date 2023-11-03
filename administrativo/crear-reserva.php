@@ -49,7 +49,7 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
                     curso</label>
                 <input type="text" name="sigla_curso" id="sigla_curso"
                     placeholder="Sigla del curso (ejemplos: IC-0101, IC9500) o 'NA' si no aplica" oninput="searchCourse()">
-                <label for="nombre_curso">Nombre del curso</label>
+                <label id="label_nombre_curso" for="nombre_curso">Nombre del curso</label>
                 <input type="text" name="nombre_curso" id="nombre_curso" placeholder="Ingrese la sigla del curso primero"
                     readonly>
                 <label for="solicitante"><i class="fa-solid fa-star-of-life" style="color: #ff0000;"></i> Nombre del
@@ -222,6 +222,7 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
 
                     // Si el usuario ingresa NA permite el ingreso de cualquier texto en lugar de nombre de curso
                     if (document.getElementById('sigla_curso').value == "NA") {
+                        document.getElementById('label_nombre_curso').innerHTML = "<i class='fa-solid fa-star-of-life' style='color: #ff0000;'></i> Razón para la reserva"
                         document.getElementById('nombre_curso').removeAttribute("readonly");
                         document.getElementById('nombre_curso').setAttribute("required", "");
                         document.getElementById('nombre_curso').setAttribute("placeholder", "Ingrese la razón para la reserva");
@@ -229,6 +230,7 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
 
                         // Si el usuario ingresa un código incorrecto vuelve a bloquear el espacio de nombre
                     } else {
+                        document.getElementById('label_nombre_curso').innerHTML = "Nombre del curso"
                         document.getElementById('nombre_curso').setAttribute("value", "");
                         document.getElementById('nombre_curso').setAttribute("readonly", "");
                         document.getElementById('nombre_curso').removeAttribute("required");
