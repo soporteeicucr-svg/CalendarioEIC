@@ -1,5 +1,5 @@
 <?php
-include "../shared/utils/db-conn.php";
+include '../shared/utils/db-conn.php';
 
 $sql = "SELECT * FROM cursos";
 $result = mysqli_query($conn, $sql);

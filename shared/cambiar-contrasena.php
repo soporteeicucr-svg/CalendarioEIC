@@ -45,10 +45,10 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
 
 	<head>
 		<meta charset="UTF-8">
-    	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+		<meta http-equiv="X-UA-Compatible" content="ie=edge">
 		<title>Cambio de contraseña</title>
-		<link rel="stylesheet" type="text/css" href="css/style.css" />
-		<link rel="stylesheet" type="text/css" href="css/form.css" />
+		<link rel='stylesheet' type='text/css' href="css/style.css" />
+		<link rel='stylesheet' type='text/css' href="css/form.css" />
 		<script>
 			function validatePassword() {
 				var currentPassword, newPassword, confirmPassword, output = true;

@@ -9,24 +9,23 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
         ?>
 
         <!DOCTYPE html>
-        <html lang="en">
+        <html lang='es'>
 
         <head>
-            <meta charset="UTF-8">
-            <meta http-equiv="X-UA-Compatible" content="IE=edge">
+            <meta charset='UTF-8'>
+            <meta http-equiv='X-UA-Compatible' content='IE=edge'>
             <title>Calendario de reservas para docentes</title>
-            <link rel='stylesheet' type="text/css" href='../shared/lib/alertify/css/alertify.css'>
-            <link rel='stylesheet' type="text/css" href='../shared/lib/alertify/css/themes/bootstrap.css'>
-            <link rel="stylesheet" type="text/css" href="../shared/lib/bootstrap/bootstrap.min.css">
-            <link rel="stylesheet" type="text/css" href="../shared/lib/fontawesome/css/all.css">
-            <link rel="stylesheet" type="text/css" href="../shared/lib/fullcalendar/lib/main.min.css">
-            <link rel="stylesheet" type="text/css" href="../shared/css/reserva.css">
-            <link rel="stylesheet" type="text/css" href="../shared/css/tabs.css">
+            <link rel='stylesheet' type='text/css' href='../shared/lib/alertify/css/alertify.css'>
+            <link rel='stylesheet' type='text/css' href='../shared/lib/alertify/css/themes/bootstrap.css'>
+            <link rel='stylesheet' type='text/css' href='../shared/lib/bootstrap/bootstrap.min.css'>
+            <link rel='stylesheet' type='text/css' href='../shared/lib/fullcalendar/lib/main.min.css'>
+            <link rel='stylesheet' type='text/css' href='../shared/css/reserva.css'>
+            <link rel='stylesheet' type='text/css' href='../shared/css/tabs.css'>
             <script src='../shared/lib/alertify/alertify.min.js'></script>
-            <script src="../shared/lib/bootstrap/bootstrap.min.js"></script>
+            <script src='../shared/lib/bootstrap/bootstrap.min.js'></script>
             <script src='../shared/lib/fullcalendar/index.global.min.js'></script>
-            <script src="../shared/lib/fullcalendar/lib/main.min.js"></script>
-            <script src="../shared/lib/jquery/jquery-3.6.0.min.js"></script>
+            <script src='../shared/lib/fullcalendar/lib/main.min.js'></script>
+            <script src='../shared/lib/jquery/jquery-3.6.0.min.js'></script>
         </head>
 
         <body class="bg-light">

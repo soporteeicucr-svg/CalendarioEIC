@@ -5,16 +5,16 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
     if ($_SESSION['tipo'] == 'docente') {
         ?>
         <!DOCTYPE html>
-        <html>
+        <html lang='es'>
 
         <head>
-            <meta charset="UTF-8">
-            <meta http-equiv="X-UA-Compatible" content="ie=edge">
+            <meta charset='UTF-8'>
+            <meta http-equiv='X-UA-Compatible' content='ie=edge'>
             <title>Reserva de laboratorios y salas para docentes</title>
-            <link rel="stylesheet" type="text/css" href="../shared/lib/bootstrap/bootstrap.min.css">
-            <link rel="stylesheet" type="text/css" href="../shared/css/home.css">
-            <script src="../shared/lib/jquery/jquery-3.6.0.min.js"></script>
-            <script src="../shared/lib/bootstrap/bootstrap.min.js"></script>
+            <link rel='stylesheet' type='text/css' href='../shared/lib/bootstrap/bootstrap.min.css'>
+            <link rel='stylesheet' type='text/css' href='../shared/css/home.css'>
+            <script src='../shared/lib/jquery/jquery-3.6.0.min.js'></script>
+            <script src='../shared/lib/bootstrap/bootstrap.min.js'></script>
         </head>
 
         <body>

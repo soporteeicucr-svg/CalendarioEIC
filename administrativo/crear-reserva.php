@@ -8,19 +8,19 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
         ?>
 
         <!DOCTYPE html>
-        <html lang="en">
+        <html lang='es'>
 
         <head>
-            <meta charset="UTF-8">
-            <meta http-equiv="X-UA-Compatible" content="IE=edge">
+            <meta charset='UTF-8'>
+            <meta http-equiv='X-UA-Compatible' content='IE=edge'>
             <title>Crear reserva</title>
-            <link rel='stylesheet' type="text/css" href='../shared/lib/alertify/css/alertify.css'>
-            <link rel='stylesheet' type="text/css" href='../shared/lib/alertify/css/themes/bootstrap.css'>
-            <link rel="stylesheet" type="text/css" href="../shared/lib/flatpickr/flatpickr.min.css">
-            <link rel="stylesheet" type="text/css" href="../shared/lib/fontawesome/css/all.css">
-            <link rel="stylesheet" type="text/css" href="../shared/css/formulario.css">
+            <link rel='stylesheet' type='text/css' href='../shared/lib/alertify/css/alertify.css'>
+            <link rel='stylesheet' type='text/css' href='../shared/lib/alertify/css/themes/bootstrap.css'>
+            <link rel='stylesheet' type='text/css' href='../shared/lib/flatpickr/flatpickr.min.css'>
+            <link rel='stylesheet' type='text/css' href='../shared/lib/fontawesome/css/all.css'>
+            <link rel='stylesheet' type='text/css' href='../shared/css/formulario.css'>
             <script src='../shared/lib/alertify/alertify.min.js'></script>
-            <script src="../shared/lib/flatpickr/flatpickr.js"></script>
+            <script src='../shared/lib/flatpickr/flatpickr.js'></script>
         </head>
 
         <body>
@@ -32,7 +32,8 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
             </div>
             <form action="../shared/utils/save-schedule.php" method="post" id="schedule-form">
                 <input type="hidden" name="id" value="">
-                <label for="espacio">Espacio a reservar (Sujeto a disponibilidad)</label>
+                <label for="espacio"><i class="fa-solid fa-star-of-life" style="color: #ff0000;"></i> Espacio a reservar (Sujeto
+                    a disponibilidad)</label>
                 <div class="selectContainer">
                     <select class="selectValue" name="espacio" id="espacio" onchange="updateSpace()" required>
                         <option value="">Seleccione un espacio</option>
@@ -44,21 +45,26 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
                         <option value="Sala Externa">Sala Externa</option>
                     </select>
                 </div>
-                <label for="sigla_curso">Sigla del curso</label>
+                <label for="sigla_curso"><i class="fa-solid fa-star-of-life" style="color: #ff0000;"></i> Sigla del
+                    curso</label>
                 <input type="text" name="sigla_curso" id="sigla_curso"
                     placeholder="Sigla del curso (ejemplos: IC-0101, IC9500) o 'NA' si no aplica" oninput="searchCourse()">
                 <label for="nombre_curso">Nombre del curso</label>
                 <input type="text" name="nombre_curso" id="nombre_curso" placeholder="Ingrese la sigla del curso primero"
                     readonly>
-                <label for="solicitante">Nombre del solicitante</label>
+                <label for="solicitante"><i class="fa-solid fa-star-of-life" style="color: #ff0000;"></i> Nombre del
+                    solicitante</label>
                 <input type="text" name="solicitante" id="solicitante" placeholder="Ingrese el nombre del solicitante" required>
-                <label for="correo">Correo institucional</label>
+                <label for="correo"><i class="fa-solid fa-star-of-life" style="color: #ff0000;"></i> Correo
+                    institucional</label>
                 <input type="text" name="correo" id="correo" placeholder="Ingrese el correo institucional del solicitante"
                     required>
-                <label for="fecha" class="control-label">Día</label>
+                <label for="fecha" class="control-label"><i class="fa-solid fa-star-of-life" style="color: #ff0000;"></i>
+                    Día</label>
                 <input type="text" name="fecha" id="fecha" placeholder="Seleccione la hora de inicio" required
                     onchange="updateDate()">
-                <label for="hora_inicio" class="control-label">Hora de inicio</label>
+                <label for="hora_inicio" class="control-label"><i class="fa-solid fa-star-of-life" style="color: #ff0000;"></i>
+                    Hora de inicio</label>
                 <div class="selectContainer">
                     <select class="selectValue" name="hora_inicio" id="hora_inicio" onchange="updateTime('hora_inicio')"
                         required>
@@ -96,7 +102,8 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
                     </select>
                 </div>
                 <div id="error_hora_inicio"></div>
-                <label for="hora_fin" class="control-label">Hora de finalización</label>
+                <label for="hora_fin" class="control-label"><i class="fa-solid fa-star-of-life" style="color: #ff0000;"></i>
+                    Hora de finalización</label>
                 <div class="selectContainer">
                     <select class="selectValue" name="hora_fin" id="hora_fin" onchange="updateTime('hora_fin')" required>
                         <option value="">Seleccione la hora de finalización</option>
@@ -220,7 +227,7 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
                         document.getElementById('nombre_curso').setAttribute("placeholder", "Ingrese la razón para la reserva");
                         foundCourse = true;
 
-                    // Si el usuario ingresa un código incorrecto vuelve a bloquear el espacio de nombre
+                        // Si el usuario ingresa un código incorrecto vuelve a bloquear el espacio de nombre
                     } else {
                         document.getElementById('nombre_curso').setAttribute("value", "");
                         document.getElementById('nombre_curso').setAttribute("readonly", "");

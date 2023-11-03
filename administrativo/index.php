@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html>
+<html lang='es'>
 
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta charset='UTF-8'>
+    <meta http-equiv='X-UA-Compatible' content='ie=edge'>
     <title>Inicio de sesión</title>
-    <link rel="stylesheet" href="../shared/lib/fontawesome/css/all.css">
-    <link rel="stylesheet" href="../shared/css/login.css">
+    <link rel='stylesheet' type='text/css' href='../shared/lib/fontawesome/css/all.css'>
+    <link rel='stylesheet' type='text/css' href='../shared/css/login.css'>
 </head>
 
 <body>
@@ -28,7 +28,8 @@
         <label for="contrasena"><i class="fa-solid fa-lock"></i> Contraseña</label>
         <div class="password-container">
             <input type="password" name="contrasena" id="contrasena" placeholder="Ingrese su contraseña" required>
-            <i class="fa-solid fa-eye-slash eye-slash-padding" style="user-select: none" id="eye" onclick="passwordToggle()"></i>
+            <i class="fa-solid fa-eye-slash eye-slash-padding" style="user-select: none" id="eye"
+                onclick="passwordToggle()"></i>
         </div>
         <input type="hidden" id="tipo" name="tipo" value="administrativo">
         <input type="submit" value="Ingresar">
@@ -41,7 +42,7 @@
         if (x.type === "password") {
             x.type = "text";
             x.className = "text-to-password";
-            eyeIcon.className = "fa-solid fa-eye eye-padding"; 
+            eyeIcon.className = "fa-solid fa-eye eye-padding";
         } else {
             x.type = "password";
             x.className = "";

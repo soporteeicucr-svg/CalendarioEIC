@@ -10,22 +10,22 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
         ?>
 
         <!DOCTYPE html>
-        <html lang="es">
+        <html lang='es'>
 
         <head>
-            <meta charset="UTF-8">
-            <meta http-equiv="X-UA-Compatible" content="IE=edge">
+            <meta charset='UTF-8'>
+            <meta http-equiv='X-UA-Compatible' content='IE=edge'>
             <title>Administración de solicitudes de reserva</title>
-            <link rel='stylesheet' type="text/css" href='../shared/lib/alertify/css/alertify.css'>
-            <link rel='stylesheet' type="text/css" href='../shared/lib/alertify/css/themes/bootstrap.css'>
-            <link rel="stylesheet" type="text/css" href="../shared/lib/bootstrap/bootstrap.min.css">
-            <link rel="stylesheet" type="text/css" href="../shared/css/reserva.css">
-            <link rel="stylesheet" type="text/css" href="../shared/css/tabs.css">
+            <link rel='stylesheet' type='text/css' href='../shared/lib/alertify/css/alertify.css'>
+            <link rel='stylesheet' type='text/css' href='../shared/lib/alertify/css/themes/bootstrap.css'>
+            <link rel='stylesheet' type='text/css' href='../shared/lib/bootstrap/bootstrap.min.css'>
+            <link rel='stylesheet' type='text/css' href='../shared/css/reserva.css'>
+            <link rel='stylesheet' type='text/css' href='../shared/css/tabs.css'>
             <script src='../shared/lib/alertify/alertify.min.js'></script>
-            <script src="../shared/lib/jquery/jquery-3.6.0.min.js"></script>
-            <script src="../shared/lib/pdfmake/pdfmake.min.js"></script>
-            <script src="../shared/lib/pdfmake/vfs_fonts.js"></script>
-            <script src="../shared/lib/sheetjs/xlsx.full.min.js"></script>
+            <script src='../shared/lib/jquery/jquery-3.6.0.min.js'></script>
+            <script src='../shared/lib/pdfmake/pdfmake.min.js'></script>
+            <script src='../shared/lib/pdfmake/vfs_fonts.js'></script>
+            <script src='../shared/lib/sheetjs/xlsx.full.min.js'></script>
         </head>
 
         <body class="bg-light">
@@ -59,14 +59,15 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
                             <div id="tab Pendientes">
 
                                 <div class="d-flex align-items-center justify-content-center mb-1 gap-3">
-                                    <input class="form-control" style="background-color: #f1f1f1" id="searchPending" type="text"
-                                        placeholder="Buscar...">
+                                    <input class="form-control"
+                                        style="font-size: 16px; font-weight: bold; border: 4px solid #ccc; padding: 12px"
+                                        id="searchPending" type="text" placeholder="Buscar...">
                                     <p class="h4 mb-0">Descargar:</p>
                                     <button type="button" class="btn download-excel-btn" id="exportToExcel"
-                                        onclick="exportToExcel('tablePending')">
+                                        onclick="exportToExcel('tablePending', 'searchPending')">
                                     </button>
                                     <button type="button" class="btn download-pdf-btn" id="exportToPDF"
-                                        onclick="exportToPDF('tablePending')">
+                                        onclick="exportToPDF('tablePending', 'searchPending')">
                                     </button>
                                 </div>
 
@@ -141,14 +142,15 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
                             <div id="tab Aprobadas">
 
                                 <div class="d-flex align-items-center justify-content-center mb-1 gap-3">
-                                    <input class="form-control" style="background-color: #f1f1f1" id="searchApproved"
-                                        type="text" placeholder="Buscar...">
+                                    <input class="form-control"
+                                        style="font-size: 16px; font-weight: bold; border: 4px solid #ccc; padding: 12px"
+                                        id="searchApproved" type="text" placeholder="Buscar...">
                                     <p class="h4 mb-0">Descargar:</p>
                                     <button type="button" class="btn download-excel-btn" id="exportToExcel"
-                                        onclick="exportToExcel('tableApproved')">
+                                        onclick="exportToExcel('tableApproved', 'searchApproved')">
                                     </button>
                                     <button type="button" class="btn download-pdf-btn" id="exportToPDF"
-                                        onclick="exportToPDF('tableApproved')">
+                                        onclick="exportToPDF('tableApproved', 'searchApproved')">
                                     </button>
                                 </div>
 
@@ -217,14 +219,15 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
                             <div id="tab Rechazadas">
 
                                 <div class="d-flex align-items-center justify-content-center mb-1 gap-3">
-                                    <input class="form-control" style="background-color: #f1f1f1" id="searchRejected"
-                                        type="text" placeholder="Buscar...">
+                                    <input class="form-control"
+                                        style="font-size: 16px; font-weight: bold; border: 4px solid #ccc; padding: 12px"
+                                        id="searchRejected" type="text" placeholder="Buscar...">
                                     <p class="h4 mb-0">Descargar:</p>
                                     <button type="button" class="btn download-excel-btn" id="exportToExcel"
-                                        onclick="exportToExcel('tableRejected')">
+                                        onclick="exportToExcel('tableRejected', 'searchRejected')">
                                     </button>
                                     <button type="button" class="btn download-pdf-btn" id="exportToPDF"
-                                        onclick="exportToPDF('tableRejected')">
+                                        onclick="exportToPDF('tableRejected', 'searchRejected')">
                                     </button>
                                 </div>
 
@@ -475,7 +478,7 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
 
             // Función para exportar a Excel
             function exportToExcel(tableName) {
-                var table = document.getElementById(tableName);
+                var table = document.getElementById(tableName, searchBarName);
 
                 // Convierte la tabla HTML en un objecto con solo los elementos visibles
                 var data = XLSX.utils.table_to_sheet(table, { display: true });
@@ -491,13 +494,22 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
 
                 // Exporta el objeto en formato XLSX
                 var wb = XLSX.utils.book_new();
-                XLSX.utils.book_append_sheet(wb, ws, 'Lista de accesos');
-                XLSX.writeFile(wb, 'Lista de accesos.xlsx');
+
+                var searchBar = document.getElementById(searchBarName);
+                search = searchBar.value.trim();
+
+                if (search != '') {
+                    XLSX.utils.book_append_sheet(wb, ws, 'Lista de accesos - ' + search);
+                    XLSX.writeFile(wb, 'Lista de accesos - ' + search + '.xlsx');
+                } else {
+                    XLSX.utils.book_append_sheet(wb, ws, 'Lista de accesos');
+                    XLSX.writeFile(wb, 'Lista de accesos.xlsx');
+                }
             }
 
 
             // Función para exportar a PDF
-            function exportToPDF(tableName) {
+            function exportToPDF(tableName, searchBarName) {
                 var table = document.getElementById(tableName);
                 var tableData = [];
 
@@ -544,7 +556,14 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
                     pageMargins: [80, 40, 80, 40],
                 };
 
-                pdfMake.createPdf(docDefinition).download('Lista de accesos.pdf');
+                var searchBar = document.getElementById(searchBarName);
+                search = searchBar.value.trim();
+
+                if (search != '') {
+                    pdfMake.createPdf(docDefinition).download('Lista de accesos - ' + search);
+                } else {
+                    pdfMake.createPdf(docDefinition).download('Lista de accesos.pdf');
+                }
             }
         </script>
 

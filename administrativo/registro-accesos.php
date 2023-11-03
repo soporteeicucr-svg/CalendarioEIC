@@ -8,20 +8,19 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
         ?>
 
         <!DOCTYPE html>
-        <html lang="es">
+        <html lang='es'>
 
         <head>
-            <meta charset="UTF-8">
-            <meta http-equiv="X-UA-Compatible" content="IE=edge">
+            <meta charset='UTF-8'>
+            <meta http-equiv='X-UA-Compatible' content='IE=edge'>
             <title>Registro de accesos a salas y espacios</title>
-            <link rel="stylesheet" type="text/css" href="../shared/lib/bootstrap/bootstrap.min.css">
-            <link rel="stylesheet" type="text/css" href="../shared/lib/fontawesome/css/all.css">
-            <link rel="stylesheet" type="text/css" href="../shared/css/reserva.css">
-            <link rel="stylesheet" type="text/css" href="../shared/css/tabs.css">
-            <script src="../shared/lib/jquery/jquery-3.6.0.min.js"></script>
-            <script src="../shared/lib/pdfmake/pdfmake.min.js"></script>
-            <script src="../shared/lib/pdfmake/vfs_fonts.js"></script>
-            <script src="../shared/lib/sheetjs/xlsx.full.min.js"></script>
+            <link rel='stylesheet' type='text/css' href='../shared/lib/bootstrap/bootstrap.min.css'>
+            <link rel='stylesheet' type='text/css' href='../shared/css/reserva.css'>
+            <link rel='stylesheet' type='text/css' href='../shared/css/tabs.css'>
+            <script src='../shared/lib/jquery/jquery-3.6.0.min.js'></script>
+            <script src='../shared/lib/pdfmake/pdfmake.min.js'></script>
+            <script src='../shared/lib/pdfmake/vfs_fonts.js'></script>
+            <script src='../shared/lib/sheetjs/xlsx.full.min.js'></script>
         </head>
 
         <body class="bg-light">
@@ -55,13 +54,15 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
                             <div id="tab Estudiantes">
 
                                 <div class="d-flex align-items-center justify-content-center mb-1 gap-3">
-                                    <input class="form-control" style="background-color: #f1f1f1" id="searchStudent" type="text" placeholder="Buscar...">
+                                    <input class="form-control"
+                                        style="font-size: 16px; font-weight: bold; border: 4px solid #ccc; padding: 12px"
+                                        id="searchStudent" type="text" placeholder="Buscar...">
                                     <p class="h4 mb-0">Descargar:</p>
                                     <button type="button" class="btn download-excel-btn" id="exportToExcel"
-                                        onclick="exportToExcel('tableStudents')">
+                                        onclick="exportToExcel('tableStudents', 'searchStudent')">
                                     </button>
                                     <button type="button" class="btn download-pdf-btn" id="exportToPDF"
-                                        onclick="exportToPDF('tableStudents')">
+                                        onclick="exportToPDF('tableStudents', 'searchStudent')">
                                     </button>
                                 </div>
 
@@ -119,13 +120,15 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
                             <div id="tab Docentes">
 
                                 <div class="d-flex align-items-center justify-content-center mb-1 gap-3">
-                                    <input class="form-control" style="background-color: #f1f1f1" id="searchProfessor" type="text" placeholder="Buscar...">
+                                    <input class="form-control"
+                                        style="font-size: 16px; font-weight: bold; border: 4px solid #ccc; padding: 12px"
+                                        id="searchProfessor" type="text" placeholder="Buscar...">
                                     <p class="h4 mb-0">Descargar:</p>
                                     <button type="button" class="btn download-excel-btn" id="exportToExcel"
-                                        onclick="exportToExcel('tableProfessors')">
+                                        onclick="exportToExcel('tableProfessors', 'searchProfessor')">
                                     </button>
                                     <button type="button" class="btn download-pdf-btn" id="exportToPDF"
-                                        onclick="exportToPDF('tableProfessors')">
+                                        onclick="exportToPDF('tableProfessors', 'searchProfessor')">
                                     </button>
                                 </div>
 
@@ -248,16 +251,25 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
             });
 
             // Función para exportar a Excel
-            function exportToExcel(tableName) {
+            function exportToExcel(tableName, searchBarName) {
                 var table = document.getElementById(tableName);
                 var ws = XLSX.utils.table_to_sheet(table);
                 var wb = XLSX.utils.book_new();
-                XLSX.utils.book_append_sheet(wb, ws, 'Lista de accesos');
-                XLSX.writeFile(wb, 'Lista de accesos.xlsx');
+
+                var searchBar = document.getElementById(searchBarName);
+                search = searchBar.value.trim();
+
+                if (search != '') {
+                    XLSX.utils.book_append_sheet(wb, ws, 'Lista de accesos - ' + search);
+                    XLSX.writeFile(wb, 'Lista de accesos - ' + search + '.xlsx');
+                } else {
+                    XLSX.utils.book_append_sheet(wb, ws, 'Lista de accesos');
+                    XLSX.writeFile(wb, 'Lista de accesos.xlsx');
+                }
             }
 
             // Función para exportar a PDF
-            function exportToPDF(tableName) {
+            function exportToPDF(tableName, searchBarName) {
                 var table = document.getElementById(tableName);
                 var tableData = [];
 
@@ -303,7 +315,14 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
                     pageMargins: [80, 40, 80, 40],
                 };
 
-                pdfMake.createPdf(docDefinition).download('Lista de accesos.pdf');
+                var searchBar = document.getElementById(searchBarName);
+                search = searchBar.value.trim();
+
+                if (search != '') {
+                    pdfMake.createPdf(docDefinition).download('Lista de accesos - ' + search);
+                } else {
+                    pdfMake.createPdf(docDefinition).download('Lista de accesos.pdf');
+                }
             }
         </script>
 

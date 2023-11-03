@@ -8,15 +8,16 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
         ?>
 
         <!DOCTYPE html>
-        <html>
+        <html lang='es'>
 
         <head>
-            <meta charset="UTF-8">
-            <meta http-equiv="X-UA-Compatible" content="ie=edge">
+            <meta charset='UTF-8'>
+            <meta http-equiv='X-UA-Compatible' content='ie=edge'>
             <title>Registro para uso de laboratorios para docentes</title>
-            <link rel='stylesheet' href='../../shared/lib/alertify/css/alertify.css'>
-            <link rel='stylesheet' href='../../shared/lib/alertify/css/themes/bootstrap.css'>
-            <link rel="stylesheet" type="text/css" href="../shared/css/formulario.css">
+            <link rel='stylesheet' type='text/css' href='../../shared/lib/alertify/css/alertify.css'>
+            <link rel='stylesheet' type='text/css' href='../../shared/lib/alertify/css/themes/bootstrap.css'>
+            <link rel='stylesheet' type='text/css' href='../shared/lib/fontawesome/css/all.css'>
+            <link rel='stylesheet' type='text/css' href='../shared/css/formulario.css'>
             <script src='../../shared/lib/alertify/alertify.min.js'></script>
         </head>
 
@@ -30,15 +31,17 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
                 <form action="utils/db-registro-docente.php" method="post">
                     <h2 class="subDatos">Datos personales</h2>
 
-                    <label for="nombre">Nombre completo</label>
+                    <label for="nombre"><i class="fa-solid fa-star-of-life" style="color: #ff0000;"></i> Nombre completo</label>
                     <input type="text" name="nombre" id="nombre" placeholder="Ingrese su nombre"
                         value="<?php echo $_SESSION['nombre']; ?>" oninput="checkFilled()">
 
-                    <label for="correo">Correo institucional</label>
+                    <label for="correo"><i class="fa-solid fa-star-of-life" style="color: #ff0000;"></i> Correo
+                        institucional</label>
                     <input type="text" name="correo" id="correo" placeholder="Ingrese su correo institucional"
                         value="<?php echo $_SESSION['usuario']; ?>" oninput="checkMail()">
 
-                    <label for="cedula">Cédula de identidad</label>
+                    <label for="cedula"><i class="fa-solid fa-star-of-life" style="color: #ff0000;"></i> Cédula de
+                        identidad</label>
                     <input type="text" name="cedula" id="cedula" placeholder="Ingrese su cédula de identidad" value="<?php if (isset($_SESSION['id'])) {
                         echo $_SESSION['id'];
                     } ?>" oninput="checkFilled()">
@@ -48,7 +51,8 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
 
                     <h2 class="subDatos">Datos de reservación</h2>
 
-                    <label for="sigla_curso">Sigla del curso</label>
+                    <label for="sigla_curso"><i class="fa-solid fa-star-of-life" style="color: #ff0000;"></i> Sigla del
+                        curso</label>
                     <input type="text" name="sigla_curso" id="sigla_curso"
                         placeholder="Ingrese la sigla del curso (ejemplos: IC-0101, IC9500)" oninput="searchCourse()">
 
@@ -56,7 +60,8 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
                     <input type="text" name="nombre_curso" id="nombre_curso" placeholder="Ingrese la sigla del curso primero"
                         readonly>
 
-                    <label for="espacio">Espacio a utilizar</label>
+                    <label for="espacio"><i class="fa-solid fa-star-of-life" style="color: #ff0000;"></i> Espacio a
+                        utilizar</label>
                     <div class="selectContainer">
                         <select class="selectValue" name="espacio" id="espacio" onchange="updateSpace()" required>
                             <option value="">Seleccione un espacio</option>

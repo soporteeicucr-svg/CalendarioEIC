@@ -7,7 +7,7 @@ session_start();
 
 if (isset($_POST['usuario']) && isset($_POST['contrasena'])) {
 	$usuario = validate($_POST['usuario']);
-    $usuario = str_replace("@ucr.ac.cr", "", $usuario);
+	$usuario = str_replace("@ucr.ac.cr", "", $usuario);
 	$contrasena = validate($_POST['contrasena']);
 	$tipo = $_POST['tipo'];
 	$table = getTableName($tipo);
