@@ -16,13 +16,16 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
             <meta charset="UTF-8">
             <meta http-equiv="X-UA-Compatible" content="IE=edge">
             <title>Administración de solicitudes de reserva</title>
-            <link rel="stylesheet" type="text/css" href="../shared/lib/bootstrap/bootstrap.min.css">
             <link rel='stylesheet' type="text/css" href='../shared/lib/alertify/css/alertify.css'>
             <link rel='stylesheet' type="text/css" href='../shared/lib/alertify/css/themes/bootstrap.css'>
+            <link rel="stylesheet" type="text/css" href="../shared/lib/bootstrap/bootstrap.min.css">
             <link rel="stylesheet" type="text/css" href="../shared/css/reserva.css">
             <link rel="stylesheet" type="text/css" href="../shared/css/tabs.css">
             <script src='../shared/lib/alertify/alertify.min.js'></script>
             <script src="../shared/lib/jquery/jquery-3.6.0.min.js"></script>
+            <script src="../shared/lib/pdfmake/pdfmake.min.js"></script>
+            <script src="../shared/lib/pdfmake/vfs_fonts.js"></script>
+            <script src="../shared/lib/sheetjs/xlsx.full.min.js"></script>
         </head>
 
         <body class="bg-light">
@@ -54,7 +57,22 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
                         <!-- Solicitudes pendientes de revisión -->
                         <div id="Pendientes" class="tabcontent">
                             <div id="tab Pendientes">
-                                <table class="table" style="margin-bottom: 0;">
+
+                                <!--
+                                <div class="d-flex align-items-center justify-content-center mb-1 gap-3">
+                                    <input class="form-control" style="background-color: #f1f1f1" id="searchPending" type="text"
+                                        placeholder="Buscar...">
+                                    <p class="h4 mb-0">Descargar:</p>
+                                    <button type="button" class="btn download-excel-btn" id="exportToExcel"
+                                        onclick="exportToExcel('tablePending')">
+                                    </button>
+                                    <button type="button" class="btn download-pdf-btn" id="exportToPDF"
+                                        onclick="exportToPDF('tablePending')">
+                                    </button>
+                                </div>
+                                -->
+
+                                <table class="table" id="tablePending" style="margin-bottom: 0;">
                                     <thead>
                                         <tr>
                                             <th>ID</th>
@@ -67,14 +85,15 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
                                             <th>Acción</th>
                                         </tr>
                                     </thead>
-                                    <tbody>
+
+                                    <tbody id="tablePendingBody">
                                         <?php
                                         $query = "SELECT * FROM `lista_horarios` WHERE estado = 'pendiente' ORDER BY id DESC";
                                         $result = mysqli_query($conn, $query);
                                         while ($row = mysqli_fetch_array($result)) {
                                             $schedules[$row['id']] = $row;
                                             ?>
-                                            <tr>
+                                            <tr class="filter-row">
                                                 <td>
                                                     <?php echo $row['id']; ?>
                                                 </td>
@@ -122,7 +141,22 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
                         <!-- Solicitudes aprobadas -->
                         <div id="Aprobadas" class="tabcontent">
                             <div id="tab Aprobadas">
-                                <table class="table" style="margin-bottom: 0;">
+
+                                <!--
+                                <div class="d-flex align-items-center justify-content-center mb-1 gap-3">
+                                    <input class="form-control" style="background-color: #f1f1f1" id="searchApproved"
+                                        type="text" placeholder="Buscar...">
+                                    <p class="h4 mb-0">Descargar:</p>
+                                    <button type="button" class="btn download-excel-btn" id="exportToExcel"
+                                        onclick="exportToExcel('tableApproved')">
+                                    </button>
+                                    <button type="button" class="btn download-pdf-btn" id="exportToPDF"
+                                        onclick="exportToPDF('tableApproved')">
+                                    </button>
+                                </div>
+                                -->
+
+                                <table class="table" id="tableApproved" style="margin-bottom: 0;">
                                     <thead>
                                         <tr>
                                             <th>ID</th>
@@ -135,14 +169,15 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
                                             <th>Acción</th>
                                         </tr>
                                     </thead>
-                                    <tbody>
+
+                                    <tbody id="tableApprovedBody">
                                         <?php
                                         $query = "SELECT * FROM `lista_horarios` WHERE estado = 'aprobado' ORDER BY id DESC";
                                         $result = $conn->query($query);
                                         while ($row = mysqli_fetch_array($result)) {
                                             $schedules[$row['id']] = $row;
                                             ?>
-                                            <tr>
+                                            <tr class="filter-row">
                                                 <td>
                                                     <?php echo $row['id']; ?>
                                                 </td>
@@ -184,7 +219,22 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
                         <!-- Solicitudes rechazadas -->
                         <div id="Rechazadas" class="tabcontent">
                             <div id="tab Rechazadas">
-                                <table class="table" style="margin-bottom: 0;">
+
+                                <!--
+                                <div class="d-flex align-items-center justify-content-center mb-1 gap-3">
+                                    <input class="form-control" style="background-color: #f1f1f1" id="searchRejected"
+                                        type="text" placeholder="Buscar...">
+                                    <p class="h4 mb-0">Descargar:</p>
+                                    <button type="button" class="btn download-excel-btn" id="exportToExcel"
+                                        onclick="exportToExcel('tableRejected')">
+                                    </button>
+                                    <button type="button" class="btn download-pdf-btn" id="exportToPDF"
+                                        onclick="exportToPDF('tableRejected')">
+                                    </button>
+                                </div>
+                                -->
+
+                                <table class="table" id="tableRejected" style="margin-bottom: 0;">
                                     <thead>
                                         <tr>
                                             <th>ID</th>
@@ -197,14 +247,14 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
                                             <th>Acción</th>
                                         </tr>
                                     </thead>
-                                    <tbody>
+                                    <tbody id="tableRejectedBody">
                                         <?php
                                         $query = "SELECT * FROM `lista_horarios` WHERE estado = 'rechazado' ORDER BY id DESC";
                                         $result = $conn->query($query);
                                         while ($row = mysqli_fetch_array($result)) {
                                             $schedules[$row['id']] = $row;
                                             ?>
-                                            <tr>
+                                            <tr class="filter-row">
                                                 <td>
                                                     <?php echo $row['id']; ?>
                                                 </td>
@@ -273,6 +323,57 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
                 activeTab = tabName;
             }
 
+            $(document).ready(function () {
+                $("#searchPending").on("keyup", function () {
+                    var value = $(this).val().toLowerCase();
+                    $("#tablePendingBody tr").each(function () {
+                        var match = $(this).text().toLowerCase().indexOf(value) > -1;
+
+                        if (match) {
+                            $(this).addClass("filter-row");
+                        } else {
+                            $(this).removeClass("filter-row");
+                        }
+
+                        $(this).toggle(match);
+                    });
+                });
+            });
+
+            $(document).ready(function () {
+                $("#searchApproved").on("keyup", function () {
+                    var value = $(this).val().toLowerCase();
+                    $("#tableApprovedBody tr").each(function () {
+                        var match = $(this).text().toLowerCase().indexOf(value) > -1;
+
+                        if (match) {
+                            $(this).addClass("filter-row");
+                        } else {
+                            $(this).removeClass("filter-row");
+                        }
+
+                        $(this).toggle(match);
+                    });
+                });
+            });
+
+            $(document).ready(function () {
+                $("#searchRejected").on("keyup", function () {
+                    var value = $(this).val().toLowerCase();
+                    $("#tableRejectedBody tr").each(function () {
+                        var match = $(this).text().toLowerCase().indexOf(value) > -1;
+
+                        if (match) {
+                            $(this).addClass("filter-row");
+                        } else {
+                            $(this).removeClass("filter-row");
+                        }
+
+                        $(this).toggle(match);
+                    });
+                });
+            });
+
             // Lista con todas las reservaciones, utilizada para comprobación de choques de horarios
             var scheds = $.parseJSON('<?= json_encode($schedules) ?>');
 
@@ -321,7 +422,7 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
                         function () { }
                     ).set({ transition: "zoom", closable: false, labels: { ok: 'Si', cancel: 'No' } });
 
-                // Caso de que una reserva choque con la elegida
+                    // Caso de que una reserva choque con la elegida
                 } else if (overlapping.length == 1) {
                     if (activeTab == "Pendientes") {
                         result = "rechazada"
@@ -345,7 +446,7 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
                         function () { }
                     ).set({ transition: "zoom", closable: false, "labels": { ok: "Aceptar", cancel: "Cancelar" } });
 
-                // Caso de que varias reservas choquen con la elegida
+                    // Caso de que varias reservas choquen con la elegida
                 } else {
                     if (activeTab == "Pendientes") {
                         result = "rechazadas"
@@ -375,8 +476,67 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
                 }
             }
 
-            // Get the element with id="defaultOpen" and click on it
+            // Busca el elemento con id="defaultOpen" y lo abre al entrar a la página
             document.getElementById("defaultOpen").click();
+
+            // Función para exportar a Excel
+            function exportToExcel(tableName) {
+                var table = document.getElementById(tableName);
+                var ws = XLSX.utils.table_to_sheet(table);
+                var wb = XLSX.utils.book_new();
+                XLSX.utils.book_append_sheet(wb, ws, 'Lista de accesos');
+                XLSX.writeFile(wb, 'Lista de accesos.xlsx');
+            }
+
+            // Función para exportar a PDF
+            function exportToPDF(tableName) {
+                var table = document.getElementById(tableName);
+                var tableData = [];
+
+                // Filtra las filas visibles utilizando "filter-row"
+                var visibleRows = Array.from(table.getElementsByClassName('filter-row'));
+
+                var tableHeader = table.querySelector('thead tr');
+
+                if (tableHeader) {
+                    var headerRow = Array.from(tableHeader.cells).map(function (cell) {
+                        return cell.textContent;
+                    });
+                } else {
+                    console.warn("Table header row not found.");
+                    var headerRow = [];
+                }
+
+                // Convierte las filas visiblis en una matriz
+                var data = visibleRows.map(function (row) {
+                    return Array.from(row.cells).map(function (cell) {
+                        return cell.textContent;
+                    });
+                });
+
+                var tableData = [headerRow].concat(data);
+
+                var pageSize = 'A4';
+
+                var docDefinition = {
+                    content: [
+                        {
+                            layout: 'noBorders',
+                            table: {
+                                body: tableData
+                            }
+                        }
+                    ],
+                    pageOrientation: 'landscape',
+                    pageSize: pageSize,
+                    defaultStyle: {
+                        fontSize: 10
+                    },
+                    pageMargins: [80, 40, 80, 40],
+                };
+
+                pdfMake.createPdf(docDefinition).download('Lista de accesos.pdf');
+            }
         </script>
 
         </html>

@@ -19,9 +19,9 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
             <link rel="stylesheet" type="text/css" href="../shared/css/reserva.css">
             <link rel="stylesheet" type="text/css" href="../shared/css/tabs.css">
             <script src="../shared/lib/jquery/jquery-3.6.0.min.js"></script>
-            <script src="../shared/lib/sheetjs/xlsx.full.min.js"></script>
             <script src="../shared/lib/pdfmake/pdfmake.min.js"></script>
             <script src="../shared/lib/pdfmake/vfs_fonts.js"></script>
+            <script src="../shared/lib/sheetjs/xlsx.full.min.js"></script>
         </head>
 
         <body class="bg-light">
@@ -119,7 +119,7 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
                             <div id="tab Docentes">
 
                                 <div class="d-flex align-items-center justify-content-center mb-1 gap-3">
-                                    <input class="form-control" id="searchProfessor" type="text" placeholder="Buscar...">
+                                    <input class="form-control" style="background-color: #f1f1f1" id="searchProfessor" type="text" placeholder="Buscar...">
                                     <p class="h4 mb-0">Descargar:</p>
                                     <button type="button" class="btn download-excel-btn" id="exportToExcel"
                                         onclick="exportToExcel('tableProfessors')">
@@ -187,38 +187,38 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
             </div>
         </body>
         <script>
+
+            // Función para cambiar de tab
             function openTab(evt, tabName) {
                 // Declare all variables
                 var i, tabcontent, tablinks;
 
-                // Get all elements with class="tabcontent" and hide them
+                // Busca todos los elementos con class="tabcontent" y los esconde
                 tabcontent = document.getElementsByClassName("tabcontent");
                 for (i = 0; i < tabcontent.length; i++) {
                     tabcontent[i].style.display = "none";
                 }
 
-                // Get all elements with class="tablinks" and remove the class "active"
+                // Busca todos los elementos con class="tablinks" y borra la class "active"
                 tablinks = document.getElementsByClassName("tablinks");
                 for (i = 0; i < tablinks.length; i++) {
                     tablinks[i].className = tablinks[i].className.replace(" active", "");
                 }
 
-                // Show the current tab, and add an "active" class to the button that opened the tab
+                // Muestra la tab elegida y agrega la class "active" al botón
                 document.getElementById(tabName).style.display = "block";
                 evt.currentTarget.className += " active";
             }
 
-            // Get the element with id="defaultOpen" and click on it
+            // Busca el elemento con id="defaultOpen" y lo abre al entrar a la página
             document.getElementById("defaultOpen").click();
 
             $(document).ready(function () {
                 $("#searchStudent").on("keyup", function () {
                     var value = $(this).val().toLowerCase();
                     $("#tableStudentsBody tr").each(function () {
-                        // Check if the row matches the filter criteria
                         var match = $(this).text().toLowerCase().indexOf(value) > -1;
 
-                        // Add or remove the "filter-row" class based on the match
                         if (match) {
                             $(this).addClass("filter-row");
                         } else {
@@ -229,14 +229,13 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
                     });
                 });
             });
+
             $(document).ready(function () {
                 $("#searchProfessor").on("keyup", function () {
                     var value = $(this).val().toLowerCase();
                     $("#tableProfessorsBody tr").each(function () {
-                        // Check if the row matches the filter criteria
                         var match = $(this).text().toLowerCase().indexOf(value) > -1;
 
-                        // Add or remove the "filter-row" class based on the match
                         if (match) {
                             $(this).addClass("filter-row");
                         } else {
@@ -248,7 +247,7 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
                 });
             });
 
-            // Add JavaScript to handle exporting to Excel
+            // Función para exportar a Excel
             function exportToExcel(tableName) {
                 var table = document.getElementById(tableName);
                 var ws = XLSX.utils.table_to_sheet(table);
@@ -257,15 +256,14 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
                 XLSX.writeFile(wb, 'Lista de accesos.xlsx');
             }
 
-            // Add JavaScript to handle exporting to PDF
+            // Función para exportar a PDF
             function exportToPDF(tableName) {
                 var table = document.getElementById(tableName);
                 var tableData = [];
 
-                // Filter the visible rows with class "filter-row"
+                // Filtra las filas visibles utilizando "filter-row"
                 var visibleRows = Array.from(table.getElementsByClassName('filter-row'));
 
-                // Extract the table header row
                 var tableHeader = table.querySelector('thead tr');
 
                 if (tableHeader) {
@@ -277,18 +275,16 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
                     var headerRow = [];
                 }
 
-                // Convert the visible rows to an array of arrays (rows and cells)
+                // Convierte las filas visiblis en una matriz
                 var data = visibleRows.map(function (row) {
                     return Array.from(row.cells).map(function (cell) {
                         return cell.textContent;
                     });
                 });
 
-                // Combine header and data arrays
                 var tableData = [headerRow].concat(data);
 
-                // Calculate page size based on the table content
-                var pageSize = 'A4'; // Default page size
+                var pageSize = 'A4';
 
                 var docDefinition = {
                     content: [
@@ -299,12 +295,12 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
                             }
                         }
                     ],
-                    pageOrientation: 'landscape', // Use landscape orientation
-                    pageSize: pageSize, // Set the calculated page size
+                    pageOrientation: 'landscape',
+                    pageSize: pageSize,
                     defaultStyle: {
-                        fontSize: 10 // Set the font size (adjust as needed)
+                        fontSize: 10
                     },
-                    pageMargins: [80, 40, 80, 40], // Adjust page margins for centering
+                    pageMargins: [80, 40, 80, 40],
                 };
 
                 pdfMake.createPdf(docDefinition).download('Lista de accesos.pdf');
