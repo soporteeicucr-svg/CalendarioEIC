@@ -55,7 +55,7 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
                             <div id="tab Estudiantes">
 
                                 <div class="d-flex align-items-center justify-content-center mb-1 gap-3">
-                                    <input class="form-control" id="searchStudent" type="text" placeholder="Buscar...">
+                                    <input class="form-control" style="background-color: #f1f1f1" id="searchStudent" type="text" placeholder="Buscar...">
                                     <p class="h4 mb-0">Descargar:</p>
                                     <button type="button" class="btn download-excel-btn" id="exportToExcel"
                                         onclick="exportToExcel('tableStudents')">
