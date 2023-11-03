@@ -58,7 +58,6 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
                         <div id="Pendientes" class="tabcontent">
                             <div id="tab Pendientes">
 
-                                <!--
                                 <div class="d-flex align-items-center justify-content-center mb-1 gap-3">
                                     <input class="form-control" style="background-color: #f1f1f1" id="searchPending" type="text"
                                         placeholder="Buscar...">
@@ -70,7 +69,6 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
                                         onclick="exportToPDF('tablePending')">
                                     </button>
                                 </div>
-                                -->
 
                                 <table class="table" id="tablePending" style="margin-bottom: 0;">
                                     <thead>
@@ -142,7 +140,6 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
                         <div id="Aprobadas" class="tabcontent">
                             <div id="tab Aprobadas">
 
-                                <!--
                                 <div class="d-flex align-items-center justify-content-center mb-1 gap-3">
                                     <input class="form-control" style="background-color: #f1f1f1" id="searchApproved"
                                         type="text" placeholder="Buscar...">
@@ -154,7 +151,6 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
                                         onclick="exportToPDF('tableApproved')">
                                     </button>
                                 </div>
-                                -->
 
                                 <table class="table" id="tableApproved" style="margin-bottom: 0;">
                                     <thead>
@@ -220,7 +216,6 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
                         <div id="Rechazadas" class="tabcontent">
                             <div id="tab Rechazadas">
 
-                                <!--
                                 <div class="d-flex align-items-center justify-content-center mb-1 gap-3">
                                     <input class="form-control" style="background-color: #f1f1f1" id="searchRejected"
                                         type="text" placeholder="Buscar...">
@@ -232,7 +227,6 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
                                         onclick="exportToPDF('tableRejected')">
                                     </button>
                                 </div>
-                                -->
 
                                 <table class="table" id="tableRejected" style="margin-bottom: 0;">
                                     <thead>
@@ -482,11 +476,25 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
             // Función para exportar a Excel
             function exportToExcel(tableName) {
                 var table = document.getElementById(tableName);
-                var ws = XLSX.utils.table_to_sheet(table);
+
+                // Convierte la tabla HTML en un objecto con solo los elementos visibles
+                var data = XLSX.utils.table_to_sheet(table, { display: true });
+
+                // Convierte el objeto en una matriz
+                var aoa = XLSX.utils.sheet_to_json(data, { header: 1, defval: "" });
+
+                // Elimina la columna "Acción"
+                aoa[0].pop();
+
+                // Vuelve a convertir la matriz a objeto
+                var ws = XLSX.utils.aoa_to_sheet(aoa);
+
+                // Exporta el objeto en formato XLSX
                 var wb = XLSX.utils.book_new();
                 XLSX.utils.book_append_sheet(wb, ws, 'Lista de accesos');
                 XLSX.writeFile(wb, 'Lista de accesos.xlsx');
             }
+
 
             // Función para exportar a PDF
             function exportToPDF(tableName) {
@@ -498,8 +506,9 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
 
                 var tableHeader = table.querySelector('thead tr');
 
+                // Obtiene los encabezados de las columnas y excluye la columna "Acción"
                 if (tableHeader) {
-                    var headerRow = Array.from(tableHeader.cells).map(function (cell) {
+                    var headerRow = Array.from(tableHeader.cells).slice(0, -1).map(function (cell) {
                         return cell.textContent;
                     });
                 } else {
@@ -507,9 +516,9 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
                     var headerRow = [];
                 }
 
-                // Convierte las filas visiblis en una matriz
+                // Convierte las filas visibles en una matriz
                 var data = visibleRows.map(function (row) {
-                    return Array.from(row.cells).map(function (cell) {
+                    return Array.from(row.cells).slice(0, -1).map(function (cell) {
                         return cell.textContent;
                     });
                 });

@@ -275,7 +275,7 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
                     var headerRow = [];
                 }
 
-                // Convierte las filas visiblis en una matriz
+                // Convierte las filas visibles en una matriz
                 var data = visibleRows.map(function (row) {
                     return Array.from(row.cells).map(function (cell) {
                         return cell.textContent;
