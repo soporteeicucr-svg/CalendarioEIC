@@ -120,13 +120,13 @@ Adicionalmente, las páginas Index (responsable de redirigir a la página princi
 
 ## Para utilizar AD DS
 
-Asegúrese de que el directorio ruta\a\xampp\php tenga los siguientes archivos.
+Asegúrese de que el directorio ruta\a\xampp\php tenga los siguientes archivos:
 
-`libeay32.dll`
-`libsasl.dll`
-`ssleay32.dll`
+1. `libeay32.dll`
+2. `libsasl.dll`
+3. `ssleay32.dll`
 
-Por lo general, se pueden encontrar en la ruta\a\xampp\sendmail; esta biblioteca también los usa. Pero si no, intente buscarlos dentro del directorio xampp.
+Por lo general, se pueden encontrar en la ruta\a\xampp\sendmail, esta biblioteca también los usa. Pero si no, intente buscarlos dentro del directorio xampp.
 
 Descomente o agregue la extensión ldap en el archivo php.ini (ruta\a\xampp\php\php.ini).
 
