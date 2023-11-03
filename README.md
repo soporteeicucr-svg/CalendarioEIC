@@ -120,21 +120,21 @@ Adicionalmente, las páginas Index (responsable de redirigir a la página princi
 
 ## Para utilizar AD DS
 
-#### 1. Asegúrese de que el directorio ruta\a\xampp\php tenga los siguientes archivos
+Asegúrese de que el directorio ruta\a\xampp\php tenga los siguientes archivos.
 
-1. libeay32.dll
-2. libsasl.dll
-3. ssleay32.dll
+`libeay32.dll`
+`libsasl.dll`
+`ssleay32.dll`
 
 Por lo general, se pueden encontrar en la ruta\a\xampp\sendmail; esta biblioteca también los usa. Pero si no, intente buscarlos dentro del directorio xampp.
 
-#### 2. Descomente o agregue la extensión ldap en el archivo php.ini (ruta\a\xampp\php\php.ini)
+Descomente o agregue la extensión ldap en el archivo php.ini (ruta\a\xampp\php\php.ini).
 
 `extensión=ldap`
 
-#### 3. Reinicie el servidor
+Reinicie el servidor.
 
-#### 4. Asegúrese de que el directorio ruta\a\xampp\php esté configurado en la variable de entorno del sistema PATH
+Asegúrese de que el directorio ruta\a\xampp\php esté configurado en la variable de entorno del sistema PATH.
 
 ## Configuración
 
@@ -148,23 +148,23 @@ Para fácil manejo de credenciales y configuración, las variables del sistema s
 
 ### Variables de la base de datos phpMyAdmin
 
-4. `$host`: Dirección IP de la base de datos.
-5. `$username`: Nombre de usuario de la base de datos.
-6. `$password`: Contraseña del usuario de la base de datos.
-7. `$dbname`: Nombre de la base de datos.
+1. `$host`: Dirección IP de la base de datos.
+2. `$username`: Nombre de usuario de la base de datos.
+3. `$password`: Contraseña del usuario de la base de datos.
+4. `$dbname`: Nombre de la base de datos.
 
-### Cuenta de correo:
+### Cuenta de correo
 
-8. `$mailUser`: Dirección de correo para enviar notificaciones.
-9. `$mailPassword`: Contraseña de la cuenta de correo.
+1. `$mailUser`: Dirección de correo para enviar notificaciones.
+2. `$mailPassword`: Contraseña de la cuenta de correo.
 
 ### OUs (Organizational Unit) y DNs (Distinguished names) para datos de Active Directory
 
 DNs utilizan DCs (Domain Component) para la búsqueda
 
-10. `$OUStudents`: Nombre de la unidad organizacional que contiene las cuentas de los estudiantes.
-11. `$OUProfessors`: Nombre de la unidad organizacional que contiene las cuentas de los profesores.
-12. `$OUAdministrators`: Nombre de la unidad organizacional que contiene las cuentas de los administradores.
-13. `$DNStudents`: Nombre distinguido para acceder a los datos de los estudiantes.
-14. `$DNProfessors`: Nombre distinguido para acceder a los datos de los profesores.
-15. `$DNAdministrators`: Nombre distinguido para acceder a los datos de los administradores.
+1. `$OUStudents`: Nombre de la unidad organizacional que contiene las cuentas de los estudiantes.
+2. `$OUProfessors`: Nombre de la unidad organizacional que contiene las cuentas de los profesores.
+3. `$OUAdministrators`: Nombre de la unidad organizacional que contiene las cuentas de los administradores.
+4. `$DNStudents`: Nombre distinguido para acceder a los datos de los estudiantes.
+5. `$DNProfessors`: Nombre distinguido para acceder a los datos de los profesores.
+6. `$DNAdministrators`: Nombre distinguido para acceder a los datos de los administradores.
