@@ -7,14 +7,15 @@ require $_SERVER['DOCUMENT_ROOT'] . '/shared/lib/phpmailer/src/Exception.php';
 
 function sendMail($address, $subject, $message)
 {
+    include 'variables.php';
     try {
         $mail = new PHPMailer(true);
         $mail->isSMTP();
         $mail->CharSet = "UTF-8";
         $mail->Host = 'smtp.ucr.ac.cr';
         $mail->SMTPAuth = true;
-        $mail->Username = 'ingenieria.civil@ucr.ac.cr';
-        $mail->Password = 'y45FJKkC';
+        $mail->Username = $mailUser;
+        $mail->Password = $mailPassword;
         $mail->SMTPSecure = 'tls';
         $mail->Port = 587;
 

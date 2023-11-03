@@ -14,7 +14,7 @@
         <h1>Reserva de laboratorios y salas para docentes</h1>
     </div>
 
-    <form action="../shared/iniciar-sesion.php" method="post">
+    <form action="../shared/iniciar-sesion-adds.php" method="post">
         <?php if (isset($_GET['error'])) { ?>
             <p class="error">
                 <?php echo $_GET['error']; ?>
