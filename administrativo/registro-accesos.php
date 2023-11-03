@@ -55,7 +55,7 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
 
                                 <div class="d-flex align-items-center justify-content-center mb-1 gap-3">
                                     <input class="form-control"
-                                        style="font-size: 16px; font-weight: bold; border: 4px solid #ccc; padding: 12px"
+                                        style="font-size: 16px; font-weight: bold; border: 4px solid rgb(0, 151, 255); padding: 12px"
                                         id="searchStudent" type="text" placeholder="Buscar...">
                                     <p class="h4 mb-0">Descargar:</p>
                                     <button type="button" class="btn download-excel-btn" id="exportToExcel"
@@ -121,7 +121,7 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
 
                                 <div class="d-flex align-items-center justify-content-center mb-1 gap-3">
                                     <input class="form-control"
-                                        style="font-size: 16px; font-weight: bold; border: 4px solid #ccc; padding: 12px"
+                                        style="font-size: 16px; font-weight: bold; border: 4px solid rgb(0, 151, 255); padding: 12px"
                                         id="searchProfessor" type="text" placeholder="Buscar...">
                                     <p class="h4 mb-0">Descargar:</p>
                                     <button type="button" class="btn download-excel-btn" id="exportToExcel"

@@ -33,16 +33,16 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
                 <form action="utils/db-registro-estudiante.php" method="post">
                     <h2 class="subDatos">Datos personales</h2>
 
-                    <label for="nombre"><i class="fa-solid fa-star-of-life" style="color: #ff0000;"></i> Nombre completo</label>
+                    <label for="nombre"><i class="fa-solid fa-star-of-life fa-2xs" style="color: #ff0000;"></i> Nombre completo</label>
                     <input type="text" name="nombre" id="nombre" placeholder="Ingrese su nombre"
                         value="<?php echo $_SESSION['nombre']; ?>" oninput="checkFilled()">
 
-                    <label for="correo"><i class="fa-solid fa-star-of-life" style="color: #ff0000;"></i> Correo
+                    <label for="correo"><i class="fa-solid fa-star-of-life fa-2xs" style="color: #ff0000;"></i> Correo
                         institucional</label>
                     <input type="text" name="correo" id="correo" placeholder="Ingrese su correo institucional"
                         value="<?php echo $_SESSION['usuario']; ?>" oninput="checkMail()">
 
-                    <label for="carnet"><i class="fa-solid fa-star-of-life" style="color: #ff0000;"></i> Carnet</label>
+                    <label for="carnet"><i class="fa-solid fa-star-of-life fa-2xs" style="color: #ff0000;"></i> Carnet</label>
                     <input type="text" name="carnet" id="carnet" placeholder="Ingrese su carnet institucional" value="<?php if (isset($_SESSION['id'])) {
                         echo $_SESSION['id'];
                     } ?>" oninput="checkId()">

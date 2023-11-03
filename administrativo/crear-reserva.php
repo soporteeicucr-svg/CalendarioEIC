@@ -32,7 +32,7 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
             </div>
             <form action="../shared/utils/save-schedule.php" method="post" id="schedule-form">
                 <input type="hidden" name="id" value="">
-                <label for="espacio"><i class="fa-solid fa-star-of-life" style="color: #ff0000;"></i> Espacio a reservar (Sujeto
+                <label for="espacio"><i class="fa-solid fa-star-of-life fa-2xs" style="color: #ff0000;"></i> Espacio a reservar (Sujeto
                     a disponibilidad)</label>
                 <div class="selectContainer">
                     <select class="selectValue" name="espacio" id="espacio" onchange="updateSpace()" required>
@@ -45,25 +45,25 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
                         <option value="Sala Externa">Sala Externa</option>
                     </select>
                 </div>
-                <label for="sigla_curso"><i class="fa-solid fa-star-of-life" style="color: #ff0000;"></i> Sigla del
+                <label for="sigla_curso"><i class="fa-solid fa-star-of-life fa-2xs" style="color: #ff0000;"></i> Sigla del
                     curso</label>
                 <input type="text" name="sigla_curso" id="sigla_curso"
                     placeholder="Sigla del curso (ejemplos: IC-0101, IC9500) o 'NA' si no aplica" oninput="searchCourse()">
                 <label id="label_nombre_curso" for="nombre_curso">Nombre del curso</label>
                 <input type="text" name="nombre_curso" id="nombre_curso" placeholder="Ingrese la sigla del curso primero"
                     readonly>
-                <label for="solicitante"><i class="fa-solid fa-star-of-life" style="color: #ff0000;"></i> Nombre del
+                <label for="solicitante"><i class="fa-solid fa-star-of-life fa-2xs" style="color: #ff0000;"></i> Nombre del
                     solicitante</label>
                 <input type="text" name="solicitante" id="solicitante" placeholder="Ingrese el nombre del solicitante" required>
-                <label for="correo"><i class="fa-solid fa-star-of-life" style="color: #ff0000;"></i> Correo
+                <label for="correo"><i class="fa-solid fa-star-of-life fa-2xs" style="color: #ff0000;"></i> Correo
                     institucional</label>
                 <input type="text" name="correo" id="correo" placeholder="Ingrese el correo institucional del solicitante"
                     required>
-                <label for="fecha" class="control-label"><i class="fa-solid fa-star-of-life" style="color: #ff0000;"></i>
+                <label for="fecha" class="control-label"><i class="fa-solid fa-star-of-life fa-2xs" style="color: #ff0000;"></i>
                     Día</label>
                 <input type="text" name="fecha" id="fecha" placeholder="Seleccione la hora de inicio" required
                     onchange="updateDate()">
-                <label for="hora_inicio" class="control-label"><i class="fa-solid fa-star-of-life" style="color: #ff0000;"></i>
+                <label for="hora_inicio" class="control-label"><i class="fa-solid fa-star-of-life fa-2xs" style="color: #ff0000;"></i>
                     Hora de inicio</label>
                 <div class="selectContainer">
                     <select class="selectValue" name="hora_inicio" id="hora_inicio" onchange="updateTime('hora_inicio')"
@@ -102,7 +102,7 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
                     </select>
                 </div>
                 <div id="error_hora_inicio"></div>
-                <label for="hora_fin" class="control-label"><i class="fa-solid fa-star-of-life" style="color: #ff0000;"></i>
+                <label for="hora_fin" class="control-label"><i class="fa-solid fa-star-of-life fa-2xs" style="color: #ff0000;"></i>
                     Hora de finalización</label>
                 <div class="selectContainer">
                     <select class="selectValue" name="hora_fin" id="hora_fin" onchange="updateTime('hora_fin')" required>
@@ -222,7 +222,7 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
 
                     // Si el usuario ingresa NA permite el ingreso de cualquier texto en lugar de nombre de curso
                     if (document.getElementById('sigla_curso').value == "NA") {
-                        document.getElementById('label_nombre_curso').innerHTML = "<i class='fa-solid fa-star-of-life' style='color: #ff0000;'></i> Razón para la reserva"
+                        document.getElementById('label_nombre_curso').innerHTML = "<i class='fa-solid fa-star-of-life fa-2xs' style='color: #ff0000;'></i> Razón para la reserva"
                         document.getElementById('nombre_curso').removeAttribute("readonly");
                         document.getElementById('nombre_curso').setAttribute("required", "");
                         document.getElementById('nombre_curso').setAttribute("placeholder", "Ingrese la razón para la reserva");
