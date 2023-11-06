@@ -93,47 +93,47 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
                                         while ($row = mysqli_fetch_array($result)) {
                                             $schedules[$row['id']] = $row;
                                             ?>
-                                                                    <tr class="filter-row">
-                                                                        <td>
-                                                                            <?php echo $row['id']; ?>
-                                                                        </td>
-                                                                        <td>
-                                                                            <?php echo $row['espacio']; ?>
-                                                                        </td>
-                                                                        <td>
-                                                                            <?php echo $row['sigla_curso']; ?>
-                                                                        </td>
-                                                                        <td>
-                                                                            <?php echo $row['nombre_curso']; ?>
-                                                                        </td>
-                                                                        <td>
-                                                                            <?php echo mb_convert_case(mb_strtolower($row['solicitante'], 'UTF-8'), MB_CASE_TITLE); ?>
-                                                                        </td>
-                                                                        <td>
-                                                                            <?php echo mb_convert_case(mb_strtolower($row['correo'], 'UTF-8'), MB_CASE_LOWER); ?>
-                                                                        </td>
-                                                                        <td>
-                                                                            <?php echo $row['hora_inicio']; ?>
-                                                                        </td>
-                                                                        <td>
-                                                                            <?php echo $row['hora_fin']; ?>
-                                                                        </td>
-                                                                        <td class="d-flex align-items-center justify-content-center">
-                                                                            <form action="../shared/utils/manage-schedule.php" method="POST">
-                                                                                <input type="hidden" name="id" id="<?php echo $row['id']; ?>"
-                                                                                    value="<?php echo $row['id']; ?>" />
-                                                                                <input type="hidden" name="action" value="aprobar" />
-                                                                                <input type="button" value="Aprobar" onclick="sendForm(this.form);" />
-                                                                            </form>
-                                                                            <form action="../shared/utils/manage-schedule.php" method="POST">
-                                                                                <input type="hidden" name="id" id="<?php echo $row['id']; ?>"
-                                                                                    value="<?php echo $row['id']; ?>" />
-                                                                                <input type="hidden" name="action" value="rechazar" />
-                                                                                <input type="button" value="Rechazar" onclick="sendForm(this.form);" />
-                                                                            </form>
-                                                                        </td>
-                                                                    </tr>
-                                                                    <?php
+                                            <tr class="filter-row">
+                                                <td>
+                                                    <?php echo $row['id']; ?>
+                                                </td>
+                                                <td>
+                                                    <?php echo $row['espacio']; ?>
+                                                </td>
+                                                <td>
+                                                    <?php echo $row['sigla_curso']; ?>
+                                                </td>
+                                                <td>
+                                                    <?php echo $row['nombre_curso']; ?>
+                                                </td>
+                                                <td>
+                                                    <?php echo mb_convert_case(mb_strtolower($row['solicitante'], 'UTF-8'), MB_CASE_TITLE); ?>
+                                                </td>
+                                                <td>
+                                                    <?php echo mb_convert_case(mb_strtolower($row['correo'], 'UTF-8'), MB_CASE_LOWER); ?>
+                                                </td>
+                                                <td>
+                                                    <?php echo $row['hora_inicio']; ?>
+                                                </td>
+                                                <td>
+                                                    <?php echo $row['hora_fin']; ?>
+                                                </td>
+                                                <td class="d-flex align-items-center justify-content-center">
+                                                    <form action="../shared/utils/manage-schedule.php" method="POST">
+                                                        <input type="hidden" name="id" id="<?php echo $row['id']; ?>"
+                                                            value="<?php echo $row['id']; ?>" />
+                                                        <input type="hidden" name="action" value="aprobar" />
+                                                        <input type="button" value="Aprobar" onclick="sendForm(this.form);" />
+                                                    </form>
+                                                    <form action="../shared/utils/manage-schedule.php" method="POST">
+                                                        <input type="hidden" name="id" id="<?php echo $row['id']; ?>"
+                                                            value="<?php echo $row['id']; ?>" />
+                                                        <input type="hidden" name="action" value="rechazar" />
+                                                        <input type="button" value="Rechazar" onclick="sendForm(this.form);" />
+                                                    </form>
+                                                </td>
+                                            </tr>
+                                            <?php
                                         }
                                         ?>
                                     </tbody>
@@ -180,41 +180,41 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
                                         while ($row = mysqli_fetch_array($result)) {
                                             $schedules[$row['id']] = $row;
                                             ?>
-                                                                    <tr class="filter-row">
-                                                                        <td>
-                                                                            <?php echo $row['id']; ?>
-                                                                        </td>
-                                                                        <td>
-                                                                            <?php echo $row['espacio']; ?>
-                                                                        </td>
-                                                                        <td>
-                                                                            <?php echo $row['sigla_curso']; ?>
-                                                                        </td>
-                                                                        <td>
-                                                                            <?php echo $row['nombre_curso']; ?>
-                                                                        </td>
-                                                                        <td>
-                                                                            <?php echo mb_convert_case(mb_strtolower($row['solicitante'], 'UTF-8'), MB_CASE_TITLE); ?>
-                                                                        </td>
-                                                                        <td>
-                                                                            <?php echo mb_convert_case(mb_strtolower($row['correo'], 'UTF-8'), MB_CASE_LOWER); ?>
-                                                                        </td>
-                                                                        <td>
-                                                                            <?php echo $row['hora_inicio']; ?>
-                                                                        </td>
-                                                                        <td>
-                                                                            <?php echo $row['hora_fin']; ?>
-                                                                        </td>
-                                                                        <td class="d-flex align-items-center justify-content-center">
-                                                                            <form action="../shared/utils/manage-schedule.php" method="POST">
-                                                                                <input type="hidden" name="id" id="<?php echo $row['id']; ?>"
-                                                                                    value="<?php echo $row['id']; ?>" />
-                                                                                <input type="hidden" name="action" value="cancelar" />
-                                                                                <input type="button" value="Cancelar" onclick="sendForm(this.form);" />
-                                                                            </form>
-                                                                        </td>
-                                                                    </tr>
-                                                                    <?php
+                                            <tr class="filter-row">
+                                                <td>
+                                                    <?php echo $row['id']; ?>
+                                                </td>
+                                                <td>
+                                                    <?php echo $row['espacio']; ?>
+                                                </td>
+                                                <td>
+                                                    <?php echo $row['sigla_curso']; ?>
+                                                </td>
+                                                <td>
+                                                    <?php echo $row['nombre_curso']; ?>
+                                                </td>
+                                                <td>
+                                                    <?php echo mb_convert_case(mb_strtolower($row['solicitante'], 'UTF-8'), MB_CASE_TITLE); ?>
+                                                </td>
+                                                <td>
+                                                    <?php echo mb_convert_case(mb_strtolower($row['correo'], 'UTF-8'), MB_CASE_LOWER); ?>
+                                                </td>
+                                                <td>
+                                                    <?php echo $row['hora_inicio']; ?>
+                                                </td>
+                                                <td>
+                                                    <?php echo $row['hora_fin']; ?>
+                                                </td>
+                                                <td class="d-flex align-items-center justify-content-center">
+                                                    <form action="../shared/utils/manage-schedule.php" method="POST">
+                                                        <input type="hidden" name="id" id="<?php echo $row['id']; ?>"
+                                                            value="<?php echo $row['id']; ?>" />
+                                                        <input type="hidden" name="action" value="cancelar" />
+                                                        <input type="button" value="Cancelar" onclick="sendForm(this.form);" />
+                                                    </form>
+                                                </td>
+                                            </tr>
+                                            <?php
                                         }
                                         ?>
                                     </tbody>
@@ -260,41 +260,41 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
                                         while ($row = mysqli_fetch_array($result)) {
                                             $schedules[$row['id']] = $row;
                                             ?>
-                                                                    <tr class="filter-row">
-                                                                        <td>
-                                                                            <?php echo $row['id']; ?>
-                                                                        </td>
-                                                                        <td>
-                                                                            <?php echo $row['espacio']; ?>
-                                                                        </td>
-                                                                        <td>
-                                                                            <?php echo $row['sigla_curso']; ?>
-                                                                        </td>
-                                                                        <td>
-                                                                            <?php echo $row['nombre_curso']; ?>
-                                                                        </td>
-                                                                        <td>
-                                                                            <?php echo mb_convert_case(mb_strtolower($row['solicitante'], 'UTF-8'), MB_CASE_TITLE); ?>
-                                                                        </td>
-                                                                        <td>
-                                                                            <?php echo mb_convert_case(mb_strtolower($row['correo'], 'UTF-8'), MB_CASE_LOWER); ?>
-                                                                        </td>
-                                                                        <td>
-                                                                            <?php echo $row['hora_inicio']; ?>
-                                                                        </td>
-                                                                        <td>
-                                                                            <?php echo $row['hora_fin']; ?>
-                                                                        </td>
-                                                                        <td class="d-flex align-items-center justify-content-center">
-                                                                            <form action="../shared/utils/manage-schedule.php" method="POST">
-                                                                                <input type="hidden" name="id" id="<?php echo $row['id']; ?>"
-                                                                                    value="<?php echo $row['id']; ?>" />
-                                                                                <input type="hidden" name="action" value="aprobar" />
-                                                                                <input type="button" value="Aprobar" onclick="sendForm(this.form);" />
-                                                                            </form>
-                                                                        </td>
-                                                                    </tr>
-                                                                    <?php
+                                            <tr class="filter-row">
+                                                <td>
+                                                    <?php echo $row['id']; ?>
+                                                </td>
+                                                <td>
+                                                    <?php echo $row['espacio']; ?>
+                                                </td>
+                                                <td>
+                                                    <?php echo $row['sigla_curso']; ?>
+                                                </td>
+                                                <td>
+                                                    <?php echo $row['nombre_curso']; ?>
+                                                </td>
+                                                <td>
+                                                    <?php echo mb_convert_case(mb_strtolower($row['solicitante'], 'UTF-8'), MB_CASE_TITLE); ?>
+                                                </td>
+                                                <td>
+                                                    <?php echo mb_convert_case(mb_strtolower($row['correo'], 'UTF-8'), MB_CASE_LOWER); ?>
+                                                </td>
+                                                <td>
+                                                    <?php echo $row['hora_inicio']; ?>
+                                                </td>
+                                                <td>
+                                                    <?php echo $row['hora_fin']; ?>
+                                                </td>
+                                                <td class="d-flex align-items-center justify-content-center">
+                                                    <form action="../shared/utils/manage-schedule.php" method="POST">
+                                                        <input type="hidden" name="id" id="<?php echo $row['id']; ?>"
+                                                            value="<?php echo $row['id']; ?>" />
+                                                        <input type="hidden" name="action" value="aprobar" />
+                                                        <input type="button" value="Aprobar" onclick="sendForm(this.form);" />
+                                                    </form>
+                                                </td>
+                                            </tr>
+                                            <?php
                                         }
                                         ?>
                                     </tbody>
