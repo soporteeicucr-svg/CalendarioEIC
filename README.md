@@ -9,7 +9,12 @@ El presente sistema de la Escuela de Ingeniería Civil fue desarrollado con el f
 ## Funcionalidad
 
 El sistema está dividido en tres módulos, cada uno con su sistema de autentificación
-y funcionalidades diferentes. El módulo de estudiantes y el módulo de docentes son accesibles a través de una página de inicio en la dirección `http://localhost`, la cual cuenta con botones que redirigen a los respectivos formularios de inicio de sesión, mientras que para el módulo de docentes es necesario ingresar la dirección `http://localhost/administrativo` en la barra de navegación, esto para que no sea visible a los otros tipos de usuarios. Las funcionalidades de cada módulo son:
+y funcionalidades diferentes. El módulo de estudiantes y el módulo de docentes son accesibles a través de una página de inicio en la dirección `http://localhost`, la cual cuenta con botones que redirigen a los respectivos formularios de inicio de sesión, mientras que para el módulo de docentes es necesario ingresar la dirección `http://localhost/administrativo` en la barra de navegación, esto para que no sea visible a los otros tipos de usuarios.
+
+![Foto de página de inicio](/shared/img/página-inicio.png)
+Formulario de registro para estudiantes.
+
+Las funcionalidades de cada módulo son:
 
 ### Módulo de estudiantes
 
@@ -95,24 +100,24 @@ La totalidad del código se encuentra en la ruta C:\xampp\htdocs accesible a tra
 
 Las librerías externas utilizadas son:
 
-1. Alertify
-2. Bootstrap
-3. Flatpickr
-4. Font Awesome
-5. FullCalendar
-6. JQuery
-7. PDFMake
-8. PHPMailer
-9. SheetJS
+1. `Alertify`
+2. `Bootstrap`
+3. `Flatpickr`
+4. `Font Awesome`
+5. `FullCalendar`
+6. `JQuery`
+7. `PDFMake`
+8. `PHPMailer`
+9. `SheetJS`
 
 Algunas de las imágenes utilizadas fueron obtenidas de fuentes externas, más específicamente del banco de imágenes gratuitas y libres de regalías Pixabay, las imágenes en cuestión son las que se encuentran en la ruta C:\xampp\htdocs\shared\img denominadas:
 
-1. calendar.png
-2. download-excel.png
-3. download-pdf.png
-4. form.png
-5. key.png
-6. plus.png
+1. `calendar.png`
+2. `download-excel.png`
+3. `download-pdf.png`
+4. `form.png`
+5. `key.png`
+6. `plus.png`
 
 El resto de imágenes fueron obtenidas de manera local o creadas utilizando las anteriormente mencionadas como base.
 
