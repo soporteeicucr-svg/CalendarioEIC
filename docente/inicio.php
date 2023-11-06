@@ -27,6 +27,8 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
                 <!-- Botones con bootstrap cards -->
                 <div class="container-fluid text-center">
                     <div class="row d-flex justify-content-center">
+
+                        <!-- Card de registro -->
                         <div class="col-md-3">
                             <div class="card w-100 h-100">
                                 <div class="card-header">
@@ -45,6 +47,8 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
                                 </div>
                             </div>
                         </div>
+
+                        <!-- Card de reserva -->
                         <div class="col-md-3">
                             <div class="card w-100 h-100">
                                 <div class="card-header">
@@ -61,6 +65,8 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
                                 </div>
                             </div>
                         </div>
+
+                        <!-- Card de calendario -->
                         <div class="col-md-3">
                             <div class="card w-100 h-100">
                                 <div class="card-header">

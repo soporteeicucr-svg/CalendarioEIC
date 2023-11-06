@@ -56,6 +56,7 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
                         </div>
 
                         <!-- Contenido de las tabs -->
+                        <!-- Elementos donde se insertan los calendarios cuando se renderizan -->
                         <div id="Laboratorio 1" class="tabcontent">
                             <div id="calendar Laboratorio 1"></div>
                         </div>

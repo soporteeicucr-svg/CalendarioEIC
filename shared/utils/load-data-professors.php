@@ -8,9 +8,9 @@ $csvFile = "../csv/Docentes.csv";
 if (($handle = fopen($csvFile, "r")) !== false) {
     while (($data = fgetcsv($handle, 1000, ";")) !== false) {
         $cedula = $data[0];
-        $usuario = $data[1];
+        $usuario = mb_convert_case(mb_strtolower($data[1], 'UTF-8'), MB_CASE_LOWER);
         $contrasena = $data[2];
-        $nombre = $data[3];
+        $nombre = mb_convert_case(mb_strtolower($data[3], 'UTF-8'), MB_CASE_TITLE);
 
         // Insert data into the database
         $sql = "INSERT INTO usuarios_docentes (cedula, usuario, contrasena, nombre) VALUES ('$cedula', '$usuario', '$contrasena', '$nombre')";

@@ -44,7 +44,7 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
 	<html>
 
 	<head>
-		<meta charset="UTF-8">
+		<meta charset='UTF-8'>
 		<meta http-equiv="X-UA-Compatible" content="ie=edge">
 		<title>Cambio de contraseña</title>
 		<link rel='stylesheet' type='text/css' href="css/style.css" />

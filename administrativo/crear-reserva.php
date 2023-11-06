@@ -32,7 +32,10 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
             </div>
             <form action="../shared/utils/save-schedule.php" method="post" id="schedule-form">
                 <input type="hidden" name="id" value="">
-                <label for="espacio"><i class="fa-solid fa-star-of-life fa-2xs" style="color: #ff0000;"></i> Espacio a reservar (Sujeto
+
+                <!-- Selección de espacio -->
+                <label for="espacio"><i class="fa-solid fa-star-of-life fa-2xs" style="color: #ff0000;"></i> Espacio a reservar
+                    (Sujeto
                     a disponibilidad)</label>
                 <div class="selectContainer">
                     <select class="selectValue" name="espacio" id="espacio" onchange="updateSpace()" required>
@@ -45,25 +48,38 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
                         <option value="Sala Externa">Sala Externa</option>
                     </select>
                 </div>
+
+                <!-- Sigla del curso -->
                 <label for="sigla_curso"><i class="fa-solid fa-star-of-life fa-2xs" style="color: #ff0000;"></i> Sigla del
                     curso</label>
                 <input type="text" name="sigla_curso" id="sigla_curso"
                     placeholder="Sigla del curso (ejemplos: IC-0101, IC9500) o 'NA' si no aplica" oninput="searchCourse()">
+
+                <!-- Nombre del curso (se autorrellena a menos que se ingrese 'NA' como Sigla del curso) -->
                 <label id="label_nombre_curso" for="nombre_curso">Nombre del curso</label>
                 <input type="text" name="nombre_curso" id="nombre_curso" placeholder="Ingrese la sigla del curso primero"
                     readonly>
+
+                <!-- Nombre del solicitante -->
                 <label for="solicitante"><i class="fa-solid fa-star-of-life fa-2xs" style="color: #ff0000;"></i> Nombre del
                     solicitante</label>
                 <input type="text" name="solicitante" id="solicitante" placeholder="Ingrese el nombre del solicitante" required>
+
+                <!-- Correo institucional -->
                 <label for="correo"><i class="fa-solid fa-star-of-life fa-2xs" style="color: #ff0000;"></i> Correo
                     institucional</label>
                 <input type="text" name="correo" id="correo" placeholder="Ingrese el correo institucional del solicitante"
                     required>
+
+                <!-- Selección de día -->
                 <label for="fecha" class="control-label"><i class="fa-solid fa-star-of-life fa-2xs" style="color: #ff0000;"></i>
                     Día</label>
                 <input type="text" name="fecha" id="fecha" placeholder="Seleccione la hora de inicio" required
                     onchange="updateDate()">
-                <label for="hora_inicio" class="control-label"><i class="fa-solid fa-star-of-life fa-2xs" style="color: #ff0000;"></i>
+
+                <!-- Selección de hora de inicio -->
+                <label for="hora_inicio" class="control-label"><i class="fa-solid fa-star-of-life fa-2xs"
+                        style="color: #ff0000;"></i>
                     Hora de inicio</label>
                 <div class="selectContainer">
                     <select class="selectValue" name="hora_inicio" id="hora_inicio" onchange="updateTime('hora_inicio')"
@@ -102,7 +118,10 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
                     </select>
                 </div>
                 <div id="error_hora_inicio"></div>
-                <label for="hora_fin" class="control-label"><i class="fa-solid fa-star-of-life fa-2xs" style="color: #ff0000;"></i>
+
+                <!-- Selección de hora de finalización -->
+                <label for="hora_fin" class="control-label"><i class="fa-solid fa-star-of-life fa-2xs"
+                        style="color: #ff0000;"></i>
                     Hora de finalización</label>
                 <div class="selectContainer">
                     <select class="selectValue" name="hora_fin" id="hora_fin" onchange="updateTime('hora_fin')" required>
@@ -142,10 +161,15 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
                 <div id="error_hora_fin"></div>
                 <div id="hora_fin_mayor"></div>
                 <div id="error_reserva_concurrente"></div>
+
+                <!-- Continuar o cerrar sesión, por defecto intenta cerrar la sesión -->
                 <input type="hidden" name="continue" id="continue" value="no" />
+
+                <!-- Botón para enviar los datos al servidor -->
                 <input type="button" id="btnSubmit" value="Enviar solicitud" onclick="sendForm(this.form);" disabled />
             </form>
 
+            <!-- Botón para cancelar la solicitud -->
             <div class="center">
                 <button id="btn5" onclick="location.href='inicio.php'">Cancelar</button>
             </div>
@@ -203,9 +227,7 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
                 // Asegura que el formato sea [Letra][Letra]-[Número][Número][Número][Número]
                 let regex = /[A-Z][A-Z]-[0-9][0-9][0-9][0-9]/;
                 let input = document.getElementById('sigla_curso').value;
-                if (!regex.test(input)) {
-
-                    // Agrega el guión si el usuario no lo introduce manualmente
+                if (!regex.test(input)) { // Agrega el guión si el usuario no lo introduce manualmente
                     regex = /[A-Z][A-Z][0-9][0-9][0-9][0-9]/;
                     if (regex.test(input)) {
                         input = input.slice(0, 2) + "-" + input.slice(2);
@@ -218,18 +240,14 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
                     document.getElementById('sigla_curso').value = curso.sigla_curso;
                     document.getElementById('nombre_curso').setAttribute("value", curso.nombre_curso);
                     foundCourse = true;
-                } else {
-
-                    // Si el usuario ingresa NA permite el ingreso de cualquier texto en lugar de nombre de curso
+                } else { // Si el usuario ingresa NA permite el ingreso de cualquier texto en lugar de nombre de curso
                     if (document.getElementById('sigla_curso').value == "NA") {
                         document.getElementById('label_nombre_curso').innerHTML = "<i class='fa-solid fa-star-of-life fa-2xs' style='color: #ff0000;'></i> Razón para la reserva"
                         document.getElementById('nombre_curso').removeAttribute("readonly");
                         document.getElementById('nombre_curso').setAttribute("required", "");
                         document.getElementById('nombre_curso').setAttribute("placeholder", "Ingrese la razón para la reserva");
                         foundCourse = true;
-
-                        // Si el usuario ingresa un código incorrecto vuelve a bloquear el espacio de nombre
-                    } else {
+                    } else { // Si el usuario ingresa un código incorrecto vuelve a bloquear el espacio de nombre
                         document.getElementById('label_nombre_curso').innerHTML = "Nombre del curso"
                         document.getElementById('nombre_curso').setAttribute("value", "");
                         document.getElementById('nombre_curso').setAttribute("readonly", "");
@@ -241,6 +259,7 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
                 checkFilled();
             }
 
+            // Verifica que se haya elegido un espacio
             function updateSpace() {
                 if (document.getElementById("espacio").value != "") {
                     spaceSelected = true;
@@ -250,6 +269,7 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
                 updateDate()
             }
 
+            // Verifica que se haya elegido un día
             function updateDate() {
                 if (document.getElementById("fecha").value != "") {
                     validDate = true;
@@ -265,6 +285,7 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
                 }
             }
 
+            // Verifica que el día y las horas elegidas no choquen con otros horarios
             function updateTime(input) {
                 if (document.getElementById(input).value != "") {
                     let selectedDate = document.getElementById("fecha").value + " " + document.getElementById(input).value + ":00";
@@ -297,11 +318,10 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
                             let newReservationStart = "";
                             let newReservationEnd = "";
 
+                            // Muestra un error si el tiempo elegido contiene otra reservación
                             if (document.getElementById("fecha").value != "" && document.getElementById("hora_inicio").value != "" && document.getElementById("hora_fin").value != "") {
                                 newReservationStart = document.getElementById("fecha").value + " " + document.getElementById("hora_inicio").value + ":00";
                                 newReservationEnd = document.getElementById("fecha").value + " " + document.getElementById("hora_fin").value + ":00";
-
-                                // Si el horario elegido choca con otra reserva muestra un mensaje de error
                                 if (newReservationStart < endDateTime && startDateTime < newReservationEnd && document.getElementById("espacio").value == space) {
                                     document.getElementById("error_reserva_concurrente").innerHTML = "<h5 style='color: red; margin-top: 0;'>Error: el rango de horas elegido hace conflicto con otra reserva</h5>";
                                     validTimeRange = false;

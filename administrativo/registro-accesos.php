@@ -34,10 +34,9 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
                     </div>
                 </div>
             </nav>
-            <div class="container py-3" id="page-container">
+            <div class="container-fluid py-3 tabSize" id="page-container">
                 <div class="row">
                     <div class="col-md-14">
-
                         <div class="text-center">
                             <h1>Registro de accesos a salas y espacios</h1>
                         </div>
@@ -90,10 +89,10 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
                                                     <?php echo $row['id']; ?>
                                                 </td>
                                                 <td>
-                                                    <?php echo $row['nombre']; ?>
+                                                    <?php echo mb_convert_case(mb_strtolower($row['nombre'], 'UTF-8'), MB_CASE_TITLE); ?>
                                                 </td>
                                                 <td>
-                                                    <?php echo $row['correo']; ?>
+                                                    <?php echo mb_convert_case(mb_strtolower($row['correo'], 'UTF-8'), MB_CASE_LOWER); ?>
                                                 </td>
                                                 <td>
                                                     <?php echo $row['carnet']; ?>
@@ -140,7 +139,7 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
                                             <th>Correo</th>
                                             <th>Cédula</th>
                                             <th>Teléfono</th>
-                                            <th>Sigla curso</th>
+                                            <th>Sigla del curso</th>
                                             <th>Espacio reservado</th>
                                             <th>Fecha y hora de ingreso</th>
                                         </tr>
@@ -157,10 +156,10 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
                                                     <?php echo $row['id']; ?>
                                                 </td>
                                                 <td>
-                                                    <?php echo $row['nombre']; ?>
+                                                    <?php echo mb_convert_case(mb_strtolower($row['nombre'], 'UTF-8'), MB_CASE_TITLE); ?>
                                                 </td>
                                                 <td>
-                                                    <?php echo $row['correo']; ?>
+                                                    <?php echo mb_convert_case(mb_strtolower($row['correo'], 'UTF-8'), MB_CASE_LOWER); ?>
                                                 </td>
                                                 <td>
                                                     <?php echo $row['cedula']; ?>
@@ -216,6 +215,7 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
             // Busca el elemento con id="defaultOpen" y lo abre al entrar a la página
             document.getElementById("defaultOpen").click();
 
+            // JQuery para filtrar la tabla de estudiantes
             $(document).ready(function () {
                 $("#searchStudent").on("keyup", function () {
                     var value = $(this).val().toLowerCase();
@@ -233,6 +233,7 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
                 });
             });
 
+            // JQuery para filtrar la tabla de profesores
             $(document).ready(function () {
                 $("#searchProfessor").on("keyup", function () {
                     var value = $(this).val().toLowerCase();
@@ -256,9 +257,11 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
                 var ws = XLSX.utils.table_to_sheet(table);
                 var wb = XLSX.utils.book_new();
 
+                // Contenido de la barra de búsqueda para utilizarlo al nombrar el archivo
                 var searchBar = document.getElementById(searchBarName);
                 search = searchBar.value.trim();
 
+                // Establece el nombre del archivo y lo descarga
                 if (search != '') {
                     XLSX.utils.book_append_sheet(wb, ws, 'Lista de accesos - ' + search);
                     XLSX.writeFile(wb, 'Lista de accesos - ' + search + '.xlsx');
@@ -278,6 +281,7 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
 
                 var tableHeader = table.querySelector('thead tr');
 
+                // Obtiene los encabezados de las columnas
                 if (tableHeader) {
                     var headerRow = Array.from(tableHeader.cells).map(function (cell) {
                         return cell.textContent;
@@ -296,8 +300,8 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
 
                 var tableData = [headerRow].concat(data);
 
+                //Configuración de la página
                 var pageSize = 'A4';
-
                 var docDefinition = {
                     content: [
                         {
@@ -315,9 +319,11 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
                     pageMargins: [80, 40, 80, 40],
                 };
 
+                // Contenido de la barra de búsqueda para utilizarlo al nombrar el archivo
                 var searchBar = document.getElementById(searchBarName);
                 search = searchBar.value.trim();
 
+                // Establece el nombre del archivo y lo descarga
                 if (search != '') {
                     pdfMake.createPdf(docDefinition).download('Lista de accesos - ' + search);
                 } else {

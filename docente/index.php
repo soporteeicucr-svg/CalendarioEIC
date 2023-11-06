@@ -21,13 +21,19 @@
                 <?php echo $_GET['error']; ?>
             </p>
         <?php } ?>
+
+        <!-- Espacio para escribir el nombre de usuario -->
         <label for="usuario"><i class="fa-solid fa-user"></i> Usuario</label>
         <div class="password-container">
             <input type="text" name="usuario" id="usuario" placeholder="Ingrese su correo institucional" required>
         </div>
+
+        <!-- Espacio para escribir la contraseña -->
         <label for="contrasena"><i class="fa-solid fa-lock"></i> Contraseña</label>
         <div class="password-container">
             <input type="password" name="contrasena" id="contrasena" placeholder="Ingrese su contraseña" required>
+
+            <!-- Botón para mostrar o ocultar la contraseña -->
             <i class="fa-solid fa-eye-slash eye-slash-padding" style="user-select: none" id="eye"
                 onclick="passwordToggle()"></i>
         </div>
@@ -39,6 +45,7 @@
     </div>
 </body>
 <script>
+    // Función para mostrar o ocultar la contraseña
     function passwordToggle() {
         let x = document.getElementById("contrasena");
         let eyeIcon = document.getElementById("eye");

@@ -38,6 +38,10 @@
   animation: fadeEffect 1s; /* Fading effect takes 1 second */
 }
 
+.tabSize {
+  padding: 0 6rem;
+}
+
 /* Go from zero to full opacity */
 @keyframes fadeEffect {
   from {

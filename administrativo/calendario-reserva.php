@@ -102,6 +102,7 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
                         </div>
 
                         <!-- Contenido de las tabs -->
+                        <!-- Elementos donde se insertan los calendarios cuando se renderizan -->
                         <div id="Laboratorio 1" class="tabcontent">
                             <div id="calendar Laboratorio 1"></div>
                         </div>
@@ -155,7 +156,7 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
                             </div>
                             <div class="text-end">
 
-                                <!-- Botón de cancelación -->
+                                <!-- Botón de cancelación de reserva -->
                                 <button type="button" class="btn btn-secondary btn-sm rounded-3"
                                     onclick="deleteEvent(document.getElementById('reserveID').innerHTML.split(': ')[1])"
                                     data-bs-dismiss="modal">Cancelar</button>

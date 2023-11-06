@@ -27,39 +27,46 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
                     <img src="../shared/img/logoEIC.png" alt="Logo Escuela de Ingeniería Civil UCR">
                     <h1>Sistema de registro y retiro de cartuchera</h1>
                 </div>
-
                 <form action="utils/db-registro-docente.php" method="post">
                     <h2 class="subDatos">Datos personales</h2>
 
-                    <label for="nombre"><i class="fa-solid fa-star-of-life fa-2xs" style="color: #ff0000;"></i> Nombre completo</label>
+                    <!-- Nombre completo -->
+                    <label for="nombre"><i class="fa-solid fa-star-of-life fa-2xs" style="color: #ff0000;"></i> Nombre
+                        completo</label>
                     <input type="text" name="nombre" id="nombre" placeholder="Ingrese su nombre"
-                        value="<?php echo $_SESSION['nombre']; ?>" oninput="checkFilled()">
+                        value="<?php echo mb_convert_case(mb_strtolower($_SESSION['nombre'], 'UTF-8'), MB_CASE_TITLE); ?>" oninput="checkFilled()">
 
+                    <!-- Correo institucional -->
                     <label for="correo"><i class="fa-solid fa-star-of-life fa-2xs" style="color: #ff0000;"></i> Correo
                         institucional</label>
                     <input type="text" name="correo" id="correo" placeholder="Ingrese su correo institucional"
-                        value="<?php echo $_SESSION['usuario']; ?>" oninput="checkMail()">
+                        value="<?php echo mb_convert_case(mb_strtolower($_SESSION['usuario'], 'UTF-8'), MB_CASE_TITLE); ?>" oninput="checkMail()">
 
+                    <!-- Cédula de identidad -->
                     <label for="cedula"><i class="fa-solid fa-star-of-life fa-2xs" style="color: #ff0000;"></i> Cédula de
                         identidad</label>
                     <input type="text" name="cedula" id="cedula" placeholder="Ingrese su cédula de identidad" value="<?php if (isset($_SESSION['id'])) {
                         echo $_SESSION['id'];
                     } ?>" oninput="checkFilled()">
 
+                    <!-- Número de teléfono -->
                     <label for="celular">Número de teléfono</label>
                     <input type="text" name="celular" id="celular" placeholder="Ingrese su número de teléfono">
 
                     <h2 class="subDatos">Datos de reservación</h2>
 
+                    <!-- Sigla del curso -->
                     <label for="sigla_curso"><i class="fa-solid fa-star-of-life fa-2xs" style="color: #ff0000;"></i> Sigla del
                         curso</label>
                     <input type="text" name="sigla_curso" id="sigla_curso"
                         placeholder="Ingrese la sigla del curso (ejemplos: IC-0101, IC9500)" oninput="searchCourse()">
 
+                    <!-- Nombre del curso (se autorrellena) -->
                     <label for="nombre_curso">Nombre del curso</label>
                     <input type="text" name="nombre_curso" id="nombre_curso" placeholder="Ingrese la sigla del curso primero"
                         readonly>
 
+                    <!-- Selección de espacio a utilizar -->
                     <label for="espacio"><i class="fa-solid fa-star-of-life fa-2xs" style="color: #ff0000;"></i> Espacio a
                         utilizar</label>
                     <div class="selectContainer">
@@ -74,14 +81,20 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
                         </select>
                     </div>
 
+                    <!-- Fecha y hora de ingreso (se autorrellena) -->
                     <label for="fecha_ingreso">Fecha y hora de ingreso</label>
                     <p class="avisoHora">Si utiliza el laboratorio después de las 17:00, comuníquese con la recepción de la
                         escuela</p>
                     <input type="text" name="fecha_ingreso" id="fecha_ingreso" readonly />
+
+                    <!-- Continuar o cerrar sesión, por defecto intenta cerrar la sesión -->
                     <input type="hidden" name="continue" id="continue" value="no" />
+
+                    <!-- Botón para enviar los datos al servidor -->
                     <input type="button" id="btnSubmit" value="Registrar" onclick="sendForm(this.form);" />
                 </form>
 
+                <!-- Botón para cancelar la solicitud -->
                 <div class="center">
                     <button id="btn5" onclick="location.href='inicio.php'">Cancelar</button>
                 </div>
@@ -104,6 +117,7 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
                 }
             }
 
+            // Verifica que el correo termine con @ucr.ac.cr
             function checkMail() {
                 if (document.getElementById('correo').value.toUpperCase().endsWith("@UCR.AC.CR")) {
                     validMail = true;
@@ -144,6 +158,7 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
                 checkFilled();
             }
 
+            // Verifica que se haya elegido un espacio
             function updateSpace() {
                 if (document.getElementById("espacio").value != "") {
                     spaceSelected = true;
@@ -153,6 +168,7 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
                 checkFilled();
             }
 
+            // Función para obtener la hora actual al entrar a la página
             function getDate() {
                 date = new Date();
                 dateString = date.getFullYear() + '-' +
@@ -185,6 +201,8 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
 
             checkMail();
             getDate();
+
+            // Actualiza la hora cada segundo
             let refreshDate = setInterval(getDate, 1000);
         </script>
 

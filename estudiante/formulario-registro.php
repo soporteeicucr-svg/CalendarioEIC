@@ -33,38 +33,48 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
                 <form action="utils/db-registro-estudiante.php" method="post">
                     <h2 class="subDatos">Datos personales</h2>
 
-                    <label for="nombre"><i class="fa-solid fa-star-of-life fa-2xs" style="color: #ff0000;"></i> Nombre completo</label>
+                    <!-- Nombre completo -->
+                    <label for="nombre"><i class="fa-solid fa-star-of-life fa-2xs" style="color: #ff0000;"></i> Nombre
+                        completo</label>
                     <input type="text" name="nombre" id="nombre" placeholder="Ingrese su nombre"
-                        value="<?php echo $_SESSION['nombre']; ?>" oninput="checkFilled()">
+                        value="<?php echo mb_convert_case(mb_strtolower($_SESSION['nombre'], 'UTF-8'), MB_CASE_TITLE); ?>" oninput="checkFilled()">
 
+                    <!-- Correo institucional -->
                     <label for="correo"><i class="fa-solid fa-star-of-life fa-2xs" style="color: #ff0000;"></i> Correo
                         institucional</label>
                     <input type="text" name="correo" id="correo" placeholder="Ingrese su correo institucional"
-                        value="<?php echo $_SESSION['usuario']; ?>" oninput="checkMail()">
+                        value="<?php echo mb_convert_case(mb_strtolower($_SESSION['usuario'], 'UTF-8'), MB_CASE_LOWER); ?>" oninput="checkMail()">
 
+                    <!-- carnet -->
                     <label for="carnet"><i class="fa-solid fa-star-of-life fa-2xs" style="color: #ff0000;"></i> Carnet</label>
                     <input type="text" name="carnet" id="carnet" placeholder="Ingrese su carnet institucional" value="<?php if (isset($_SESSION['id'])) {
                         echo $_SESSION['id'];
                     } ?>" oninput="checkId()">
 
+                    <!-- Número de teléfono -->
                     <label for="celular">Número de teléfono</label>
                     <input type="text" name="celular" id="celular" placeholder="Ingrese su número de teléfono">
 
                     <h2 class="subDatos">Datos reserva</h2>
 
+                    <!-- Selección de espacio a utilizar -->
                     <label>¿A cuál laboratorio desea asistir?</label>
                     <div class="selectorForm">
                         <label for="Laboratorio 1"><input type="radio" name="laboratorio" value="Laboratorio 1"
                                 id="Laboratorio 1" checked="checked"> Laboratorio 1 </label>
                     </div>
 
+                    <!-- Fecha y hora de ingreso (se autorrellena) -->
                     <label for="fecha_ingreso">Fecha y hora de ingreso</label>
                     <p class="avisoHora">Si utiliza el laboratorio después de las 17:00, comuníquese con la recepción de la
                         escuela</p>
                     <input type="text" name="fecha_ingreso" id="fecha_ingreso" readonly />
+
+                    <!-- Botón para enviar los datos al servidor -->
                     <input type="button" id="btnSubmit" value="Registrar" onclick="sendForm(this.form);" disabled />
                 </form>
 
+                <!-- Botón para cerrar sesión -->
                 <div class="center">
                     <button id="btn3" onclick="location.href='../shared/cerrar-sesion.php'">Cerrar sesión</button>
                 </div>
@@ -84,6 +94,7 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
                 }
             }
 
+            // Verifica que el correo termine con @ucr.ac.cr
             function checkMail() {
                 if (document.getElementById('correo').value.toUpperCase().endsWith("@UCR.AC.CR")) {
                     validMail = true;
@@ -93,6 +104,7 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
                 checkFilled();
             }
 
+            // Asegura que el carnet solo acepte letras mayúsculas y números, y verifica que no esté vacío
             function checkId() {
                 let p = document.getElementById('carnet').selectionStart;
                 document.getElementById('carnet').value = document.getElementById('carnet').value.toUpperCase();
@@ -107,6 +119,7 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
                 checkFilled();
             }
 
+            // Función para obtener la hora actual al entrar a la página
             function getDate() {
                 let date = new Date();
                 dateString = date.getFullYear() + '-' +
@@ -137,6 +150,8 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
             checkMail();
             checkId();
             getDate();
+
+            // Actualiza la hora cada segundo
             let refreshDate = setInterval(getDate, 1000);
         </script>
 
