@@ -501,8 +501,6 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
                     aoa[i][7] = new Date(aoa[i][7]).toTimeString().split(' ')[0];
                 }
 
-                console.log(aoa);
-
                 // Elimina la columna "Acción"
                 aoa[0].pop();
 

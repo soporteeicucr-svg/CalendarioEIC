@@ -74,7 +74,8 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
                                             <th>Carnet</th>
                                             <th>Teléfono</th>
                                             <th>Laboratorio</th>
-                                            <th>Fecha y hora de ingreso</th>
+                                            <th>Fecha</th>
+                                            <th>Hora</th>
                                         </tr>
                                     </thead>
 
@@ -104,7 +105,10 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
                                                     <?php echo $row['laboratorio']; ?>
                                                 </td>
                                                 <td>
-                                                    <?php echo $row['fecha_ingreso']; ?>
+                                                    <?php echo explode(" ", $row['fecha_ingreso'])[0]; ?>
+                                                </td>
+                                                <td>
+                                                    <?php echo explode(" ", $row['fecha_ingreso'])[1]; ?>
                                                 </td>
                                             </tr>
                                             <?php
@@ -141,7 +145,8 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
                                             <th>Teléfono</th>
                                             <th>Sigla del curso</th>
                                             <th>Espacio reservado</th>
-                                            <th>Fecha y hora de ingreso</th>
+                                            <th>Fecha</th>
+                                            <th>Hora</th>
                                         </tr>
                                     </thead>
 
@@ -174,7 +179,10 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
                                                     <?php echo $row['espacio']; ?>
                                                 </td>
                                                 <td>
-                                                    <?php echo $row['fecha_ingreso']; ?>
+                                                    <?php echo explode(" ", $row['fecha_ingreso'])[0]; ?>
+                                                </td>
+                                                <td>
+                                                    <?php echo explode(" ", $row['fecha_ingreso'])[1]; ?>
                                                 </td>
                                             </tr>
                                             <?php
@@ -254,7 +262,7 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
             // Función para exportar a Excel
             function exportToExcel(tableName, searchBarName) {
                 var table = document.getElementById(tableName);
-                var ws = XLSX.utils.table_to_sheet(table);
+                var ws = XLSX.utils.table_to_sheet(table, { raw: true });
                 var wb = XLSX.utils.book_new();
 
                 // Contenido de la barra de búsqueda para utilizarlo al nombrar el archivo
