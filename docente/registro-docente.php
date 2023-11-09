@@ -14,11 +14,11 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
             <meta charset='UTF-8'>
             <meta http-equiv='X-UA-Compatible' content='ie=edge'>
             <title>Registro para uso de laboratorios para docentes</title>
-            <link rel='stylesheet' type='text/css' href='../../shared/lib/alertify/css/alertify.css'>
-            <link rel='stylesheet' type='text/css' href='../../shared/lib/alertify/css/themes/bootstrap.css'>
+            <link rel='stylesheet' type='text/css' href='../shared/lib/alertify/css/alertify.css'>
+            <link rel='stylesheet' type='text/css' href='../shared/lib/alertify/css/themes/bootstrap.css'>
             <link rel='stylesheet' type='text/css' href='../shared/lib/fontawesome/css/all.css'>
             <link rel='stylesheet' type='text/css' href='../shared/css/formulario.css'>
-            <script src='../../shared/lib/alertify/alertify.min.js'></script>
+            <script src='../shared/lib/alertify/alertify.min.js'></script>
         </head>
 
         <body>
@@ -40,7 +40,7 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
                     <label for="correo"><i class="fa-solid fa-star-of-life fa-2xs" style="color: #ff0000;"></i> Correo
                         institucional</label>
                     <input type="text" name="correo" id="correo" placeholder="Ingrese su correo institucional"
-                        value="<?php echo mb_convert_case(mb_strtolower($_SESSION['usuario'], 'UTF-8'), MB_CASE_TITLE); ?>" oninput="checkMail()">
+                        value="<?php echo mb_convert_case(mb_strtolower($_SESSION['usuario'], 'UTF-8'), MB_CASE_LOWER); ?>" oninput="checkMail()">
 
                     <!-- Cédula de identidad -->
                     <label for="cedula"><i class="fa-solid fa-star-of-life fa-2xs" style="color: #ff0000;"></i> Cédula de

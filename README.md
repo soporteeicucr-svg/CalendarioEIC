@@ -11,7 +11,7 @@ El presente sistema de la Escuela de Ingeniería Civil fue desarrollado con el f
 El sistema está dividido en tres módulos, cada uno con su sistema de autentificación
 y funcionalidades diferentes. El módulo de estudiantes y el módulo de docentes son accesibles a través de una página de inicio en la dirección `http://localhost`, la cual cuenta con botones que redirigen a los respectivos formularios de inicio de sesión, mientras que para el módulo de docentes es necesario ingresar la dirección `http://localhost/administrativo` en la barra de navegación, esto para que no sea visible a los otros tipos de usuarios.
 
-![Foto de página de inicio](/shared/img/página-inicio.png)
+![Foto de página de inicio](/shared/img/pagina-inicio.png)
 Formulario de registro para estudiantes.
 
 Las funcionalidades de cada módulo son:
@@ -22,7 +22,7 @@ Las funcionalidades de cada módulo son:
 2. Registro del formulario para el uso de un laboratorio por parte de un estudiante.
 3. Cerrar sesión.
 
-![Foto de formulario de registro para estudiantes](/shared/img/módulo-estudiante.png)
+![Foto de formulario de registro para estudiantes](/shared/img/modulo-estudiante.png)
 Formulario de registro para estudiantes.
 
 ### Módulo de docentes
@@ -33,16 +33,16 @@ Formulario de registro para estudiantes.
 4. Visualización del calendario con las reservas activas de toda la escuela (sin mostrar datos detallados sobre la reservación o la persona que la hizo, simplemente se indica que dicho espacio ya está reservado).
 5. Cerrar sesión
 
-![Foto de página de inicio para docentes](/shared/img/módulo-docente-inicio.png)
+![Foto de página de inicio para docentes](/shared/img/modulo-docente-inicio.png)
 Página de inicio para docentes.
 
-![Foto de formulario de registro para docentes](/shared/img/módulo-docente-registro.png)
+![Foto de formulario de registro para docentes](/shared/img/modulo-docente-registro.png)
 Formulario de registro para docentes.
 
-![Foto de formulario de reserva para docentes](/shared/img/módulo-docente-reserva.png)
+![Foto de formulario de reserva para docentes](/shared/img/modulo-docente-reserva.png)
 Formulario de reserva para docentes.
 
-![Foto de calendario para docentes](/shared/img/módulo-docente-calendario.png)
+![Foto de calendario para docentes](/shared/img/modulo-docente-calendario.png)
 Calendario para docentes.
 
 ### Módulo administrativo
@@ -54,19 +54,19 @@ Calendario para docentes.
 5. Visualización del calendario con las reservas activas de toda la escuela (con detalles de quién la solicitó y con qué razón).
 6. Cerrar sesión.
 
-![Foto de página de inicio para administrativos](/shared/img/módulo-administrativo-inicio.png)
+![Foto de página de inicio para administrativos](/shared/img/modulo-administrativo-inicio.png)
 Página de inicio para administrativos.
 
-![Foto de lista de registro de accesos por parte de estudiantes y docentes](/shared/img/módulo-administrativo-registros.png)
+![Foto de lista de registro de accesos por parte de estudiantes y docentes](/shared/img/modulo-administrativo-registros.png)
 Lista de registro de accesos por parte de estudiantes y docentes.
 
-![Foto de lista de solicitudes de reserva](/shared/img/módulo-administrativo-solicitudes.png)
+![Foto de lista de solicitudes de reserva](/shared/img/modulo-administrativo-solicitudes.png)
 Lista de solicitudes de reserva.
 
-![Foto de formulario de reserva para administrativos](/shared/img/módulo-administrativo-reserva.png)
+![Foto de formulario de reserva para administrativos](/shared/img/modulo-administrativo-reserva.png)
 Formulario de reserva para administrativos.
 
-![Foto de calendario para administrativos](/shared/img/módulo-administrativo-calendario.png)
+![Foto de calendario para administrativos](/shared/img/modulo-administrativo-calendario.png)
 Calendario para administrativos.
 
 ## Información relacionada a la ejecución de los módulos
@@ -145,11 +145,15 @@ Por lo general, se pueden encontrar en la ruta\a\xampp\sendmail, esta biblioteca
 
 Para fácil manejo de credenciales y configuración, las variables del sistema se pueden establecer en el archivo `shared/utils/variables.php`, dichas variables son:
 
+### Variable para establecer directorio raíz
+
+1. `$rootDir`: Directorio dentro de htdocs a utilizar como raíz para el servidor.
+
 ### Variables de Active Directory
 
-1. `$servidor`: establece el nombre del servidor de Active Directory.
-2. `$adminUser`: usuario administrador de Active Directory.
-3. `$adminPassword`: contraseña del administrador de Active Directory.
+1. `$servidor`: Establece el nombre del servidor de Active Directory.
+2. `$adminUser`: Usuario administrador de Active Directory.
+3. `$adminPassword`: Contraseña del administrador de Active Directory.
 
 ### Variables de la base de datos phpMyAdmin
 

@@ -69,7 +69,7 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
                 <!-- Correo institucional -->
                 <label for="correo"><i class="fa-solid fa-star-of-life fa-2xs" style="color: #ff0000;"></i> Correo
                     institucional</label>
-                <input type="text" name="correo" id="correo" placeholder="Ingrese su correo institucional" value=<?php echo mb_convert_case(mb_strtolower($_SESSION['usuario'], 'UTF-8'), MB_CASE_TITLE); ?>>
+                <input type="text" name="correo" id="correo" placeholder="Ingrese su correo institucional" value=<?php echo mb_convert_case(mb_strtolower($_SESSION['usuario'], 'UTF-8'), MB_CASE_LOWER); ?>>
 
                 <!-- Selección de día -->
                 <label for="fecha" class="control-label"><i class="fa-solid fa-star-of-life fa-2xs" style="color: #ff0000;"></i>

@@ -129,7 +129,7 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
 
 	</html <?php
 } else {
-	header("Location: /index.php");
+	header("Location: ../index.php");
 	exit();
 }
 ?>

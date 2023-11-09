@@ -64,6 +64,7 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
             <link rel='stylesheet' type='text/css' href='../shared/lib/alertify/css/alertify.css'>
             <link rel='stylesheet' type='text/css' href='../shared/lib/alertify/css/themes/bootstrap.css'>
             <link rel='stylesheet' type='text/css' href='../shared/lib/bootstrap/bootstrap.min.css'>
+            <link rel='stylesheet' type='text/css' href='../shared/lib/fontawesome/css/all.css'>
             <link rel='stylesheet' type='text/css' href='../shared/lib/fullcalendar/lib/main.min.css'>
             <link rel='stylesheet' type='text/css' href='../shared/css/reserva.css'>
             <link rel='stylesheet' type='text/css' href='../shared/css/tabs.css'>

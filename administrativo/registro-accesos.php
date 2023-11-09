@@ -262,12 +262,18 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
                 search = searchBar.value.trim();
 
                 // Establece el nombre del archivo y lo descarga
-                if (search != '') {
-                    XLSX.utils.book_append_sheet(wb, ws, 'Lista de accesos - ' + search);
-                    XLSX.writeFile(wb, 'Lista de accesos - ' + search + '.xlsx');
+                var tab = '';
+                if (tableName == 'tableStudents') {
+                    tab = 'estudiantes';
                 } else {
-                    XLSX.utils.book_append_sheet(wb, ws, 'Lista de accesos');
-                    XLSX.writeFile(wb, 'Lista de accesos.xlsx');
+                    tab = 'profesores';
+                }
+                if (search != '') {
+                    XLSX.utils.book_append_sheet(wb, ws, 'Accesos de ' + tab);
+                    XLSX.writeFile(wb, 'Lista de accesos de ' + tab + ' - ' + search + '.xlsx');
+                } else {
+                    XLSX.utils.book_append_sheet(wb, ws, 'Accesos de ' + tab);
+                    XLSX.writeFile(wb, 'Lista de accesos de ' + tab + '.xlsx');
                 }
             }
 
@@ -324,10 +330,16 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
                 search = searchBar.value.trim();
 
                 // Establece el nombre del archivo y lo descarga
-                if (search != '') {
-                    pdfMake.createPdf(docDefinition).download('Lista de accesos - ' + search);
+                var tab = '';
+                if (tableName == 'tableStudents') {
+                    tab = 'estudiantes';
                 } else {
-                    pdfMake.createPdf(docDefinition).download('Lista de accesos.pdf');
+                    tab = 'profesores';
+                }
+                if (search != '') {
+                    pdfMake.createPdf(docDefinition).download('Lista de accesos de ' + tab + ' - ' + search + '.pdf');
+                } else {
+                    pdfMake.createPdf(docDefinition).download('Lista de accesos de ' + tab + '.pdf');
                 }
             }
         </script>

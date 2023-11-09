@@ -58,7 +58,7 @@ if (isset($_POST['usuario']) && isset($_POST['contrasena'])) {
         }
     }
 } else {
-    header('Location: /index.php');
+    header('Location: ../index.php');
     exit();
 }
 ?>

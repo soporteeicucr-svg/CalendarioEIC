@@ -487,14 +487,21 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
             document.getElementById("defaultOpen").click();
 
             // Función para exportar a Excel
-            function exportToExcel(tableName) {
-                var table = document.getElementById(tableName, searchBarName);
+            function exportToExcel(tableName, searchBarName) {
+                var table = document.getElementById(tableName);
 
                 // Convierte la tabla HTML en un objecto con solo los elementos visibles
                 var data = XLSX.utils.table_to_sheet(table, { display: true });
 
                 // Convierte el objeto en una matriz
                 var aoa = XLSX.utils.sheet_to_json(data, { header: 1, defval: "" });
+
+                for (i = 1; i < aoa.length; i++) {
+                    aoa[i][6] = new Date(aoa[i][6]).toTimeString().split(' ')[0];
+                    aoa[i][7] = new Date(aoa[i][7]).toTimeString().split(' ')[0];
+                }
+
+                console.log(aoa);
 
                 // Elimina la columna "Acción"
                 aoa[0].pop();
@@ -510,15 +517,22 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
                 search = searchBar.value.trim();
 
                 // Establece el nombre del archivo y lo descarga
-                if (search != '') {
-                    XLSX.utils.book_append_sheet(wb, ws, 'Lista de accesos - ' + search);
-                    XLSX.writeFile(wb, 'Lista de accesos - ' + search + '.xlsx');
+                var tab = '';
+                if (tableName == 'tablePending') {
+                    tab = 'pendientes';
+                } else if (tableName == 'tableApproved') {
+                    tab = 'aprobadas';
                 } else {
-                    XLSX.utils.book_append_sheet(wb, ws, 'Lista de accesos');
-                    XLSX.writeFile(wb, 'Lista de accesos.xlsx');
+                    tab = 'rechazadas';
+                }
+                if (search != '') {
+                    XLSX.utils.book_append_sheet(wb, ws, 'Solicitudes ' + tab);
+                    XLSX.writeFile(wb, 'Solicitudes de reserva ' + tab + ' - ' + search + '.xlsx');
+                } else {
+                    XLSX.utils.book_append_sheet(wb, ws, 'Solicitudes ' + tab);
+                    XLSX.writeFile(wb, 'Solicitudes de reserva: ' + tab + '.xlsx');
                 }
             }
-
 
             // Función para exportar a PDF
             function exportToPDF(tableName, searchBarName) {
@@ -573,10 +587,18 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
                 search = searchBar.value.trim();
 
                 // Establece el nombre del archivo y lo descarga
-                if (search != '') {
-                    pdfMake.createPdf(docDefinition).download('Lista de accesos - ' + search);
+                var tab = '';
+                if (tableName == 'tablePending') {
+                    tab = 'pendientes';
+                } else if (tableName == 'tableApproved') {
+                    tab = 'aprobadas';
                 } else {
-                    pdfMake.createPdf(docDefinition).download('Lista de accesos.pdf');
+                    tab = 'rechazadas';
+                }
+                if (search != '') {
+                    pdfMake.createPdf(docDefinition).download('Solicitudes de reserva ' + tab + ' - ' + search + '.pdf');
+                } else {
+                    pdfMake.createPdf(docDefinition).download('Solicitudes de reserva ' + tab + '.pdf');
                 }
             }
         </script>

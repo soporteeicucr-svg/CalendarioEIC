@@ -1,9 +1,11 @@
 <?php
 use PHPMailer\PHPMailer\PHPMailer;
 
-require $_SERVER['DOCUMENT_ROOT'] . '/shared/lib/phpmailer/src/PHPMailer.php';
-require $_SERVER['DOCUMENT_ROOT'] . '/shared/lib/phpmailer/src/SMTP.php';
-require $_SERVER['DOCUMENT_ROOT'] . '/shared/lib/phpmailer/src/Exception.php';
+include 'variables.php';
+
+require $_SERVER['DOCUMENT_ROOT'] . $rootDir . '/shared/lib/phpmailer/src/PHPMailer.php';
+require $_SERVER['DOCUMENT_ROOT'] . $rootDir . '/shared/lib/phpmailer/src/SMTP.php';
+require $_SERVER['DOCUMENT_ROOT'] . $rootDir . '/shared/lib/phpmailer/src/Exception.php';
 
 function sendMail($address, $subject, $message)
 {

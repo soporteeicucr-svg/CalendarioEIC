@@ -11,11 +11,11 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
             <meta charset='UTF-8'>
             <meta http-equiv='X-UA-Compatible' content='ie=edge'>
             <title>Registro para uso de laboratorios para estudiantes</title>
-            <link rel='stylesheet' type='text/css' href='../../shared/lib/alertify/css/alertify.css'>
-            <link rel='stylesheet' type='text/css' href='../../shared/lib/alertify/css/themes/bootstrap.css'>
-            <link rel='stylesheet' type='text/css' href='../../shared/lib/fontawesome/css/all.css'>
+            <link rel='stylesheet' type='text/css' href='../shared/lib/alertify/css/alertify.css'>
+            <link rel='stylesheet' type='text/css' href='../shared/lib/alertify/css/themes/bootstrap.css'>
+            <link rel='stylesheet' type='text/css' href='../shared/lib/fontawesome/css/all.css'>
             <link rel='stylesheet' type='text/css' href='../shared/css/formulario.css'>
-            <script src='../../shared/lib/alertify/alertify.min.js'></script>
+            <script src='../shared/lib/alertify/alertify.min.js'></script>
             <style>
                 .ajs-cancel {
                     display: none;
