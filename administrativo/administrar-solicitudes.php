@@ -80,6 +80,7 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
                                             <th>Curso</th>
                                             <th>Solicitante</th>
                                             <th>Correo</th>
+                                            <th>Fecha</th>
                                             <th>Inicio</th>
                                             <th>Finalización</th>
                                             <th>Acción</th>
@@ -113,10 +114,13 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
                                                     <?php echo mb_convert_case(mb_strtolower($row['correo'], 'UTF-8'), MB_CASE_LOWER); ?>
                                                 </td>
                                                 <td>
-                                                    <?php echo $row['hora_inicio']; ?>
+                                                    <?php echo explode(" ", $row['hora_inicio'])[0]; ?>
                                                 </td>
                                                 <td>
-                                                    <?php echo $row['hora_fin']; ?>
+                                                    <?php echo explode(" ", $row['hora_inicio'])[1]; ?>
+                                                </td>
+                                                <td>
+                                                    <?php echo explode(" ", $row['hora_fin'])[1]; ?>
                                                 </td>
                                                 <td class="d-flex align-items-center justify-content-center">
                                                     <form action="../shared/utils/manage-schedule.php" method="POST">
@@ -167,6 +171,7 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
                                             <th>Curso</th>
                                             <th>Solicitante</th>
                                             <th>Correo</th>
+                                            <th>Fecha</th>
                                             <th>Inicio</th>
                                             <th>Finalización</th>
                                             <th>Acción</th>
@@ -200,10 +205,13 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
                                                     <?php echo mb_convert_case(mb_strtolower($row['correo'], 'UTF-8'), MB_CASE_LOWER); ?>
                                                 </td>
                                                 <td>
-                                                    <?php echo $row['hora_inicio']; ?>
+                                                    <?php echo explode(" ", $row['hora_inicio'])[0]; ?>
                                                 </td>
                                                 <td>
-                                                    <?php echo $row['hora_fin']; ?>
+                                                    <?php echo explode(" ", $row['hora_inicio'])[1]; ?>
+                                                </td>
+                                                <td>
+                                                    <?php echo explode(" ", $row['hora_fin'])[1]; ?>
                                                 </td>
                                                 <td class="d-flex align-items-center justify-content-center">
                                                     <form action="../shared/utils/manage-schedule.php" method="POST">
@@ -248,6 +256,7 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
                                             <th>Curso</th>
                                             <th>Solicitante</th>
                                             <th>Correo</th>
+                                            <th>Fecha</th>
                                             <th>Inicio</th>
                                             <th>Finalización</th>
                                             <th>Acción</th>
@@ -280,10 +289,13 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
                                                     <?php echo mb_convert_case(mb_strtolower($row['correo'], 'UTF-8'), MB_CASE_LOWER); ?>
                                                 </td>
                                                 <td>
-                                                    <?php echo $row['hora_inicio']; ?>
+                                                    <?php echo explode(" ", $row['hora_inicio'])[0]; ?>
                                                 </td>
                                                 <td>
-                                                    <?php echo $row['hora_fin']; ?>
+                                                    <?php echo explode(" ", $row['hora_inicio'])[1]; ?>
+                                                </td>
+                                                <td>
+                                                    <?php echo explode(" ", $row['hora_fin'])[1]; ?>
                                                 </td>
                                                 <td class="d-flex align-items-center justify-content-center">
                                                     <form action="../shared/utils/manage-schedule.php" method="POST">
@@ -491,15 +503,10 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
                 var table = document.getElementById(tableName);
 
                 // Convierte la tabla HTML en un objecto con solo los elementos visibles
-                var data = XLSX.utils.table_to_sheet(table, { display: true });
+                var data = XLSX.utils.table_to_sheet(table, { display: true, raw: true });
 
                 // Convierte el objeto en una matriz
                 var aoa = XLSX.utils.sheet_to_json(data, { header: 1, defval: "" });
-
-                for (i = 1; i < aoa.length; i++) {
-                    aoa[i][6] = new Date(aoa[i][6]).toTimeString().split(' ')[0];
-                    aoa[i][7] = new Date(aoa[i][7]).toTimeString().split(' ')[0];
-                }
 
                 // Elimina la columna "Acción"
                 aoa[0].pop();
