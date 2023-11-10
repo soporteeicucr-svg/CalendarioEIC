@@ -535,7 +535,7 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
                     XLSX.writeFile(wb, 'Solicitudes de reserva ' + tab + ' - ' + search + '.xlsx');
                 } else {
                     XLSX.utils.book_append_sheet(wb, ws, 'Solicitudes ' + tab);
-                    XLSX.writeFile(wb, 'Solicitudes de reserva: ' + tab + '.xlsx');
+                    XLSX.writeFile(wb, 'Solicitudes de reserva ' + tab + '.xlsx');
                 }
             }
 
