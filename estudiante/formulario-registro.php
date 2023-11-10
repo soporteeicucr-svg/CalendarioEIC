@@ -1,11 +1,12 @@
+<!DOCTYPE html>
+<html lang='es'>
+
 <?php
 session_start();
 
 if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
     if ($_SESSION['tipo'] == 'estudiante') {
         ?>
-        <!DOCTYPE html>
-        <html lang='es'>
 
         <head>
             <meta charset='UTF-8'>
@@ -44,6 +45,7 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
                         institucional</label>
                     <input type="text" name="correo" id="correo" placeholder="Ingrese su correo institucional"
                         value="<?php echo mb_convert_case(mb_strtolower($_SESSION['usuario'], 'UTF-8'), MB_CASE_LOWER); ?>" oninput="checkMail()">
+                    <div id="error_correo"></div>
 
                     <!-- carnet -->
                     <label for="carnet"><i class="fa-solid fa-star-of-life fa-2xs" style="color: #ff0000;"></i> Carnet</label>
@@ -96,9 +98,11 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
 
             // Verifica que el correo termine con @ucr.ac.cr
             function checkMail() {
-                if (document.getElementById('correo').value.toUpperCase().endsWith("@UCR.AC.CR")) {
+                if (document.getElementById('correo').value.toLowerCase().endsWith("@ucr.ac.cr")) {
+                    document.getElementById('error_correo').innerHTML = '';
                     validMail = true;
                 } else {
+                    document.getElementById('error_correo').innerHTML = "<h5 style='color: red; margin-top: 0;'>Error: el correo debe finalizar con @ucr.ac.cr</h5>";
                     validMail = false;
                 }
                 checkFilled();

@@ -1,11 +1,12 @@
+<!DOCTYPE html>
+<html lang='es'>
+
 <?php
 session_start();
 
 if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
     if ($_SESSION['tipo'] == 'docente') {
         ?>
-        <!DOCTYPE html>
-        <html lang='es'>
 
         <head>
             <meta charset='UTF-8'>

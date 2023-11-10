@@ -1,3 +1,6 @@
+<!DOCTYPE html>
+<html lang='es'>
+
 <?php
 include '../shared/utils/get-courses.php';
 
@@ -6,9 +9,6 @@ session_start();
 if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
     if ($_SESSION['tipo'] == 'administrativo') {
         ?>
-
-        <!DOCTYPE html>
-        <html lang='es'>
 
         <head>
             <meta charset='UTF-8'>
@@ -69,12 +69,13 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
                 <label for="correo"><i class="fa-solid fa-star-of-life fa-2xs" style="color: #ff0000;"></i> Correo
                     institucional</label>
                 <input type="text" name="correo" id="correo" placeholder="Ingrese el correo institucional del solicitante"
-                    required>
+                    oninput="checkMail()" required>
+                    <div id="error_correo"></div>
 
                 <!-- Selección de día -->
                 <label for="fecha" class="control-label"><i class="fa-solid fa-star-of-life fa-2xs" style="color: #ff0000;"></i>
                     Día</label>
-                <input type="text" name="fecha" id="fecha" placeholder="Seleccione la hora de inicio" required
+                <input type="text" name="fecha" id="fecha" placeholder="Seleccione la fecha" required
                     onchange="updateDate()">
 
                 <!-- Selección de hora de inicio -->
@@ -216,6 +217,18 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
                 } else {
                     document.getElementById('btnSubmit').disabled = true;
                 }
+            }
+
+            // Verifica que el correo termine con @ucr.ac.cr
+            function checkMail() {
+                if (document.getElementById('correo').value.toLowerCase().endsWith("@ucr.ac.cr")) {
+                    document.getElementById('error_correo').innerHTML = '';
+                    validMail = true;
+                } else {
+                    document.getElementById('error_correo').innerHTML = "<h5 style='color: red; margin-top: 0;'>Error: el correo debe finalizar con @ucr.ac.cr</h5>";
+                    validMail = false;
+                }
+                checkFilled();
             }
 
             // Compara el código introducido por el usuario con los códigos de los cursos en la base de datos y rellena el campo de nombre si encuentra un match

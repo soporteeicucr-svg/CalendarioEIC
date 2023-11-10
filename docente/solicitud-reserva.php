@@ -1,3 +1,6 @@
+<!DOCTYPE html>
+<html lang='es'>
+
 <?php
 include '../shared/utils/get-courses.php';
 
@@ -6,9 +9,6 @@ session_start();
 if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
     if ($_SESSION['tipo'] == 'docente') {
         ?>
-
-        <!DOCTYPE html>
-        <html lang='es'>
 
         <head>
             <meta charset='UTF-8'>
@@ -69,12 +69,14 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
                 <!-- Correo institucional -->
                 <label for="correo"><i class="fa-solid fa-star-of-life fa-2xs" style="color: #ff0000;"></i> Correo
                     institucional</label>
-                <input type="text" name="correo" id="correo" placeholder="Ingrese su correo institucional" value=<?php echo mb_convert_case(mb_strtolower($_SESSION['usuario'], 'UTF-8'), MB_CASE_LOWER); ?>>
+                <input type="text" name="correo" id="correo" placeholder="Ingrese su correo institucional" value=<?php echo mb_convert_case(mb_strtolower($_SESSION['usuario'], 'UTF-8'), MB_CASE_LOWER); ?>
+                    oninput="checkMail()">
+                <div id="error_correo"></div>
 
                 <!-- Selección de día -->
                 <label for="fecha" class="control-label"><i class="fa-solid fa-star-of-life fa-2xs" style="color: #ff0000;"></i>
                     Día</label>
-                <input type="text" name="fecha" id="fecha" placeholder="Seleccione la hora de inicio" required
+                <input type="text" name="fecha" id="fecha" placeholder="Seleccione fecha" required
                     onchange="updateDate()">
 
                 <!-- Selección de hora de inicio -->
@@ -186,6 +188,7 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
         <script>
             let listaCursos = <?php echo json_encode($courses); ?>;
             let listaReservas = <?php echo json_encode($sched_res); ?>;
+            let validMail = false;
             let spaceSelected = false;
             let foundCourse = false;
             let validDate = false;
@@ -211,11 +214,23 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
 
             // Revisa que todos los campos estén correctos y activa el botón para enviar los datos
             function checkFilled() {
-                if (spaceSelected && foundCourse && validDate && validStartTime && validEndTime && validStartEndTime && validTimeRange) {
+                if (validMail && spaceSelected && foundCourse && validDate && validStartTime && validEndTime && validStartEndTime && validTimeRange) {
                     document.getElementById('btnSubmit').disabled = false;
                 } else {
                     document.getElementById('btnSubmit').disabled = true;
                 }
+            }
+
+            // Verifica que el correo termine con @ucr.ac.cr
+            function checkMail() {
+                if (document.getElementById('correo').value.toLowerCase().endsWith("@ucr.ac.cr")) {
+                    document.getElementById('error_correo').innerHTML = '';
+                    validMail = true;
+                } else {
+                    document.getElementById('error_correo').innerHTML = "<h5 style='color: red; margin-top: 0;'>Error: el correo debe finalizar con @ucr.ac.cr</h5>";
+                    validMail = false;
+                }
+                checkFilled();
             }
 
             // Compara el código introducido por el usuario con los códigos de los cursos en la base de datos y rellena el campo de nombre si encuentra un match

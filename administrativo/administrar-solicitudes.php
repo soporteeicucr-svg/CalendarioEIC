@@ -1,3 +1,6 @@
+<!DOCTYPE html>
+<html lang='es'>
+
 <?php
 include '../shared/utils/db-conn.php';
 
@@ -8,9 +11,6 @@ $schedules = [];
 if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
     if ($_SESSION['tipo'] == 'administrativo') {
         ?>
-
-        <!DOCTYPE html>
-        <html lang='es'>
 
         <head>
             <meta charset='UTF-8'>

@@ -1,3 +1,6 @@
+<!DOCTYPE html>
+<html lang='es'>
+
 <?php
 include '../shared/utils/db-conn.php';
 include '../shared/utils/translate-date.php';
@@ -53,9 +56,6 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
             die();
         }
         ?>
-
-        <!DOCTYPE html>
-        <html lang='es'>
 
         <head>
             <meta charset='UTF-8'>
