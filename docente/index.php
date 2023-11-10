@@ -41,7 +41,7 @@
         <input type="submit" value="Ingresar">
     </form>
     <div class="center">
-        <button type="button" class="btn btn-back" onclick="window.location.href='/index.php'">Regresar</button>
+        <button type="button" class="btn btn-back" onclick="window.location.href='../index.php'">Regresar</button>
     </div>
 </body>
 <script>
