@@ -125,14 +125,6 @@ Adicionalmente, las páginas Index (responsable de redirigir a la página princi
 
 ## Para utilizar AD DS
 
-### Verificar que el directorio ruta\a\xampp\php tenga los siguientes archivos:
-
-1. `libeay32.dll`
-2. `libsasl.dll`
-3. `ssleay32.dll`
-
-Por lo general, se pueden encontrar en la ruta\a\xampp\sendmail, esta biblioteca también los usa. Pero si no, intente buscarlos dentro del directorio xampp.
-
 ### Descomentar o agregar la extensión ldap en el archivo php.ini (ruta\a\xampp\php\php.ini).
 
 `extensión=ldap`
@@ -147,11 +139,12 @@ Para fácil manejo de credenciales y configuración, las variables del sistema s
 
 ### Variable para establecer directorio raíz
 
-1. `$rootDir`: Directorio dentro de htdocs a utilizar como raíz para el servidor.
+1. `$serverName`: Nombre de la página como aparece en el navegador (Ej: registro.eic.ucr.ac.cr).
+2. `$rootDir`: Directorio dentro de htdocs a utilizar como raíz para el servidor.
 
 ### Variables de Active Directory
 
-1. `$servidor`: Establece el nombre del servidor de Active Directory.
+1. `$server`: Establece el nombre del servidor de Active Directory.
 2. `$adminUser`: Usuario administrador de Active Directory.
 3. `$adminPassword`: Contraseña del administrador de Active Directory.
 

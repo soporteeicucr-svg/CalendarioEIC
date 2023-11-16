@@ -393,6 +393,8 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
                     }
                 ).set({ transition: "zoom", closable: false, labels: { ok: 'Si', cancel: 'No' } }).autoOk(10);
             }
+
+            checkMail();
         </script>
 
         </html>
