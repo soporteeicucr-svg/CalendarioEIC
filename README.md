@@ -137,11 +137,6 @@ Adicionalmente, las páginas Index (responsable de redirigir a la página princi
 
 Para fácil manejo de credenciales y configuración, las variables del sistema se pueden establecer en el archivo `shared/utils/variables.php`, dichas variables son:
 
-### Variable para establecer directorio raíz
-
-1. `$serverName`: Nombre de la página como aparece en el navegador (Ej: registro.eic.ucr.ac.cr).
-2. `$rootDir`: Directorio dentro de htdocs a utilizar como raíz para el servidor.
-
 ### Variables de Active Directory
 
 1. `$server`: Establece el nombre del servidor de Active Directory.

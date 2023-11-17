@@ -3,20 +3,9 @@ use PHPMailer\PHPMailer\PHPMailer;
 
 include 'variables.php';
 
-$useRootDir = false;
-if ($_SERVER['HTTP_HOST'] == 'localhost') {
-	$useRootDir = true;
-}
-
-if ($useRootDir) {
-    require $_SERVER['DOCUMENT_ROOT'] . $rootDir . '/shared/lib/phpmailer/src/PHPMailer.php';
-    require $_SERVER['DOCUMENT_ROOT'] . $rootDir . '/shared/lib/phpmailer/src/SMTP.php';
-    require $_SERVER['DOCUMENT_ROOT'] . $rootDir . '/shared/lib/phpmailer/src/Exception.php';
-} else {
-    require $_SERVER['DOCUMENT_ROOT'] . '/shared/lib/phpmailer/src/PHPMailer.php';
-    require $_SERVER['DOCUMENT_ROOT'] . '/shared/lib/phpmailer/src/SMTP.php';
-    require $_SERVER['DOCUMENT_ROOT'] . '/shared/lib/phpmailer/src/Exception.php';
-}
+require $_SERVER['DOCUMENT_ROOT'] . '/shared/lib/phpmailer/src/PHPMailer.php';
+require $_SERVER['DOCUMENT_ROOT'] . '/shared/lib/phpmailer/src/SMTP.php';
+require $_SERVER['DOCUMENT_ROOT'] . '/shared/lib/phpmailer/src/Exception.php';
 
 function sendMail($address, $subject, $message)
 {
