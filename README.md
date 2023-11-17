@@ -2,7 +2,7 @@
 
 Sistema de reservas para la Escuela de Ingeniería Civil.
 
-## Sistema de Reserva EIC
+## Sistema de registros y reservas EIC
 
 El presente sistema de la Escuela de Ingeniería Civil fue desarrollado con el fin de automatizar y digitalizar tanto el proceso de reserva de espacios por parte de docentes y personal administrativo, como el de registro y retiro de cartuchera para el uso de laboratorios por parte de los estudiantes y docentes, permitiendo al personal administrativo una fácil y rápida administración de dichos datos.
 
