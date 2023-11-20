@@ -3,9 +3,15 @@ use PHPMailer\PHPMailer\PHPMailer;
 
 include 'variables.php';
 
-require $_SERVER['DOCUMENT_ROOT'] . '/shared/lib/phpmailer/src/PHPMailer.php';
-require $_SERVER['DOCUMENT_ROOT'] . '/shared/lib/phpmailer/src/SMTP.php';
-require $_SERVER['DOCUMENT_ROOT'] . '/shared/lib/phpmailer/src/Exception.php';
+if ($_SERVER['HTTP_HOST'] == 'localhost') {
+    require $_SERVER['DOCUMENT_ROOT'] . $rootDir . '/shared/lib/phpmailer/src/PHPMailer.php';
+    require $_SERVER['DOCUMENT_ROOT'] . $rootDir . '/shared/lib/phpmailer/src/SMTP.php';
+    require $_SERVER['DOCUMENT_ROOT'] . $rootDir . '/shared/lib/phpmailer/src/Exception.php';
+} else {
+    require $_SERVER['DOCUMENT_ROOT'] . '/shared/lib/phpmailer/src/PHPMailer.php';
+    require $_SERVER['DOCUMENT_ROOT'] . '/shared/lib/phpmailer/src/SMTP.php';
+    require $_SERVER['DOCUMENT_ROOT'] . '/shared/lib/phpmailer/src/Exception.php';
+}
 
 function sendMail($address, $subject, $message)
 {

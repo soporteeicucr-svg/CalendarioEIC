@@ -6,7 +6,11 @@ if (!empty($_SERVER['HTTPS']) && ('on' == $_SERVER['HTTPS'])) {
 } else {
 	$uri = 'http://';
 }
-$uri .= $_SERVER['HTTP_HOST'];
+if ($_SERVER['HTTP_HOST'] == 'localhost') {
+	$uri .= $_SERVER['HTTP_HOST'] . $rootDir;
+} else {
+	$uri .= $_SERVER['HTTP_HOST'];
+}
 header('Location: ' . $uri . '/inicio.php');
 exit;
 ?>
