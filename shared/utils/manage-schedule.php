@@ -45,7 +45,7 @@ if (isset($_SESSION['usuario'])) {
                     <p>Desde: <b>$horaInicio</b></p>
                     <p>Hasta: <b>$horaFin</b></p>
                     <p>Puede que otra reservación haya sido solicitada con anterioridad en el horario especificado, si aún requiere de una reservación, por favor solicítela nuevamente o póngase en contacto con la dirección de la escuela, gracias.</p>";
-                    sendMail($correo, "Su reservación ha sido $estado", $message);
+                    sendMail($correo, "Su reservación ha sido $estado", $message, '<h3>No contestar a este correo</h3>');
                 }
             }
 
@@ -71,7 +71,7 @@ if (isset($_SESSION['usuario'])) {
             <p>Desde: <b>$horaInicio</b></p>
             <p>Hasta: <b>$horaFin</b></p>
             <p>Recuerde utilizar el sistema de registro y retiro de cartuchera antes de dirigirse a su reservación, gracias.</p>";
-            sendMail($correo, "Su reservación ha sido aprobada", $message);
+            sendMail($correo, "Su reservación ha sido aprobada", $message, '<h3>No contestar a este correo</h3>');
             $conn->close();
             header("Location: ../../administrativo/administrar-solicitudes.php");
             exit();
@@ -110,7 +110,7 @@ if (isset($_SESSION['usuario'])) {
             <p>Desde: <b>$horaInicio</b></p>
             <p>Hasta: <b>$horaFin</b></p>
             <p>Puede que otra reservación haya sido creada con anterioridad en el horario solicitado, si aún requiere de una reservación, por favor solicítela nuevamente o póngase en contacto con la dirección de la escuela, gracias.</p>";
-            sendMail($correo, "Su reservación ha sido $estado", $message);
+            sendMail($correo, "Su reservación ha sido $estado", $message, '<h3>No contestar a este correo</h3>');
             $conn->close();
             header("Location: ../../administrativo/administrar-solicitudes.php");
             exit();

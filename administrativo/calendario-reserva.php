@@ -47,7 +47,7 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
             <p>Desde: <b>$horaInicio</b></p>
             <p>Hasta: <b>$horaFin</b></p>
             <p>Puede que otra reservación haya sido solicitada con anterioridad en el horario especificado, si aún requiere de una reservación, por favor solicítela nuevamente o póngase en contacto con la dirección de la escuela, gracias.</p>";
-            sendMail($correo, 'Su reservación ha sido cancelada', $message);
+            sendMail($correo, 'Su reservación ha sido cancelada', $message, '<h3>No contestar a este correo</h3>');
 
             // Recarga la página al terminar
             echo '<script type = "text/javascript">';

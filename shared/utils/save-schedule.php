@@ -39,6 +39,43 @@ if (isset($_SESSION['usuario'])) {
     $save = $conn->query($sql);
     if ($save) {
         if ($tipo == "docente") {
+            $select = "SELECT * FROM `lista_horarios` WHERE `espacio` = '$espacio' AND `sigla_curso` = '$siglaCurso' AND `nombre_curso` = '$nombreCurso' AND `solicitante` = '$solicitante' AND `correo` = '$correo' AND `hora_inicio` = '$horaInicio' AND `hora_fin` = '$horaFin'";
+            $result = mysqli_query($conn, $select);
+            $schedule = mysqli_fetch_assoc($result);
+
+            $id = $schedule['id'];
+            $espacio = $schedule['espacio'];
+            $siglaCurso = $schedule['sigla_curso'];
+            $nombreCurso = $schedule['nombre_curso'];
+            $solicitante = $schedule['solicitante'];
+            $correo = $schedule['correo'];
+            $horaInicio = $schedule['hora_inicio'];
+            $horaFin = $schedule['hora_fin'];
+
+            $message = "<p>$solicitante ha solicitado reservar el espacio $espacio, a continuación se muestran los detalles de la solicitud.</p>
+            <p>ID de reservación: <b>$id</b></p>
+            <p>Espacio reservado: <b>$espacio</b></p>
+            <p>Sigla del curso: <b>$siglaCurso</b></p>
+            <p>Nombre del curso: <b>$nombreCurso</b></p>
+            <p>Nombre del solicitante: <b>$solicitante</b></p>
+            <p>Correo del solicitante: <b>$correo</b></p>
+            <p>Desde: <b>$horaInicio</b></p>
+            <p>Hasta: <b>$horaFin</b></p>";
+
+            $approvalRequired = false;
+            if ($espacio == 'Aula PEC' || $espacio == 'Sala Interna') {
+                $approvalRequired = true;
+            }
+
+            $header = '<h3>Un docente ha solicitado una reserva de espacio';
+            if ($approvalRequired) {
+                $header = $header . ' que requiere visto bueno de la dirección</h3>';
+            } else {
+                $header = $header . '</h3>';
+            }
+            $subject = $header;
+
+            notifyMail($subject, $message, $header);
             if ($_POST['continue'] == 'yes') {
                 header("Location: ../../$tipo/inicio.php");
             } else {
@@ -69,7 +106,7 @@ if (isset($_SESSION['usuario'])) {
             <p>Desde: <b>$horaInicio</b></p>
             <p>Hasta: <b>$horaFin</b></p>
             <p>Recuerde utilizar el sistema de registro y retiro de cartuchera antes de dirigirse a su reservación, gracias.</p>";
-            sendMail($correo, 'Su reservación ha sido creada', $message);
+            sendMail($correo, 'Su reservación ha sido creada', $message, '<h3>No contestar a este correo</h3>');
             if ($_POST['continue'] == 'yes') {
                 header("Location: ../../$tipo/inicio.php");
             } else {
