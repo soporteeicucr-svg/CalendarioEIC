@@ -35,8 +35,7 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
 
                 <!-- Selección de espacio -->
                 <label for="espacio"><i class="fa-solid fa-star-of-life fa-2xs" style="color: #ff0000;"></i> Espacio a reservar
-                    (Sujeto
-                    a disponibilidad)</label>
+                    (Sujeto a disponibilidad)</label>
                 <div class="selectContainer">
                     <select class="selectValue" name="espacio" id="espacio" onchange="updateSpace()" required>
                         <option value="">Seleccione un espacio</option>
@@ -69,15 +68,13 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
                 <!-- Correo institucional -->
                 <label for="correo"><i class="fa-solid fa-star-of-life fa-2xs" style="color: #ff0000;"></i> Correo
                     institucional</label>
-                <input type="text" name="correo" id="correo" placeholder="Ingrese su correo institucional" value=<?php echo mb_convert_case(mb_strtolower($_SESSION['usuario'], 'UTF-8'), MB_CASE_LOWER); ?>
-                    oninput="checkMail()">
+                <input type="text" name="correo" id="correo" placeholder="Ingrese su correo institucional" value=<?php echo mb_convert_case(mb_strtolower($_SESSION['usuario'], 'UTF-8'), MB_CASE_LOWER); ?> oninput="checkMail()">
                 <div id="error_correo"></div>
 
                 <!-- Selección de día -->
                 <label for="fecha" class="control-label"><i class="fa-solid fa-star-of-life fa-2xs" style="color: #ff0000;"></i>
                     Día</label>
-                <input type="text" name="fecha" id="fecha" placeholder="Seleccione fecha" required
-                    onchange="updateDate()">
+                <input type="text" name="fecha" id="fecha" placeholder="Seleccione fecha" required onchange="updateDate()">
 
                 <!-- Selección de hora de inicio -->
                 <label for="hora_inicio" class="control-label"><i class="fa-solid fa-star-of-life fa-2xs"
