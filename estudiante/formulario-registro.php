@@ -38,13 +38,15 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
                     <label for="nombre"><i class="fa-solid fa-star-of-life fa-2xs" style="color: #ff0000;"></i> Nombre
                         completo</label>
                     <input type="text" name="nombre" id="nombre" placeholder="Ingrese su nombre"
-                        value="<?php echo mb_convert_case(mb_strtolower($_SESSION['nombre'], 'UTF-8'), MB_CASE_TITLE); ?>" oninput="checkFilled()">
+                        value="<?php echo mb_convert_case(mb_strtolower($_SESSION['nombre'], 'UTF-8'), MB_CASE_TITLE); ?>"
+                        oninput="checkFilled()">
 
                     <!-- Correo institucional -->
                     <label for="correo"><i class="fa-solid fa-star-of-life fa-2xs" style="color: #ff0000;"></i> Correo
                         institucional</label>
                     <input type="text" name="correo" id="correo" placeholder="Ingrese su correo institucional"
-                        value="<?php echo mb_convert_case(mb_strtolower($_SESSION['usuario'], 'UTF-8'), MB_CASE_LOWER); ?>" oninput="checkMail()">
+                        value="<?php echo mb_convert_case(mb_strtolower($_SESSION['usuario'], 'UTF-8'), MB_CASE_LOWER); ?>"
+                        oninput="checkMail()">
                     <div id="error_correo"></div>
 
                     <!-- carnet -->

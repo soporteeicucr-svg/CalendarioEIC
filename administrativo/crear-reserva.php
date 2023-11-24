@@ -35,8 +35,7 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
 
                 <!-- Selección de espacio -->
                 <label for="espacio"><i class="fa-solid fa-star-of-life fa-2xs" style="color: #ff0000;"></i> Espacio a reservar
-                    (Sujeto
-                    a disponibilidad)</label>
+                    (Sujeto a disponibilidad)</label>
                 <div class="selectContainer">
                     <select class="selectValue" name="espacio" id="espacio" onchange="updateSpace()" required>
                         <option value="">Seleccione un espacio</option>
@@ -70,13 +69,39 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
                     institucional</label>
                 <input type="text" name="correo" id="correo" placeholder="Ingrese el correo institucional del solicitante"
                     oninput="checkMail()" required>
-                    <div id="error_correo"></div>
+                <div id="error_correo"></div>
+
+                <!-- Activar repeticiópn de reserva -->
+                <label>¿Desea repetir esta reserva?</label>
+                <div class="selectorForm">
+                    <label for="si">
+                        <input type="radio" name="repetir" value="si" id="si" onchange="changeRepetition('si');">Si
+                    </label>
+                    <label for="no">
+                        <input type="radio" name="repetir" value="no" id="no" onchange="changeRepetition('no');" checked>No
+                    </label>
+                </div>
 
                 <!-- Selección de día -->
-                <label for="fecha" class="control-label"><i class="fa-solid fa-star-of-life fa-2xs" style="color: #ff0000;"></i>
-                    Día</label>
-                <input type="text" name="fecha" id="fecha" placeholder="Seleccione la fecha" required
-                    onchange="updateDate()">
+                <div id="dia">
+                    <label for="fecha" class="control-label"><i class="fa-solid fa-star-of-life fa-2xs"
+                            style="color: #ff0000;"></i>
+                        Día</label>
+                    <input type="text" name="fecha" id="fecha" placeholder="Seleccione la fecha" required
+                        onchange="updateDate()">
+                </div>
+
+                <!-- Selección de rango de días -->
+                <div id="rango">
+                    <label for="rango_inicio" class="control-label"><i class="fa-solid fa-star-of-life fa-2xs"
+                            style="color: #ff0000;"></i> Inicio</label>
+                    <input type="text" name="rango_inicio" id="rango_inicio" placeholder="Seleccione la hora de inicio" required
+                        onchange="updateDatePickers('rango_inicio')">
+                    <label for="rango_fin" class="control-label"><i class="fa-solid fa-star-of-life fa-2xs"
+                            style="color: #ff0000;"></i> Finalización</label>
+                    <input type="text" name="rango_fin" id="rango_fin" placeholder="Seleccione la hora de finalización" required
+                        onchange="updateDatePickers('rango_fin')">
+                </div>
 
                 <!-- Selección de hora de inicio -->
                 <label for="hora_inicio" class="control-label"><i class="fa-solid fa-star-of-life fa-2xs"
@@ -162,6 +187,7 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
                 <div id="error_hora_fin"></div>
                 <div id="hora_fin_mayor"></div>
                 <div id="error_reserva_concurrente"></div>
+                </div>
 
                 <!-- Continuar o cerrar sesión, por defecto intenta cerrar la sesión -->
                 <input type="hidden" name="continue" id="continue" value="no" />
@@ -207,6 +233,30 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
                 ],
                 "locale": {
                     "firstDayOfWeek": 1 // Empieza la semana en lunes
+                }
+            });
+
+            // Rango de fechas para repetir reservas
+            flatpickr('#rango_inicio', {
+                "minDate": minDate,
+                "disable": [
+                    function (date) {
+                        return (date.getDay() === 0);
+                    }
+                ],
+                "locale": {
+                    "firstDayOfWeek": 1
+                }
+            });
+            flatpickr('#rango_fin', {
+                "minDate": minDate,
+                "disable": [
+                    function (date) {
+                        return (date.getDay() === 0);
+                    }
+                ],
+                "locale": {
+                    "firstDayOfWeek": 1
                 }
             });
 
@@ -280,6 +330,16 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
                     spaceSelected = false;
                 }
                 updateDate()
+            }
+
+            function changeRepetition(option) {
+                if (option == 'si') {
+                    document.getElementById('dia').setAttribute("hidden", "hidden");
+                    document.getElementById('rango').removeAttribute("hidden");
+                } else {
+                    document.getElementById('dia').removeAttribute("hidden");
+                    document.getElementById('rango').setAttribute("hidden", "hidden");
+                }
             }
 
             // Verifica que se haya elegido un día
@@ -392,6 +452,35 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
                 checkFilled();
             }
 
+            function updateDatePickers(inputDate) {
+                if (inputDate == "rango_inicio") {
+                    flatpickr('#rango_fin', {
+                        "minDate": new Date(document.getElementById("rango_inicio").value),
+                        "disable": [
+                            function (date) {
+                                return (date.getDay() === 0);
+                            }
+                        ],
+                        "locale": {
+                            "firstDayOfWeek": 1
+                        }
+                    });
+                } else {
+                    flatpickr('#rango_inicio', {
+                        "minDate": minDate,
+                        "maxDate": new Date(document.getElementById("rango_fin").value),
+                        "disable": [
+                            function (date) {
+                                return (date.getDay() === 0);
+                            }
+                        ],
+                        "locale": {
+                            "firstDayOfWeek": 1
+                        }
+                    });
+                }
+            }
+
             // Función para enviar la información al servidor
             function sendForm(form) {
                 alertify.confirm('Mensaje',
@@ -403,6 +492,8 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
                     }
                 ).set({ transition: "zoom", closable: false, labels: { ok: 'Si', cancel: 'No' } }).autoOk(10);
             }
+
+            changeRepetition('no');
         </script>
 
         </html>
