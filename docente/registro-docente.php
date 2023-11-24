@@ -34,13 +34,15 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
                     <label for="nombre"><i class="fa-solid fa-star-of-life fa-2xs" style="color: #ff0000;"></i> Nombre
                         completo</label>
                     <input type="text" name="nombre" id="nombre" placeholder="Ingrese su nombre"
-                        value="<?php echo mb_convert_case(mb_strtolower($_SESSION['nombre'], 'UTF-8'), MB_CASE_TITLE); ?>" oninput="checkFilled()">
+                        value="<?php echo mb_convert_case(mb_strtolower($_SESSION['nombre'], 'UTF-8'), MB_CASE_TITLE); ?>"
+                        oninput="checkFilled()">
 
                     <!-- Correo institucional -->
                     <label for="correo"><i class="fa-solid fa-star-of-life fa-2xs" style="color: #ff0000;"></i> Correo
                         institucional</label>
                     <input type="text" name="correo" id="correo" placeholder="Ingrese su correo institucional"
-                        value="<?php echo mb_convert_case(mb_strtolower($_SESSION['usuario'], 'UTF-8'), MB_CASE_LOWER); ?>" oninput="checkMail()">
+                        value="<?php echo mb_convert_case(mb_strtolower($_SESSION['usuario'], 'UTF-8'), MB_CASE_LOWER); ?>"
+                        oninput="checkMail()">
                     <div id="error_correo"></div>
 
                     <!-- Cédula de identidad -->
@@ -57,13 +59,12 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
                     <h2 class="subDatos">Datos de reservación</h2>
 
                     <!-- Sigla del curso -->
-                    <label for="sigla_curso"><i class="fa-solid fa-star-of-life fa-2xs" style="color: #ff0000;"></i> Sigla del
-                        curso</label>
+                    <label for="sigla_curso">Sigla del curso (Si aplica)</label>
                     <input type="text" name="sigla_curso" id="sigla_curso"
                         placeholder="Ingrese la sigla del curso (ejemplos: IC-0101, IC9500)" oninput="searchCourse()">
 
                     <!-- Nombre del curso (se autorrellena) -->
-                    <label for="nombre_curso">Nombre del curso</label>
+                    <label for="nombre_curso">Nombre del curso (Si aplica)</label>
                     <input type="text" name="nombre_curso" id="nombre_curso" placeholder="Ingrese la sigla del curso primero"
                         readonly>
 
@@ -111,7 +112,7 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
 
             // Revisa que todos los campos estén correctos y activa el botón para enviar los datos
             function checkFilled() {
-                if (document.getElementById('nombre').value != "" && validMail && document.getElementById('cedula').value != "" && spaceSelected && foundCourse && validTimeRange) {
+                if (document.getElementById('nombre').value != "" && validMail && document.getElementById('cedula').value != "" && spaceSelected && (document.getElementById('sigla_curso').value == "" || foundCourse) && validTimeRange) {
                     document.getElementById('btnSubmit').disabled = false;
                 } else {
                     document.getElementById('btnSubmit').disabled = true;
