@@ -455,7 +455,7 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
             function updateDatePickers(inputDate) {
                 if (inputDate == "rango_inicio") {
                     flatpickr('#rango_fin', {
-                        "minDate": new Date(document.getElementById("rango_inicio").value),
+                        "minDate": new Date(document.getElementById("rango_inicio").value + "T00:00:00.00-06:00"),
                         "disable": [
                             function (date) {
                                 return (date.getDay() === 0);
@@ -468,7 +468,7 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
                 } else {
                     flatpickr('#rango_inicio', {
                         "minDate": minDate,
-                        "maxDate": new Date(document.getElementById("rango_fin").value),
+                        "maxDate": new Date(document.getElementById("rango_fin").value + "T00:00:00.00-06:00"),
                         "disable": [
                             function (date) {
                                 return (date.getDay() === 0);
