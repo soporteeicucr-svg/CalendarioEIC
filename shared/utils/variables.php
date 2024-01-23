@@ -1,4 +1,7 @@
 <?php
+// Variables del servidor
+$rootDir = '/registro';
+
 // Base de datos de cuentas de usuarios
 $server = 'serverlic.eic.ucr.ac.cr';
 $adminUser = 'EIC\Administrador';
