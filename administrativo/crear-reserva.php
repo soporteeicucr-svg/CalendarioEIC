@@ -72,7 +72,7 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
                 <div id="error_correo"></div>
 
                 <!-- Activar repeticiópn de reserva -->
-                <label>¿Desea repetir esta reserva?</label>
+                <h4 style="margin: 0px">¿Desea repetir esta reserva?</h4>
                 <div class="selectorForm">
                     <label for="si">
                         <input type="radio" name="repetir" value="si" id="si" onchange="changeRepetition('si');">Si
@@ -85,22 +85,34 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
                 <!-- Selección de día -->
                 <div id="dia">
                     <label for="fecha" class="control-label"><i class="fa-solid fa-star-of-life fa-2xs"
-                            style="color: #ff0000;"></i>
-                        Día</label>
+                            style="color: #ff0000;"></i> Fecha</label>
                     <input type="text" name="fecha" id="fecha" placeholder="Seleccione la fecha" required
                         onchange="updateDate()">
                 </div>
 
                 <!-- Selección de rango de días -->
                 <div id="rango">
+                    <label for="numero_dia" class="control-label"><i class="fa-solid fa-star-of-life fa-2xs"
+                            style="color: #ff0000;"></i> Día</label>
+                    <div class="selectContainer">
+                        <select class="selectValue" name="numero_dia" id="numero_dia" required onchange="updateDay()">
+                            <option value="">Seleccione el día</option>
+                            <option value="1">Lunes</option>
+                            <option value="2">Martes</option>
+                            <option value="3">Miércoles</option>
+                            <option value="4">Jueves</option>
+                            <option value="5">Viernes</option>
+                            <option value="6">Sábado</option>
+                        </select>
+                    </div>
                     <label for="rango_inicio" class="control-label"><i class="fa-solid fa-star-of-life fa-2xs"
                             style="color: #ff0000;"></i> Inicio</label>
-                    <input type="text" name="rango_inicio" id="rango_inicio" placeholder="Seleccione la hora de inicio" required
-                        onchange="updateDatePickers('rango_inicio')">
+                    <input type="text" name="rango_inicio" id="rango_inicio" placeholder="Seleccione la fecha de inicio"
+                        required onchange="updateDatePickers('rango_inicio')">
                     <label for="rango_fin" class="control-label"><i class="fa-solid fa-star-of-life fa-2xs"
                             style="color: #ff0000;"></i> Finalización</label>
-                    <input type="text" name="rango_fin" id="rango_fin" placeholder="Seleccione la hora de finalización" required
-                        onchange="updateDatePickers('rango_fin')">
+                    <input type="text" name="rango_fin" id="rango_fin" placeholder="Seleccione la fecha de finalización"
+                        required onchange="updateDatePickers('rango_fin')">
                 </div>
 
                 <!-- Selección de hora de inicio -->
@@ -220,6 +232,9 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
             let validEndTime = false;
             let validStartEndTime = false;
             let validTimeRange = false;
+            let validDay = false;
+            let validRangeStart = false;
+            let validRangeEnd = false;
 
             // Creación de un campo de selección de fecha con flatpickr
             minDate = new Date();
@@ -236,33 +251,9 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
                 }
             });
 
-            // Rango de fechas para repetir reservas
-            flatpickr('#rango_inicio', {
-                "minDate": minDate,
-                "disable": [
-                    function (date) {
-                        return (date.getDay() === 0);
-                    }
-                ],
-                "locale": {
-                    "firstDayOfWeek": 1
-                }
-            });
-            flatpickr('#rango_fin', {
-                "minDate": minDate,
-                "disable": [
-                    function (date) {
-                        return (date.getDay() === 0);
-                    }
-                ],
-                "locale": {
-                    "firstDayOfWeek": 1
-                }
-            });
-
             // Revisa que todos los campos estén correctos y activa el botón para enviar los datos
             function checkFilled() {
-                if (spaceSelected && foundCourse && validDate && validStartTime && validEndTime && validStartEndTime && validTimeRange) {
+                if (spaceSelected && foundCourse && validDate && validStartTime && validEndTime && validStartEndTime && validTimeRange && validDay && validRangeStart && validRangeEnd) {
                     document.getElementById('btnSubmit').disabled = false;
                 } else {
                     document.getElementById('btnSubmit').disabled = true;
@@ -332,14 +323,36 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
                 updateDate()
             }
 
+            function updateDay() {
+                if (document.getElementById("numero_dia").value != "") {
+                    validDay = true;
+                } else {
+                    validDay = false;
+                }
+                checkFilled();
+            }
+
             function changeRepetition(option) {
                 if (option == 'si') {
                     document.getElementById('dia').setAttribute("hidden", "hidden");
                     document.getElementById('rango').removeAttribute("hidden");
+                    document.getElementById('fecha').value = "";
+                    validDate = true;
+                    validDay = false;
+                    validRangeStart = false;
+                    validRangeEnd = false;
                 } else {
                     document.getElementById('dia').removeAttribute("hidden");
                     document.getElementById('rango').setAttribute("hidden", "hidden");
+                    document.getElementById('numero_dia').value = "";
+                    document.getElementById('rango_inicio').value = "";
+                    document.getElementById('rango_fin').value = "";
+                    validDate = false;
+                    validDay = true;
+                    validRangeStart = true;
+                    validRangeEnd = true;
                 }
+                updateDatePickers("");
             }
 
             // Verifica que se haya elegido un día
@@ -356,6 +369,8 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
                 if (document.getElementById("hora_fin").value != "") {
                     updateTime("hora_fin");
                 }
+
+                checkFilled();
             }
 
             // Verifica que el día y las horas elegidas no choquen con otros horarios
@@ -454,8 +469,23 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
 
             function updateDatePickers(inputDate) {
                 if (inputDate == "rango_inicio") {
+                    let newMinDate = new Date(document.getElementById("rango_inicio").value + "T00:00:00.00-06:00");
                     flatpickr('#rango_fin', {
-                        "minDate": new Date(document.getElementById("rango_inicio").value + "T00:00:00.00-06:00"),
+                        "minDate": newMinDate,
+                        "disable": [
+                            function (date) {
+                                return (date.getDay() === 0);
+                            }
+                        ],
+                        "locale": {
+                            "firstDayOfWeek": 1
+                        }
+                    });
+                } else if (inputDate == "rango_fin") {
+                    let newMaxDate = new Date(document.getElementById("rango_fin").value + "T00:00:00.00-06:00")
+                    flatpickr('#rango_inicio', {
+                        "minDate": minDate,
+                        "maxDate": newMaxDate,
                         "disable": [
                             function (date) {
                                 return (date.getDay() === 0);
@@ -466,9 +496,20 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
                         }
                     });
                 } else {
+                    // Rango de fechas para repetir reservas
                     flatpickr('#rango_inicio', {
                         "minDate": minDate,
-                        "maxDate": new Date(document.getElementById("rango_fin").value + "T00:00:00.00-06:00"),
+                        "disable": [
+                            function (date) {
+                                return (date.getDay() === 0);
+                            }
+                        ],
+                        "locale": {
+                            "firstDayOfWeek": 1
+                        }
+                    });
+                    flatpickr('#rango_fin', {
+                        "minDate": minDate,
                         "disable": [
                             function (date) {
                                 return (date.getDay() === 0);
@@ -479,18 +520,69 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
                         }
                     });
                 }
+
+                if (inputDate != "") {
+                    if (document.getElementById("rango_inicio").value != "") {
+                        validRangeStart = true;
+                    } else {
+                        validRangeStart = false;
+                    }
+
+                    if (document.getElementById("rango_fin").value != "") {
+                        validRangeEnd = true;
+                    } else {
+                        validRangeEnd = false;
+                    }
+                }
+
+                checkFilled();
             }
 
             // Función para enviar la información al servidor
             function sendForm(form) {
-                alertify.confirm('Mensaje',
-                    'Reservación creada de manera exitosa, ¿desea cerrar la sesión?',
-                    function () { form.submit() },
-                    function () {
-                        document.getElementById("continue").setAttribute("value", "yes");
-                        form.submit();
+                if (document.getElementsByName("repetir").value == "no") {
+                    alertify.confirm('Mensaje',
+                        'Reservación creada de manera exitosa, ¿desea cerrar la sesión?',
+                        function () { form.submit() },
+                        function () {
+                            document.getElementById("continue").setAttribute("value", "yes");
+                            form.submit();
+                        }
+                    ).set({ transition: "zoom", closable: false, labels: { ok: 'Si', cancel: 'No' } }).autoOk(10);
+                } else {
+                    let dayNum = document.getElementById("numero_dia").value;
+                    let dateRangeStart = new Date(document.getElementById("rango_inicio").value + "T00:00:00.00-06:00");
+                    let dateRangeEnd = new Date(document.getElementById("rango_fin").value + "T00:00:00.00-06:00");
+                    let range = dateRangeStart;
+                    let dates = [];
+
+                    while (range <= dateRangeEnd) {
+                        if (range.getDay() == dayNum) {
+                            dates.push(new Date(range));
+                        }
+                        range.setDate(range.getDate() + 1);
+                        console.log(range);
                     }
-                ).set({ transition: "zoom", closable: false, labels: { ok: 'Si', cancel: 'No' } }).autoOk(10);
+
+                    let conflictingDates = [];
+
+                    // Falta probar
+
+                    for (date in dates) {
+                        let newReservationStart = date + " " + document.getElementById("hora_inicio").value + ":00";
+                        let newReservationEnd = date + " " + document.getElementById("hora_fin").value + ":00";
+                        for (i in listaReservas) {
+                            let startDateTime = listaReservas[i]["hora_inicio"];
+                            let endDateTime = listaReservas[i]["hora_fin"];
+                            let space = listaReservas[i]["espacio"];
+                            if ((newReservationStart >= startDateTime && newReservationStart <= endDateTime && document.getElementById("espacio").value == space)
+                            || (newReservationEnd >= startDateTime && newReservationEnd <= endDateTime && document.getElementById("espacio").value == space)
+                            || (newReservationStart < endDateTime && startDateTime < newReservationEnd && document.getElementById("espacio").value == space)) {
+                                conflictingDates.push(date);
+                            }
+                        }
+                    }
+                }
             }
 
             changeRepetition('no');
