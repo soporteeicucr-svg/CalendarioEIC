@@ -61,7 +61,7 @@ function notifyMail($subject, $message, $header)
         $mail->setFrom($mailAddress, $mailAlias);
         $mail->addAddress($administratorMail);
         if ($approvalRequired) {
-            $mail->addAddress($principalName);
+            $mail->addAddress($principalMail);
         }
 
         $mail->Subject = $subject;

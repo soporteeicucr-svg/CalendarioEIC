@@ -575,8 +575,6 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
                     let conflictingDatesApproved = [];
                     let conflictingDatesPending = [];
 
-                    // Falta probar
-
                     for (date in dates) {
                         let newReservationStart = dates[date] + " " + document.getElementById("hora_inicio").value + ":00";
                         let newReservationEnd = dates[date] + " " + document.getElementById("hora_fin").value + ":00";
@@ -604,50 +602,143 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
                         }
                     }
 
-                    var overlappingMessage = "";
+                    if (conflictingDatesApproved.length > 0 || conflictingDatesPending.length > 0) {
+                        var overlappingMessage = "";
 
-                    for (i in conflictingDatesApproved) {
-                        overlappingMessage = overlappingMessage + 'ID: ' + conflictingDatesApproved[i]['id'] + ', Inicio: ' + conflictingDatesApproved[i]['hora_inicio'] + ', Finalización: ' + conflictingDatesApproved[i]['hora_fin'] + '<br>';
-                    }
-
-                    for (i in conflictingDatesPending) {
-                        overlappingMessage = overlappingMessage + 'ID: ' + conflictingDatesPending[i]['id'] + ', Inicio: ' + conflictingDatesPending[i]['hora_inicio'] + ', Finalización: ' + conflictingDatesPending[i]['hora_fin'] + '<br>';
-                    }
-
-                    alertify.confirm('Alerta',
-                        'Esto cancelará las siguientes reservaciones:<br><br>' + overlappingMessage + '<br>¿desea continuar?',
-                        function () {
-                            let approved = [];
-                            let pending = [];
-
+                        if (conflictingDatesApproved.length > 0) {
+                            overlappingMessage = overlappingMessage + 'Solicitudes de reserva aprobadas:<br>'
                             for (i in conflictingDatesApproved) {
-                                approved.push(conflictingDatesApproved[i]['id']);
+                                overlappingMessage = overlappingMessage + 'ID: ' + conflictingDatesApproved[i]['id'] + ', Inicio: ' + conflictingDatesApproved[i]['hora_inicio'] + ', Finalización: ' + conflictingDatesApproved[i]['hora_fin'] + '<br>';
                             }
+                        }
 
+                        if (conflictingDatesApproved.length > 0 && conflictingDatesPending.length > 0) {
+                            overlappingMessage = overlappingMessage + '<br>'
+                        }
+
+                        if (conflictingDatesPending.length > 0) {
+                            overlappingMessage = overlappingMessage + 'Solicitudes de reserva pendientes:<br>'
                             for (i in conflictingDatesPending) {
-                                pending.push(conflictingDatesPending[i]['id']);
+                                overlappingMessage = overlappingMessage + 'ID: ' + conflictingDatesPending[i]['id'] + ', Inicio: ' + conflictingDatesPending[i]['hora_inicio'] + ', Finalización: ' + conflictingDatesPending[i]['hora_fin'] + '<br>';
                             }
+                        }
 
-                            var element1 = document.createElement("input");
-                            var element2 = document.createElement("input");
-                            var element3 = document.createElement("input");
+                        alertify.confirm('Alerta',
+                            'Esto cancelará/rechazará las siguientes reservaciones:<br><br>' + overlappingMessage + '<br>¿desea continuar?',
+                            function () {
+                                setTimeout(function () {
+                                    alertify.confirm('Mensaje',
+                                        'Reservaciones creadas de manera exitosa, ¿desea cerrar la sesión?',
+                                        function () {
+                                            let approved = [];
+                                            let pending = [];
 
-                            element1.name = "dates";
-                            element1.value = dates;
-                            form.appendChild(element1);
+                                            for (i in conflictingDatesApproved) {
+                                                approved.push(conflictingDatesApproved[i]['id']);
+                                            }
 
-                            element2.name = "approved";
-                            element2.value = approved;
-                            form.appendChild(element2);
+                                            for (i in conflictingDatesPending) {
+                                                pending.push(conflictingDatesPending[i]['id']);
+                                            }
 
-                            element3.name = "pending";
-                            element3.value = pending;
-                            form.appendChild(element3);
+                                            var element1 = document.createElement("input");
+                                            var element2 = document.createElement("input");
+                                            var element3 = document.createElement("input");
 
-                            form.submit();
-                        },
-                        function () { }
-                    ).set({ transition: "zoom", closable: false, labels: { ok: 'Si', cancel: 'No' } });
+                                            element1.name = "dates";
+                                            element1.value = dates;
+                                            form.appendChild(element1);
+
+                                            element2.name = "approved";
+                                            element2.value = approved;
+                                            form.appendChild(element2);
+
+                                            element3.name = "pending";
+                                            element3.value = pending;
+                                            form.appendChild(element3);
+
+                                            form.submit();
+                                        },
+                                        function () {
+                                            document.getElementById("continue").setAttribute("value", "yes");
+
+                                            let approved = [];
+                                            let pending = [];
+
+                                            var element1 = document.createElement("input");
+                                            var element2 = document.createElement("input");
+                                            var element3 = document.createElement("input");
+
+                                            element1.name = "dates";
+                                            element1.value = dates;
+                                            form.appendChild(element1);
+
+                                            element2.name = "approved";
+                                            element2.value = approved;
+                                            form.appendChild(element2);
+
+                                            element3.name = "pending";
+                                            element3.value = pending;
+                                            form.appendChild(element3);
+
+                                            form.submit();
+                                        }
+                                    ).set({ transition: "zoom", closable: false, labels: { ok: 'Si', cancel: 'No' } }).autoOk(10);
+                                }, 100);
+                            },
+                            function () { }
+                        ).set({ transition: "zoom", closable: false, labels: { ok: 'Si', cancel: 'No' } });
+                    } else {
+                        alertify.confirm('Mensaje',
+                            'Reservaciones creadas de manera exitosa, ¿desea cerrar la sesión?',
+                            function () {
+                                let approved = [];
+                                let pending = [];
+
+                                var element1 = document.createElement("input");
+                                var element2 = document.createElement("input");
+                                var element3 = document.createElement("input");
+
+                                element1.name = "dates";
+                                element1.value = dates;
+                                form.appendChild(element1);
+
+                                element2.name = "approved";
+                                element2.value = approved;
+                                form.appendChild(element2);
+
+                                element3.name = "pending";
+                                element3.value = pending;
+                                form.appendChild(element3);
+
+                                form.submit();
+                            },
+                            function () {
+                                document.getElementById("continue").setAttribute("value", "yes");
+
+                                let approved = [];
+                                let pending = [];
+
+                                var element1 = document.createElement("input");
+                                var element2 = document.createElement("input");
+                                var element3 = document.createElement("input");
+
+                                element1.name = "dates";
+                                element1.value = dates;
+                                form.appendChild(element1);
+
+                                element2.name = "approved";
+                                element2.value = approved;
+                                form.appendChild(element2);
+
+                                element3.name = "pending";
+                                element3.value = pending;
+                                form.appendChild(element3);
+
+                                form.submit();
+                            }
+                        ).set({ transition: "zoom", closable: false, labels: { ok: 'Si', cancel: 'No' } }).autoOk(10);
+                    }
                 }
             }
 

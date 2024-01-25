@@ -14,8 +14,13 @@ $password = '';
 $dbname = 'sistema_reservas_eic';
 
 // Cuenta de correo:
-$mailUser = 'ingenieria.civil@ucr.ac.cr';
+$mailAddress = 'ingenieria.civil@ucr.ac.cr';
+$mailAlias = 'Sistema de reserva de espacios EIC';
 $mailPassword = 'y45FJKkC';
+
+// Correos para notificaciones
+$administratorMail = 'ingenieria.civil@ucr.ac.cr';
+$principalMail = 'gabriel.zunigaorozco@ucr.ac.cr';
 
 // OUs (Organizational Unit) y DNs (Distinguished names) para datos de Active Directory
 // DNs utilizan DCs (Domain Component) para la búsqueda
