@@ -44,7 +44,7 @@ function sendMail($address, $subject, $message, $header)
     }
 }
 
-function notifyMail($subject, $message, $header)
+function notifyMail($subject, $message, $header, $approvalRequired)
 {
     include 'variables.php';
     try {

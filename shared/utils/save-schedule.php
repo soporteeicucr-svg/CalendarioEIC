@@ -4,8 +4,8 @@ include 'send-mail.php';
 
 session_start();
 
-if (isset($_SESSION['usuario']) && isset($_POST['repetir'])) {
-    if ($_POST['repetir'] == 'si') {
+if (isset($_SESSION['usuario'])) {
+    if (isset($_POST['repetir']) && $_POST['repetir'] == 'si') {
         $dates = explode(',', $_POST['dates']);
         $approved = explode(',', $_POST['approved']);
         $pending = explode(',', $_POST['pending']);
@@ -165,8 +165,6 @@ if (isset($_SESSION['usuario']) && isset($_POST['repetir'])) {
             exit;
         }
         extract($_POST);
-        $allday = isset($allday);
-
         $sql = "";
 
         $tipo = $_SESSION['tipo'];
@@ -219,7 +217,7 @@ if (isset($_SESSION['usuario']) && isset($_POST['repetir'])) {
                 }
                 $subject = $header;
 
-                notifyMail($subject, $message, $header);
+                notifyMail($subject, $message, $header, $approvalRequired);
                 if ($_POST['continue'] == 'yes') {
                     header("Location: ../../$tipo/inicio.php");
                 } else {
