@@ -477,7 +477,7 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
                         overlappingMessage = overlappingMessage + 'ID: ' + overlapping[i]['id'] + ', Inicio: ' + overlapping[i]['hora_inicio'] + ', Finalización: ' + overlapping[i]['hora_fin'] + '<br>';
                     };
                     alertify.confirm('Mensaje',
-                        'Las reservaciones:<br>' + overlappingMessage + 'serán ' + result + ', ¿desea continuar?',
+                        'Las reservaciones:<br><br>' + overlappingMessage + '<br>serán ' + result + ', ¿desea continuar?',
                         function () {
                             var style = document.createElement("style");
                             style.textContent = ".ajs-cancel { display: none; }";

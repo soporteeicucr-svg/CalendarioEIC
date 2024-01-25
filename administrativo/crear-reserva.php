@@ -215,16 +215,24 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
 
             <?php
             // Obtiene las reservaciones ya existentes que puedan chocar con la nueva
-            $schedules = $conn->query("SELECT * FROM `lista_horarios` WHERE estado = 'aprobado' AND hora_inicio > CURRENT_DATE");
-            $sched_res = [];
-            foreach ($schedules->fetch_all(MYSQLI_ASSOC) as $row) {
-                $sched_res[$row['id']] = $row;
+            $approvedSchedsSelect = $conn->query("SELECT * FROM `lista_horarios` WHERE estado = 'aprobado' AND hora_inicio > CURRENT_DATE");
+            $approvedScheds = [];
+            foreach ($approvedSchedsSelect->fetch_all(MYSQLI_ASSOC) as $row) {
+                $approvedScheds[$row['id']] = $row;
+            }
+
+            // Obtiene las reservaciones creadas pero sin aprobar que puedan chocar con la nueva
+            $pendingSchedsSelect = $conn->query("SELECT * FROM `lista_horarios` WHERE estado = 'pendiente' AND hora_inicio > CURRENT_DATE");
+            $pendingScheds = [];
+            foreach ($pendingSchedsSelect->fetch_all(MYSQLI_ASSOC) as $row) {
+                $pendingScheds[$row['id']] = $row;
             }
             ?>
         </body>
         <script>
             let listaCursos = <?php echo json_encode($courses); ?>;
-            let listaReservas = <?php echo json_encode($sched_res); ?>;
+            let listaReservasAprobadas = <?php echo json_encode($approvedScheds); ?>;
+            let listaReservasPendientes = <?php echo json_encode($pendingScheds); ?>;
             let spaceSelected = false;
             let foundCourse = false;
             let validDate = false;
@@ -381,10 +389,10 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
                     let overlapFound = false;
 
                     if ((input == "hora_inicio" && document.getElementById(input).value >= "07:00" && document.getElementById(input).value < "22:00") || (input == "hora_fin" && document.getElementById(input).value > "07:00" && document.getElementById(input).value <= "22:00")) {
-                        for (i in listaReservas) {
-                            let startDateTime = listaReservas[i]["hora_inicio"];
-                            let endDateTime = listaReservas[i]["hora_fin"];
-                            let space = listaReservas[i]["espacio"];
+                        for (i in listaReservasAprobadas) {
+                            let startDateTime = listaReservasAprobadas[i]["hora_inicio"];
+                            let endDateTime = listaReservasAprobadas[i]["hora_fin"];
+                            let space = listaReservasAprobadas[i]["espacio"];
                             if (selectedDate >= startDateTime && selectedDate <= endDateTime && document.getElementById("espacio").value == space) {
                                 if (input == "hora_inicio") {
                                     if (selectedDate != endDateTime) {
@@ -410,7 +418,8 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
                             if (document.getElementById("fecha").value != "" && document.getElementById("hora_inicio").value != "" && document.getElementById("hora_fin").value != "") {
                                 newReservationStart = document.getElementById("fecha").value + " " + document.getElementById("hora_inicio").value + ":00";
                                 newReservationEnd = document.getElementById("fecha").value + " " + document.getElementById("hora_fin").value + ":00";
-                                if (newReservationStart < endDateTime && startDateTime < newReservationEnd && document.getElementById("espacio").value == space) {
+                                //if (newReservationStart < endDateTime && startDateTime < newReservationEnd && document.getElementById("espacio").value == space) {
+                                if (newReservationStart < startDateTime && newReservationEnd > endDateTime && document.getElementById("espacio").value == space) {
                                     document.getElementById("error_reserva_concurrente").innerHTML = "<h5 style='color: red; margin-top: 0;'>Error: el rango de horas elegido hace conflicto con otra reserva</h5>";
                                     validTimeRange = false;
                                     overlapFound = true;
@@ -540,7 +549,7 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
 
             // Función para enviar la información al servidor
             function sendForm(form) {
-                if (document.getElementsByName("repetir").value == "no") {
+                if (document.querySelector('input[name="repetir"]:checked').value == "no") {
                     alertify.confirm('Mensaje',
                         'Reservación creada de manera exitosa, ¿desea cerrar la sesión?',
                         function () { form.submit() },
@@ -558,30 +567,87 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
 
                     while (range <= dateRangeEnd) {
                         if (range.getDay() == dayNum) {
-                            dates.push(new Date(range));
+                            dates.push(new Date(range).toISOString().split("T")[0]);
                         }
                         range.setDate(range.getDate() + 1);
-                        console.log(range);
                     }
 
-                    let conflictingDates = [];
+                    let conflictingDatesApproved = [];
+                    let conflictingDatesPending = [];
 
                     // Falta probar
 
                     for (date in dates) {
-                        let newReservationStart = date + " " + document.getElementById("hora_inicio").value + ":00";
-                        let newReservationEnd = date + " " + document.getElementById("hora_fin").value + ":00";
-                        for (i in listaReservas) {
-                            let startDateTime = listaReservas[i]["hora_inicio"];
-                            let endDateTime = listaReservas[i]["hora_fin"];
-                            let space = listaReservas[i]["espacio"];
+                        let newReservationStart = dates[date] + " " + document.getElementById("hora_inicio").value + ":00";
+                        let newReservationEnd = dates[date] + " " + document.getElementById("hora_fin").value + ":00";
+
+                        for (i in listaReservasAprobadas) {
+                            let startDateTime = listaReservasAprobadas[i]["hora_inicio"];
+                            let endDateTime = listaReservasAprobadas[i]["hora_fin"];
+                            let space = listaReservasAprobadas[i]["espacio"];
                             if ((newReservationStart >= startDateTime && newReservationStart <= endDateTime && document.getElementById("espacio").value == space)
-                            || (newReservationEnd >= startDateTime && newReservationEnd <= endDateTime && document.getElementById("espacio").value == space)
-                            || (newReservationStart < endDateTime && startDateTime < newReservationEnd && document.getElementById("espacio").value == space)) {
-                                conflictingDates.push(date);
+                                || (newReservationEnd >= startDateTime && newReservationEnd <= endDateTime && document.getElementById("espacio").value == space)
+                                || (newReservationStart < startDateTime && newReservationEnd > endDateTime && document.getElementById("espacio").value == space)) {
+                                conflictingDatesApproved.push(listaReservasAprobadas[i]);
+                            }
+                        }
+
+                        for (i in listaReservasPendientes) {
+                            let startDateTime = listaReservasPendientes[i]["hora_inicio"];
+                            let endDateTime = listaReservasPendientes[i]["hora_fin"];
+                            let space = listaReservasPendientes[i]["espacio"];
+                            if ((newReservationStart >= startDateTime && newReservationStart <= endDateTime && document.getElementById("espacio").value == space)
+                                || (newReservationEnd >= startDateTime && newReservationEnd <= endDateTime && document.getElementById("espacio").value == space)
+                                || (newReservationStart < startDateTime && newReservationEnd > endDateTime && document.getElementById("espacio").value == space)) {
+                                conflictingDatesPending.push(listaReservasPendientes[i]);
                             }
                         }
                     }
+
+                    var overlappingMessage = "";
+
+                    for (i in conflictingDatesApproved) {
+                        overlappingMessage = overlappingMessage + 'ID: ' + conflictingDatesApproved[i]['id'] + ', Inicio: ' + conflictingDatesApproved[i]['hora_inicio'] + ', Finalización: ' + conflictingDatesApproved[i]['hora_fin'] + '<br>';
+                    }
+
+                    for (i in conflictingDatesPending) {
+                        overlappingMessage = overlappingMessage + 'ID: ' + conflictingDatesPending[i]['id'] + ', Inicio: ' + conflictingDatesPending[i]['hora_inicio'] + ', Finalización: ' + conflictingDatesPending[i]['hora_fin'] + '<br>';
+                    }
+
+                    alertify.confirm('Alerta',
+                        'Esto cancelará las siguientes reservaciones:<br><br>' + overlappingMessage + '<br>¿desea continuar?',
+                        function () {
+                            let approved = [];
+                            let pending = [];
+
+                            for (i in conflictingDatesApproved) {
+                                approved.push(conflictingDatesApproved[i]['id']);
+                            }
+
+                            for (i in conflictingDatesPending) {
+                                pending.push(conflictingDatesPending[i]['id']);
+                            }
+
+                            var element1 = document.createElement("input");
+                            var element2 = document.createElement("input");
+                            var element3 = document.createElement("input");
+
+                            element1.name = "dates";
+                            element1.value = dates;
+                            form.appendChild(element1);
+
+                            element2.name = "approved";
+                            element2.value = approved;
+                            form.appendChild(element2);
+
+                            element3.name = "pending";
+                            element3.value = pending;
+                            form.appendChild(element3);
+
+                            form.submit();
+                        },
+                        function () { }
+                    ).set({ transition: "zoom", closable: false, labels: { ok: 'Si', cancel: 'No' } });
                 }
             }
 

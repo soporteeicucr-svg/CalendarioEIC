@@ -17,6 +17,14 @@ if (isset($_SESSION['usuario']) && isset($_POST['repetir'])) {
         $horaInicio = $_POST['hora_inicio'];
         $horaFin = $_POST['hora_fin'];
 
+        $dates = $_POST['dates'];
+        $approved = $_POST['approved'];
+        $pending = $_POST['pending'];
+
+        echo $dates;
+        echo $approved;
+        echo $pending;
+
         // En proceso
 
     } else {
