@@ -322,7 +322,7 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
                             if (document.getElementById("fecha").value != "" && document.getElementById("hora_inicio").value != "" && document.getElementById("hora_fin").value != "") {
                                 newReservationStart = document.getElementById("fecha").value + " " + document.getElementById("hora_inicio").value + ":00";
                                 newReservationEnd = document.getElementById("fecha").value + " " + document.getElementById("hora_fin").value + ":00";
-                                if (newReservationStart < endDateTime && startDateTime < newReservationEnd && document.getElementById("espacio").value == space) {
+                                if (newReservationStart < startDateTime && newReservationEnd > endDateTime && document.getElementById("espacio").value == space) {
                                     document.getElementById("error_reserva_concurrente").innerHTML = "<h5 style='color: red; margin-top: 0;'>Error: el rango de horas elegido hace conflicto con otra reserva</h5>";
                                     validTimeRange = false;
                                     overlapFound = true;
