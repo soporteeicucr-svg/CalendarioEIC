@@ -1,26 +1,17 @@
 <?php
-// Variables del servidor
-$rootDir = '/registro';
-
-// Base de datos de cuentas de usuarios
-$server = 'serverlic.eic.ucr.ac.cr';
-$adminUser = 'EIC\Administrador';
-$adminPassword = 'EIC-2024.';
+// Active Directory: solo se usa $server, para el bind LDAP del propio
+// usuario (shared/iniciar-sesion-adds.php, shared/utils/db-adds.php).
+// No hay valor por defecto a proposito: debe venir del entorno (.env).
+// (Antes aqui vivian $adminUser/$adminPassword con la clave de
+// EIC\Administrador en texto plano; no se usaban en ningun lado y se
+// quitaron.)
+$server = getenv('AD_SERVER') ?: 'serverlic.eic.ucr.ac.cr';
 
 // Base de datos de cursos y horarios
-$host = 'localhost';
-$username = 'root';
-$password = '';
-$dbname = 'sistema_reservas_eic';
-
-// Cuenta de correo:
-$mailAddress = 'ingenieria.civil@ucr.ac.cr';
-$mailAlias = 'Sistema de reserva de espacios EIC';
-$mailPassword = 'y45FJKkC';
-
-// Correos para notificaciones
-$administratorMail = 'ingenieria.civil@ucr.ac.cr';
-$principalMail = 'gabriel.zunigaorozco@ucr.ac.cr';
+$host = getenv('DB_HOST') ?: 'db';
+$username = getenv('DB_USER');
+$password = getenv('DB_PASSWORD');
+$dbname = getenv('DB_NAME') ?: 'sistema_reservas_eic';
 
 // OUs (Organizational Unit) y DNs (Distinguished names) para datos de Active Directory
 // DNs utilizan DCs (Domain Component) para la búsqueda

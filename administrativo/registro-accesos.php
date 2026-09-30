@@ -3,83 +3,84 @@
 
 <?php
 include '../shared/utils/db-conn.php';
+include '../shared/utils/cleanup-access-logs.php';
 
 session_start();
 
 if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
     if ($_SESSION['tipo'] == 'administrativo') {
+        cleanupAccessLogs($conn);
         ?>
 
         <head>
             <meta charset='UTF-8'>
             <meta http-equiv='X-UA-Compatible' content='IE=edge'>
-            <title>Registro de accesos a salas y espacios</title>
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Calendario EIC</title>
             <link rel='stylesheet' type='text/css' href='../shared/lib/bootstrap/bootstrap.min.css'>
-            <link rel='stylesheet' type='text/css' href='../shared/css/reserva.css'>
-            <link rel='stylesheet' type='text/css' href='../shared/css/tabs.css'>
+            <link rel='stylesheet' type='text/css' href='../shared/lib/fontawesome/css/all.css'>
+            <link rel='stylesheet' type='text/css' href='../shared/css/calendario.css'>
+            <link rel='stylesheet' type='text/css' href='../shared/css/tabla-moderna.css'>
             <script src='../shared/lib/jquery/jquery-3.6.0.min.js'></script>
             <script src='../shared/lib/pdfmake/pdfmake.min.js'></script>
             <script src='../shared/lib/pdfmake/vfs_fonts.js'></script>
             <script src='../shared/lib/sheetjs/xlsx.full.min.js'></script>
         </head>
 
-        <body class="bg-light">
-            <nav class="navbar navbar-expand-lg navbar-dark bg-gradient bg-primary" id="topNavBar">
-                <div class="container">
-                    <a class="navbar-brand">
-                        Escuela de Ingeniería Civil
-                    </a>
-                    <div>
-                        <button class="buttonHome" onclick="location.href='inicio.php'">Inicio</button>
-                    </div>
+        <body>
+            <div class="cal-header">
+                <div class="cal-header-brand">
+                    <img src="../shared/img/EIC.png" alt="Logo Escuela de Ingeniería Civil UCR">
+                    <h1>Registro de accesos a salas y espacios</h1>
                 </div>
-            </nav>
-            <div class="container-fluid py-3 tabSize" id="page-container">
-                <div class="row">
-                    <div class="col-md-14">
-                        <div class="text-center">
-                            <h1>Registro de accesos a salas y espacios</h1>
+                <button type="button" class="btn-back" onclick="location.href='inicio.php'">
+                    <i class="fa-solid fa-arrow-left"></i> Inicio
+                </button>
+            </div>
+
+            <div class="calendar-card">
+                <!-- Pestañas -->
+                <div class="calendar-tabs">
+                    <button class="cal-tab" onclick="openTab(event, 'Estudiantes')" id="defaultOpen">Estudiantes</button>
+                    <button class="cal-tab" onclick="openTab(event, 'Docentes')">Docentes</button>
+                </div>
+
+                <!-- Contenido de las tabs -->
+                <div id="Estudiantes" class="tabcontent cal-fade">
+                    <div id="tab Estudiantes">
+
+                        <div class="access-toolbar">
+                            <div class="access-search">
+                                <i class="fa-solid fa-magnifying-glass"></i>
+                                <input id="searchStudent" type="text" placeholder="Buscar...">
+                            </div>
+                            <p class="access-download-label">Descargar:</p>
+                            <button type="button" class="access-download-btn excel" id="exportToExcel"
+                                onclick="exportToExcel('tableStudents', 'searchStudent')" title="Descargar Excel">
+                                <i class="fa-solid fa-file-excel"></i>
+                            </button>
+                            <button type="button" class="access-download-btn pdf" id="exportToPDF"
+                                onclick="exportToPDF('tableStudents', 'searchStudent')" title="Descargar PDF">
+                                <i class="fa-solid fa-file-pdf"></i>
+                            </button>
                         </div>
 
-                        <!-- Tabs -->
-                        <div class="tab d-flex justify-content-center">
-                            <button class="tablinks" onclick="openTab(event, 'Estudiantes')"
-                                id="defaultOpen">Estudiantes</button>
-                            <button class="tablinks" onclick="openTab(event, 'Docentes')">Docentes</button>
-                        </div>
+                        <div class="modern-table-wrap">
+                            <table class="modern-table" id="tableStudents">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Nombre</th>
+                                        <th>Correo</th>
+                                        <th>Carnet</th>
+                                        <th>Teléfono</th>
+                                        <th>Laboratorio</th>
+                                        <th>Fecha</th>
+                                        <th>Hora</th>
+                                    </tr>
+                                </thead>
 
-                        <!-- Contenido de las tabs -->
-                        <div id="Estudiantes" class="tabcontent">
-                            <div id="tab Estudiantes">
-
-                                <div class="d-flex align-items-center justify-content-center mb-1 gap-3">
-                                    <input class="form-control"
-                                        style="font-size: 16px; font-weight: bold; border: 4px solid rgb(0, 151, 255); padding: 12px"
-                                        id="searchStudent" type="text" placeholder="Buscar...">
-                                    <p class="h4 mb-0">Descargar:</p>
-                                    <button type="button" class="btn download-excel-btn" id="exportToExcel"
-                                        onclick="exportToExcel('tableStudents', 'searchStudent')">
-                                    </button>
-                                    <button type="button" class="btn download-pdf-btn" id="exportToPDF"
-                                        onclick="exportToPDF('tableStudents', 'searchStudent')">
-                                    </button>
-                                </div>
-
-                                <table class="table" id="tableStudents" style="margin-bottom: 0;">
-                                    <thead>
-                                        <tr>
-                                            <th>ID</th>
-                                            <th>Nombre</th>
-                                            <th>Correo</th>
-                                            <th>Carnet</th>
-                                            <th>Teléfono</th>
-                                            <th>Laboratorio</th>
-                                            <th>Fecha</th>
-                                            <th>Hora</th>
-                                        </tr>
-                                    </thead>
-
-                                    <tbody id="tableStudentsBody">
+                                <tbody id="tableStudentsBody">
                                         <?php
                                         $query = "SELECT * FROM registro_estudiante ORDER BY id DESC";
                                         $result = $conn->query($query);
@@ -118,24 +119,29 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
                                 </table>
                             </div>
                         </div>
+                    </div>
 
-                        <div id="Docentes" class="tabcontent">
-                            <div id="tab Docentes">
+                    <div id="Docentes" class="tabcontent cal-fade">
+                        <div id="tab Docentes">
 
-                                <div class="d-flex align-items-center justify-content-center mb-1 gap-3">
-                                    <input class="form-control"
-                                        style="font-size: 16px; font-weight: bold; border: 4px solid rgb(0, 151, 255); padding: 12px"
-                                        id="searchProfessor" type="text" placeholder="Buscar...">
-                                    <p class="h4 mb-0">Descargar:</p>
-                                    <button type="button" class="btn download-excel-btn" id="exportToExcel"
-                                        onclick="exportToExcel('tableProfessors', 'searchProfessor')">
-                                    </button>
-                                    <button type="button" class="btn download-pdf-btn" id="exportToPDF"
-                                        onclick="exportToPDF('tableProfessors', 'searchProfessor')">
-                                    </button>
+                            <div class="access-toolbar">
+                                <div class="access-search">
+                                    <i class="fa-solid fa-magnifying-glass"></i>
+                                    <input id="searchProfessor" type="text" placeholder="Buscar...">
                                 </div>
+                                <p class="access-download-label">Descargar:</p>
+                                <button type="button" class="access-download-btn excel" id="exportToExcel"
+                                    onclick="exportToExcel('tableProfessors', 'searchProfessor')" title="Descargar Excel">
+                                    <i class="fa-solid fa-file-excel"></i>
+                                </button>
+                                <button type="button" class="access-download-btn pdf" id="exportToPDF"
+                                    onclick="exportToPDF('tableProfessors', 'searchProfessor')" title="Descargar PDF">
+                                    <i class="fa-solid fa-file-pdf"></i>
+                                </button>
+                            </div>
 
-                                <table class="table" id="tableProfessors" style="margin-bottom: 0;">
+                            <div class="modern-table-wrap">
+                                <table class="modern-table" id="tableProfessors">
                                     <thead>
                                         <tr>
                                             <th>ID</th>
@@ -194,7 +200,6 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
                         </div>
                     </div>
                 </div>
-            </div>
         </body>
         <script>
 
@@ -209,8 +214,8 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
                     tabcontent[i].style.display = "none";
                 }
 
-                // Busca todos los elementos con class="tablinks" y borra la class "active"
-                tablinks = document.getElementsByClassName("tablinks");
+                // Busca todos los elementos con class="cal-tab" y borra la class "active"
+                tablinks = document.getElementsByClassName("cal-tab");
                 for (i = 0; i < tablinks.length; i++) {
                     tablinks[i].className = tablinks[i].className.replace(" active", "");
                 }

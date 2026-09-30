@@ -7,8 +7,12 @@ session_start();
 if (isset($_SESSION['usuario'])) {
     if (isset($_POST['repetir']) && $_POST['repetir'] == 'si') {
         $dates = explode(',', $_POST['dates']);
-        $approved = explode(',', $_POST['approved']);
-        $pending = explode(',', $_POST['pending']);
+        // array_filter descarta las entradas vacías: cuando no hay reservas
+        // en conflicto, "approved"/"pending" llegan como cadena vacía y
+        // explode() devolvería un arreglo con un elemento vacío en vez de
+        // un arreglo realmente vacío.
+        $approved = array_filter(explode(',', $_POST['approved']), fn($v) => trim($v) !== '');
+        $pending = array_filter(explode(',', $_POST['pending']), fn($v) => trim($v) !== '');
 
         if (count($approved) > 0) {
             foreach ($approved as $id) {
@@ -88,12 +92,16 @@ if (isset($_SESSION['usuario'])) {
         $horaInicio = $_POST['hora_inicio'];
         $horaFin = $_POST['hora_fin'];
 
+        // Identificador común para todas las reservaciones de esta serie
+        // repetida, para poder cancelarlas todas de una vez más adelante.
+        $serieId = bin2hex(random_bytes(8));
+
         foreach ($dates as $date) {
             $fechas = $fechas . $date . '<br>';
             $inicio = $date . " " . $horaInicio;
             $fin = $date . " " . $horaFin;
 
-            $sql = "INSERT INTO `lista_horarios` (`espacio`,`sigla_curso`,`nombre_curso`,`solicitante`,`correo`,`hora_inicio`,`hora_fin`, estado) VALUES ('$espacio','$siglaCurso','$nombreCurso','$solicitante','$correo','$inicio','$fin','aprobado')";
+            $sql = "INSERT INTO `lista_horarios` (`espacio`,`sigla_curso`,`nombre_curso`,`solicitante`,`correo`,`hora_inicio`,`hora_fin`,`serie_id`, estado) VALUES ('$espacio','$siglaCurso','$nombreCurso','$solicitante','$correo','$inicio','$fin','$serieId','aprobado')";
             $save = $conn->query($sql);
 
             if ($save) {
@@ -170,61 +178,15 @@ if (isset($_SESSION['usuario'])) {
         $tipo = $_SESSION['tipo'];
 
         if (empty($id)) {
-            if ($tipo == "docente") {
-                $sql = "INSERT INTO `lista_horarios` (`espacio`,`sigla_curso`,`nombre_curso`,`solicitante`,`correo`,`hora_inicio`,`hora_fin`, estado) VALUES ('$espacio','$siglaCurso','$nombreCurso','$solicitante','$correo','$horaInicio','$horaFin','pendiente')";
-            } else if ($tipo == "administrativo") {
-                $sql = "INSERT INTO `lista_horarios` (`espacio`,`sigla_curso`,`nombre_curso`,`solicitante`,`correo`,`hora_inicio`,`hora_fin`, estado) VALUES ('$espacio','$siglaCurso','$nombreCurso','$solicitante','$correo','$horaInicio','$horaFin','aprobado')";
-            }
+            // Las reservaciones de docentes y administrativos quedan
+            // aprobadas de inmediato, no hay un flujo de solicitud/aprobación.
+            $sql = "INSERT INTO `lista_horarios` (`espacio`,`sigla_curso`,`nombre_curso`,`solicitante`,`correo`,`hora_inicio`,`hora_fin`, estado) VALUES ('$espacio','$siglaCurso','$nombreCurso','$solicitante','$correo','$horaInicio','$horaFin','aprobado')";
         } else {
             $sql = "UPDATE `lista_horarios` set `espacio` = '{$espacio}', `sigla_curso` = '{$siglaCurso}', `nombre_curso` = '{$nombreCurso}', `solicitante` = '{$solicitante}', `correo` = '{$correo}', `hora_inicio` = '{$horaInicio}', `hora_fin` = '{$horaFin}' where `id` = '{$id}'";
         }
         $save = $conn->query($sql);
         if ($save) {
-            if ($tipo == "docente") {
-                $select = "SELECT * FROM `lista_horarios` WHERE `espacio` = '$espacio' AND `sigla_curso` = '$siglaCurso' AND `nombre_curso` = '$nombreCurso' AND `solicitante` = '$solicitante' AND `correo` = '$correo' AND `hora_inicio` = '$horaInicio' AND `hora_fin` = '$horaFin'";
-                $result = mysqli_query($conn, $select);
-                $schedule = mysqli_fetch_assoc($result);
-
-                $id = $schedule['id'];
-                $espacio = $schedule['espacio'];
-                $siglaCurso = $schedule['sigla_curso'];
-                $nombreCurso = $schedule['nombre_curso'];
-                $solicitante = $schedule['solicitante'];
-                $correo = $schedule['correo'];
-                $horaInicio = $schedule['hora_inicio'];
-                $horaFin = $schedule['hora_fin'];
-
-                $message = "<p>$solicitante ha solicitado reservar el espacio $espacio, a continuación se muestran los detalles de la solicitud.</p>
-                <p>ID de reservación: <b>$id</b></p>
-                <p>Espacio reservado: <b>$espacio</b></p>
-                <p>Sigla del curso: <b>$siglaCurso</b></p>
-                <p>Nombre del curso: <b>$nombreCurso</b></p>
-                <p>Nombre del solicitante: <b>$solicitante</b></p>
-                <p>Correo del solicitante: <b>$correo</b></p>
-                <p>Desde: <b>$horaInicio</b></p>
-                <p>Hasta: <b>$horaFin</b></p>";
-
-                $approvalRequired = false;
-                if ($espacio == 'Aula PEC' || $espacio == 'Sala Interna') {
-                    $approvalRequired = true;
-                }
-
-                $header = '<h3>Un docente ha solicitado una reserva de espacio';
-                if ($approvalRequired) {
-                    $header = $header . ' que requiere visto bueno de la dirección</h3>';
-                } else {
-                    $header = $header . '</h3>';
-                }
-                $subject = $header;
-
-                notifyMail($subject, $message, $header, $approvalRequired);
-                if ($_POST['continue'] == 'yes') {
-                    header("Location: ../../$tipo/inicio.php");
-                } else {
-                    header("Location: ../cerrar-sesion.php");
-                }
-                exit();
-            } else if ($tipo == "administrativo") {
+            if ($tipo == "docente" || $tipo == "administrativo") {
                 $select = "SELECT * FROM `lista_horarios` WHERE `espacio` = '$espacio' AND `sigla_curso` = '$siglaCurso' AND `nombre_curso` = '$nombreCurso' AND `solicitante` = '$solicitante' AND `correo` = '$correo' AND `hora_inicio` = '$horaInicio' AND `hora_fin` = '$horaFin'";
                 $result = mysqli_query($conn, $select);
                 $schedule = mysqli_fetch_assoc($result);

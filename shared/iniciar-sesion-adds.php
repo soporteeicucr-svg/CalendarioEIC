@@ -6,7 +6,10 @@ session_start();
 
 if (isset($_POST['usuario']) && isset($_POST['contrasena'])) {
     $usuario = validate($_POST['usuario']);
-    $usuario = str_replace("@ucr.ac.cr", "", $usuario);
+    // str_ireplace (no str_replace): el usuario ahora llega en mayúsculas
+    // desde el formulario, así que "@UCR.AC.CR" también debe reconocerse.
+    $usuario = str_ireplace("@ucr.ac.cr", "", $usuario);
+    $usuario = mb_strtoupper($usuario, 'UTF-8'); // mb_*: preserva tildes/ñ correctamente
     $contrasena = validate($_POST['contrasena']);
     $tipo = $_POST['tipo'];
 
@@ -27,16 +30,13 @@ if (isset($_POST['usuario']) && isset($_POST['contrasena'])) {
             $DN = $DNAdministrators;
         }
 
-        /* Inicio de sesión usando SamAccountName
-        // if (ldap_bind($ldapconn, "EIC\$usuario", $contrasena)) {
-        */
-
         // Inicio de sesión usando userprincipalname
         if (ldap_bind($ldapconn, $usuario, $contrasena)) {
             $filter = "(userprincipalname=$usuario)";
             $result = ldap_search($ldapconn, $DN, $filter);
             $entries = ldap_get_entries($ldapconn, $result);
             if (!empty($entries[0])) {
+                unset($_SESSION['intentos_' . $tipo]);
                 $_SESSION['usuario'] = $entries[0]['userprincipalname'][0];
                 $_SESSION['nombre'] = $entries[0]['cn'][0];
                 $_SESSION['tipo'] = $tipo;
@@ -49,11 +49,13 @@ if (isset($_POST['usuario']) && isset($_POST['contrasena'])) {
                 }
                 exit();
             } else {
-                header('Location: ' . '../' . $tipo . '/index.php?error=Credenciales incorrectas');
+                $_SESSION['intentos_' . $tipo] = ($_SESSION['intentos_' . $tipo] ?? 0) + 1;
+                header('Location: ' . '../' . $tipo . '/index.php?error=Credenciales incorrectas&intentos=' . $_SESSION['intentos_' . $tipo]);
                 exit();
             }
         } else {
-            header('Location: ' . '../' . $tipo . '/index.php?error=Credenciales incorrectas');
+            $_SESSION['intentos_' . $tipo] = ($_SESSION['intentos_' . $tipo] ?? 0) + 1;
+            header('Location: ' . '../' . $tipo . '/index.php?error=Credenciales incorrectas&intentos=' . $_SESSION['intentos_' . $tipo]);
             exit();
         }
     }

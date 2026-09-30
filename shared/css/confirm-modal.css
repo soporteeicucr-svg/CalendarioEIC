@@ -1,0 +1,86 @@
+/* =========================================================================
+   Recuadro de confirmación (alertify) con la misma temática moderna del
+   modal "Detalles de reservación" del calendario: cabecera oscura, tarjeta
+   con bordes redondeados y botones en forma de píldora, en vez del
+   diálogo cuadrado por defecto de alertify/bootstrap.
+   ========================================================================= */
+
+/* Centra el diálogo también verticalmente (por defecto alertify solo lo
+   centra horizontalmente y lo deja pegado cerca del borde superior). */
+.alertify .ajs-modal {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Fondo un poco más oscuro mientras el recuadro está abierto, para que
+   contraste más y sea más fácil de leer. */
+.alertify .ajs-dimmer {
+  background-color: #000;
+  opacity: 0.65;
+}
+
+.alertify .ajs-dialog {
+  margin: 0;
+  max-width: 640px;
+  border: none;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 24px 60px -12px rgba(8, 29, 56, 0.35), 0 4px 12px rgba(8, 29, 56, 0.08);
+}
+
+.alertify .ajs-header {
+  background: var(--color-primary-800, #213242);
+  color: #fff;
+  border-bottom: none;
+  font-weight: 700;
+  font-size: 22px;
+  padding: 20px 28px;
+}
+
+.alertify .ajs-body .ajs-content {
+  padding: 24px 28px;
+  font-size: 17px;
+  color: var(--color-gray-700, #3d4451);
+}
+
+.alertify .ajs-footer {
+  border-top: 1px solid var(--color-gray-300, #d4d9e0);
+  padding: 18px 28px;
+}
+
+/* Solo queda el botón de aceptar (el de "No" se quita): se centra y se
+   agranda un poco para que se vea como la única acción disponible. */
+.alertify .ajs-footer .ajs-buttons .ajs-button.ajs-cancel {
+  display: none;
+}
+
+.alertify .ajs-footer .ajs-buttons.ajs-primary {
+  float: none;
+  text-align: center;
+}
+
+.alertify .ajs-footer .ajs-buttons .ajs-button {
+  border: none;
+  border-radius: 999px;
+  padding: 0 22px;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.alertify .ajs-footer .ajs-buttons.ajs-primary .ajs-button {
+  min-width: 240px;
+  min-height: 50px;
+  font-size: 17px;
+}
+
+.alertify .ajs-footer .ajs-buttons .ajs-button.ajs-ok {
+  background: var(--color-primary-800, #213242);
+  color: #fff;
+}
+
+.alertify .ajs-footer .ajs-buttons .ajs-button.ajs-ok:hover {
+  background: var(--color-primary-700, #123a6b);
+}

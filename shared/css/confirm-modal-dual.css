@@ -1,0 +1,77 @@
+/* =========================================================================
+   Misma temática moderna de shared/css/confirm-modal.css (cabecera oscura,
+   bordes redondeados, fondo más oscuro), pero para diálogos de alertify
+   que necesitan mantener DOS botones visibles (Confirmar/Cancelar, Si/No),
+   en vez de quedarse con uno solo. Se usa en administrativo/crear-reserva.php,
+   donde además del recuadro nuevo de "confirmar reserva" ya existían otros
+   diálogos (conflictos de horario, cerrar sesión) que sí necesitan la
+   opción de cancelar.
+   ========================================================================= */
+
+.alertify .ajs-modal {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.alertify .ajs-dimmer {
+  background-color: #000;
+  opacity: 0.65;
+}
+
+.alertify .ajs-dialog {
+  margin: 0;
+  max-width: 640px;
+  border: none;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 24px 60px -12px rgba(8, 29, 56, 0.35), 0 4px 12px rgba(8, 29, 56, 0.08);
+}
+
+.alertify .ajs-header {
+  background: var(--color-primary-800, #213242);
+  color: #fff;
+  border-bottom: none;
+  font-weight: 700;
+  font-size: 20px;
+  padding: 20px 28px;
+}
+
+.alertify .ajs-body .ajs-content {
+  padding: 24px 28px;
+  font-size: 16px;
+  color: var(--color-gray-700, #3d4451);
+}
+
+.alertify .ajs-footer {
+  border-top: 1px solid var(--color-gray-300, #d4d9e0);
+  padding: 16px 28px;
+}
+
+.alertify .ajs-footer .ajs-buttons .ajs-button {
+  border: none;
+  border-radius: 999px;
+  padding: 10px 24px;
+  font-weight: 600;
+  font-size: 15px;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.alertify .ajs-footer .ajs-buttons .ajs-button.ajs-ok {
+  background: var(--color-primary-800, #213242);
+  color: #fff;
+}
+
+.alertify .ajs-footer .ajs-buttons .ajs-button.ajs-ok:hover {
+  background: var(--color-primary-700, #123a6b);
+}
+
+.alertify .ajs-footer .ajs-buttons .ajs-button.ajs-cancel {
+  background: var(--color-gray-100, #eef1f5);
+  color: var(--color-gray-700, #3d4451);
+}
+
+.alertify .ajs-footer .ajs-buttons .ajs-button.ajs-cancel:hover {
+  background: var(--color-gray-300, #d4d9e0);
+}

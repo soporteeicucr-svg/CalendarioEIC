@@ -1,0 +1,7 @@
+Contraseña: 1ng.c1v1/
+
+Dirección web: http://localhost
+
+IP del servidor: 163.178.109.45
+
+IP de la compu del servidor: 163.178.109.42

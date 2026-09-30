@@ -1,106 +1,325 @@
+/* =========================================================================
+   Formularios internos (registro de estudiante/docente, solicitud y
+   creación de reserva): mismo lenguaje visual que login.css (degradado de
+   fondo, tarjeta de vidrio para el <form>, inputs y botones a juego),
+   sin tocar el acomodo de los campos.
+   ========================================================================= */
+
+@font-face {
+  font-family: "CreatoDisplay";
+  src: url("../fonts/CreatoDisplay-Regular.otf") format("opentype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  --gradient-start: #8bb9e3;
+  --gradient-middle: #5886b0;
+  --gradient-end: #37546e;
+  --color-primary-500: #2f6fb3;
+  --color-primary-700: #123a6b;
+  --color-primary-800: #213242;
+  --color-primary-900: #43576a;
+
+  --color-gray-50: #f7f8fa;
+  --color-gray-100: #eef1f5;
+  --color-gray-300: #d4d9e0;
+  --color-gray-500: #8a93a3;
+  --color-gray-600: #5b6472;
+  --color-gray-700: #3d4451;
+
+  --color-danger: #b3261e;
+  --color-danger-dark: #8f1e18;
+  --color-success-bg: #dff0d8;
+  --color-success-text: #3c763d;
+
+  --radius-lg: 1rem;
+  --radius-sm: 10px;
+
+  --shadow-card: 0 24px 60px -12px rgba(8, 29, 56, 0.35), 0 4px 12px rgba(8, 29, 56, 0.08);
+}
+
+* {
+  box-sizing: border-box;
+}
+
 .success {
-  color: #3c763d;
-  background: #dff0d8;
-  border: 1px solid #3c763d;
+  color: var(--color-success-text);
+  background: var(--color-success-bg);
+  border: 1px solid var(--color-success-text);
+  border-radius: var(--radius-sm);
+  padding: 12px 16px;
   margin-bottom: 20px;
 }
 
 .center {
   margin: auto;
-  width: 50%;
+  max-width: 640px;
   padding: 10px;
   text-align: center;
 }
 
+.center img {
+  max-width: 210px;
+  height: auto;
+  margin-bottom: 14px;
+  border-radius: var(--radius-sm);
+}
+
 body {
-  font-family: Arial, sans-serif;
-  background-color: #f2f2f2;
-  padding: auto;
+  margin: 0;
+  min-height: 100vh;
+  font-family: "Segoe UI", Arial, sans-serif;
+  color: var(--color-gray-700);
+  background: linear-gradient(90deg, var(--gradient-start) 0%, var(--gradient-middle) 50%, var(--gradient-end) 100%);
+  padding: 40px 20px;
 }
 
 .subDatos {
-  font-family: Arial, sans-serif;
+  font-family: "CreatoDisplay", "Segoe UI", Arial, sans-serif;
   margin-top: 0;
-  margin-bottom: 25px;
+  margin-bottom: 22px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--color-gray-300);
+  color: var(--color-primary-800);
+  font-size: 19px;
 }
 
 h1 {
   text-align: center;
+  font-family: "CreatoDisplay", "Segoe UI", Arial, sans-serif;
+  color: #fff;
+  font-size: clamp(22px, 2.2vw, 28px);
 }
 
 .subTitulo {
   text-align: center;
   margin-bottom: 30px;
+  color: var(--color-gray-700);
 }
 
-.selectContainer {
-  margin-bottom: 20px;
-  width: 90%;
-  padding: 2px 15px;
-  border-radius: 4px;
-  border: 1px solid #ccc;
-}
+/* -------------------------------------------------------------------------
+   El <form>/.card actúa como la misma tarjeta de vidrio del login
+   ------------------------------------------------------------------------- */
 
-.selectValue {
-  width: 100%;
-  padding: 12px 0;
-  border-radius: 4px;
-  border: 1px solid white;
-  background-color: white;
-}
-
-form {
-  max-width: 450px;
+form,
+.card {
+  max-width: 480px;
   margin: 0 auto;
-  background-color: #fff;
+  background: rgba(255, 255, 255, 0.95);
+  -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
   padding: 40px;
-  border-radius: 8px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  text-align: left;
+}
+
+.card {
+  text-align: center;
+}
+
+/* Formularios con secciones ("Datos personales" / "Datos de reservación"):
+   más anchos, y las secciones van en columnas dentro de la misma tarjeta
+   -> sigue leyéndose como un único formulario, no como dos separados. */
+form.form-wide {
+  max-width: 760px;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: 48px;
+}
+
+.form-col:first-child {
+  padding-right: 24px;
+  border-right: 1px solid var(--color-gray-300);
+}
+
+.form-col:last-child {
+  padding-left: 24px;
+}
+
+@media screen and (max-width: 680px) {
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .form-col:first-child {
+    padding-right: 0;
+    padding-bottom: 8px;
+    border-right: none;
+    border-bottom: 1px solid var(--color-gray-300);
+  }
+
+  .form-col:last-child {
+    padding-left: 0;
+    padding-top: 16px;
+  }
 }
 
 label {
   display: block;
-  margin-bottom: 10px;
-  font-weight: bold;
+  margin-bottom: 8px;
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--color-gray-700);
+}
+
+/* Correo de sesión: texto simple, sin recuadro, para que no parezca un
+   campo editable (el valor real va en un input oculto aparte). */
+.form-static-field {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 26px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--color-gray-300);
+  color: var(--color-primary-800);
+  font-size: 19px;
+  font-weight: 700;
+}
+
+.form-static-field i {
+  color: var(--color-primary-500);
+  font-size: 17px;
+}
+
+/* Otros campos fijos (no editables) dentro de las columnas, como el
+   nombre: mismo espíritu que .form-static-field (sin recuadro), pero en
+   línea con el resto de los campos de la columna. */
+.form-static-value {
+  padding: 0 0 14px;
+  margin-bottom: 20px;
+  border-bottom: 1px solid var(--color-gray-300);
+  color: var(--color-gray-700);
+  font-size: 15px;
+}
+
+.selectContainer {
+  margin-bottom: 20px;
+  width: 100%;
+  padding: 0;
+  border-radius: var(--radius-sm);
+  border: 1.5px solid var(--color-gray-300);
+  background: var(--color-gray-50);
+  overflow: hidden;
+}
+
+.selectValue {
+  width: 100%;
+  padding: 14px 16px;
+  border-radius: var(--radius-sm);
+  border: none;
+  background-color: transparent;
+  font-size: 15px;
+  color: var(--color-gray-700);
 }
 
 input[type="text"],
 input[type="date"],
 input[type="email"],
-input[type="checkbox"],
 input[type="datetime-local"] {
-  width: 90%;
-  padding: 15px;
+  width: 100%;
+  padding: 14px 16px;
   margin-bottom: 20px;
-  border-radius: 4px;
-  border: 1px solid #ccc;
+  border-radius: var(--radius-sm);
+  border: 1.5px solid var(--color-gray-300);
+  background: var(--color-gray-50);
+  font-size: 15px;
+  color: var(--color-gray-700);
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
 }
 
+input[type="text"]:focus,
+input[type="date"]:focus,
+input[type="email"]:focus,
+input[type="datetime-local"]:focus {
+  outline: none;
+  border-color: var(--color-primary-500);
+  box-shadow: 0 0 0 4px rgba(47, 111, 179, 0.15);
+}
+
+input[type="checkbox"] {
+  margin-bottom: 20px;
+}
+
+/* Campos de solo lectura (correo de sesión, fecha autogenerada): se ven
+   claramente distintos de los editables, sin parecer deshabilitados. */
+input[readonly] {
+  background: var(--color-gray-100);
+  color: var(--color-gray-600);
+  cursor: default;
+}
+
+input[readonly]:focus {
+  box-shadow: none;
+  border-color: var(--color-gray-300);
+}
+
+/* Campos obligatorios vacíos: se resaltan en rojo al intentar enviar el
+   formulario (en vez de un asterisco fijo en la etiqueta). */
+input.input-error,
+.selectContainer.input-error {
+  border-color: var(--color-danger) !important;
+  box-shadow: 0 0 0 3px rgba(179, 38, 30, 0.15);
+}
+
+/* Mensaje de error bajo un campo (p.ej. dominio de correo inválido),
+   mismo estilo que el de las pantallas de inicio de sesión. */
+.field-error-text {
+  margin: -10px 0 10px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--color-danger);
+}
+
+.field-error-text:empty {
+  display: none;
+}
+
+/* -------------------------------------------------------------------------
+   Botones
+   ------------------------------------------------------------------------- */
+
 #btnSubmit {
-  background-color: #4caf50;
+  background-color: var(--color-primary-800);
   color: #fff;
-  padding: 15px 25px;
+  padding: 13px 25px;
   border: none;
-  border-radius: 6px;
+  border-radius: var(--radius-sm);
   cursor: pointer;
   display: block;
-  margin-top: 20px;
-  margin-right: auto;
-  margin-left: auto;
-  font-weight: bold;
-  font-size: 15px;
+  width: 37.5%;
+  margin: 20px auto 0;
+  font-weight: 700;
+  font-size: 16px;
+  text-align: center;
+}
+
+#btnSubmit:disabled,
+#btnSubmit:disabled:hover,
+#btnSubmit.btn-incomplete,
+#btnSubmit.btn-incomplete:hover {
+  background-color: var(--color-gray-300);
+  color: var(--color-gray-500);
 }
 
 #btnSubmit:disabled {
-  background-color: rgb(170, 170, 170);
+  cursor: not-allowed;
 }
 
-#btnSubmit:disabled:hover {
-  background-color: rgb(170, 170, 170);
+/* .btn-incomplete se ve igual que deshabilitado, pero sigue siendo
+   clicable: al hacer clic resalta en rojo los campos que faltan. */
+#btnSubmit.btn-incomplete {
+  cursor: pointer;
 }
 
 #btnSubmit:hover {
-  background-color: #48964c;
+  background-color: var(--color-primary-900);
 }
 
 .selectorForm {
@@ -109,19 +328,21 @@ input[type="datetime-local"] {
 }
 
 a {
-  background: #555;
-  padding: 15px 10px;
+  display: inline-block;
+  background: var(--color-gray-600);
+  padding: 12px 20px;
   color: #fff;
-  border-radius: 5px;
+  border-radius: var(--radius-sm);
   border: none;
   text-decoration: none;
-  margin-top: 35px;
-  margin-bottom: 15%;
+  margin-top: 24px;
   text-align: center;
-  font-weight: bold;
+  font-weight: 600;
 }
+
 a:hover {
-  opacity: 0.7;
+  opacity: 0.85;
+  text-decoration: none;
 }
 
 .spacingLogout {
@@ -130,52 +351,83 @@ a:hover {
 
 .avisoHora {
   font-size: 14px;
+  color: var(--color-gray-500);
 }
 
-.card {
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  background-color: #fff;
-  transition: 0.3s;
-  border-radius: 8px;
-  max-width: 450px;
-  margin: 0 auto;
-  margin-top: 20px;
-  padding: 40px;
+#btn3,
+#btn5 {
+  border: none;
+  color: #fff;
+  padding: 11px 20px;
   text-align: center;
+  text-decoration: none;
+  display: block;
+  width: 37.5%;
+  margin: 12px auto 0;
+  font-size: 15px;
+  font-weight: 600;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
 }
 
 #btn3 {
-  background-color: #c75858;
-  border: none;
-  color: white;
-  padding: 15px 32px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 16px;
-  margin: 4px 2px;
-  border-radius: 6px;
-  cursor: pointer;
+  background-color: var(--color-danger);
 }
 
 #btn3:hover {
-  background-color: #df5a51;
+  background-color: var(--color-danger-dark);
 }
 
 #btn5 {
-  background-color: #9b9b9b;
-  border: none;
-  color: white;
-  padding: 15px 32px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 16px;
-  margin: 4px 2px;
-  border-radius: 6px;
-  cursor: pointer;
+  background-color: var(--color-gray-500);
 }
 
 #btn5:hover {
-  background-color: #d1d1d1;
+  background-color: var(--color-gray-600);
+}
+
+/* Recuadro de detalles dentro del diálogo de confirmación (alertify) al
+   registrar/enviar un formulario: repasa lo que se va a enviar antes de
+   cerrar sesión. */
+.confirm-details {
+  text-align: left;
+  background: var(--color-gray-100);
+  border: 1px solid var(--color-gray-300);
+  border-radius: var(--radius-sm);
+  padding: 18px 22px;
+  margin: 4px 0 16px;
+}
+
+.confirm-details p {
+  margin: 10px 0;
+  font-size: 17px;
+  color: var(--color-gray-700);
+}
+
+.confirm-details p span {
+  display: inline-block;
+  min-width: 160px;
+  font-weight: 600;
+  color: var(--color-primary-800);
+}
+
+/* Insignia que resalta el laboratorio/sala reservada: es el dato más
+   relevante del resumen, así que se separa del resto en un bloque propio
+   con mayor tamaño y contraste. */
+.confirm-space-badge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  background: var(--color-primary-800);
+  color: #fff;
+  font-weight: 700;
+  font-size: 22px;
+  border-radius: var(--radius-sm);
+  padding: 18px 20px;
+  margin: 0 0 16px;
+}
+
+.confirm-space-badge i {
+  font-size: 24px;
 }

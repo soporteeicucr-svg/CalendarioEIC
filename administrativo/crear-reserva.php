@@ -1,8 +1,9 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang='es'>
 
 <?php
 include '../shared/utils/get-courses.php';
+include '../shared/utils/get-spaces.php';
 
 session_start();
 
@@ -13,12 +14,13 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
         <head>
             <meta charset='UTF-8'>
             <meta http-equiv='X-UA-Compatible' content='IE=edge'>
-            <title>Crear reserva</title>
+            <title>Calendario EIC</title>
             <link rel='stylesheet' type='text/css' href='../shared/lib/alertify/css/alertify.css'>
             <link rel='stylesheet' type='text/css' href='../shared/lib/alertify/css/themes/bootstrap.css'>
             <link rel='stylesheet' type='text/css' href='../shared/lib/flatpickr/flatpickr.min.css'>
             <link rel='stylesheet' type='text/css' href='../shared/lib/fontawesome/css/all.css'>
             <link rel='stylesheet' type='text/css' href='../shared/css/formulario.css'>
+            <link rel='stylesheet' type='text/css' href='../shared/css/confirm-modal-dual.css'>
             <script src='../shared/lib/alertify/alertify.min.js'></script>
             <script src='../shared/lib/flatpickr/flatpickr.js'></script>
         </head>
@@ -26,50 +28,70 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
         <body>
             <div>
                 <div class="center">
-                    <img src="../shared/img/logoEIC.png" alt="Logo Escuela de Ingeniería Civil UCR">
-                    <h1>Sistema de reserva administrativo</h1>
+                    <img src="../shared/img/EIC.png" alt="Logo Escuela de Ingeniería Civil UCR">
+                    <h1>Sistema Registro Laboratorios</h1>
                 </div>
             </div>
-            <form action="../shared/utils/save-schedule.php" method="post" id="schedule-form">
+            <form class="form-wide" action="../shared/utils/save-schedule.php" method="post" id="schedule-form">
                 <input type="hidden" name="id" value="">
 
-                <!-- Selección de espacio -->
-                <label for="espacio"><i class="fa-solid fa-star-of-life fa-2xs" style="color: #ff0000;"></i> Espacio a reservar
-                    (Sujeto a disponibilidad)</label>
-                <div class="selectContainer">
-                    <select class="selectValue" name="espacio" id="espacio" onchange="updateSpace()" required>
-                        <option value="">Seleccione un espacio</option>
-                        <option value="Laboratorio 1">Laboratorio 1</option>
-                        <option value="Laboratorio 2">Laboratorio 2</option>
-                        <option value="Laboratorio 3">Laboratorio 3</option>
-                        <option value="Aula PEC">Aula PEC (Requiere visto bueno de la dirección)</option>
-                        <option value="Sala Interna">Sala Interna (Requiere visto bueno de la dirección)</option>
-                        <option value="Sala Externa">Sala Externa</option>
-                    </select>
+                <div class="form-grid">
+                    <div class="form-col">
+                        <h2 class="subDatos">Datos del solicitante</h2>
+
+                        <!-- Nombre del solicitante: aqui si se debe escribir, ya que
+                             quien reserva es un administrativo a nombre de otra
+                             persona (no hay sesion de esa persona de la cual tomarlo) -->
+                        <label for="solicitante">Nombre del solicitante</label>
+                        <input type="text" name="solicitante" id="solicitante" placeholder="Ingrese el nombre del solicitante"
+                            oninput="checkFilled()">
+
+                        <!-- Correo institucional: por la misma razon, tambien se
+                             escribe manualmente. Igual que en las pantallas de
+                             inicio de sesión: lo que va antes del @ se pasa a
+                             mayúsculas y el dominio a minúsculas al escribir, y
+                             el dominio @ucr.ac.cr solo se valida hasta que se
+                             deja de escribir (blur), no en cada tecla. -->
+                        <label for="correo">Correo institucional</label>
+                        <input type="text" name="correo" id="correo" placeholder="Ingrese el correo institucional del solicitante"
+                            oninput="forceUppercase(this); clearMailError(); checkFilled();" onblur="checkMail()">
+                        <div id="error_correo" class="field-error-text"></div>
+                    </div>
+
+                    <div class="form-col">
+                        <h2 class="subDatos">Datos de reservación</h2>
+
+                        <!-- Selección de espacio -->
+                        <label for="espacio">Espacio a reservar (Sujeto a disponibilidad)</label>
+                        <div class="selectContainer" id="espacio-container">
+                            <select class="selectValue" name="espacio" id="espacio" onchange="updateSpace()">
+                                <option value="">Seleccione un espacio</option>
+                                <?php foreach ($spaces as $espacio) { ?>
+                                    <option value="<?php echo htmlspecialchars($espacio); ?>">
+                                        <?php echo htmlspecialchars($espacio); ?>
+                                    </option>
+                                <?php } ?>
+                            </select>
+                        </div>
+
+                        <!-- Sigla y nombre del curso: se autocompletan entre sí
+                             con los cursos existentes, pero tambien se puede
+                             escribir uno nuevo o un motivo libre si no aplica a
+                             un curso (no se guarda en la lista de cursos, solo
+                             queda en esta reserva) -->
+                        <label for="sigla_curso">Sigla del curso</label>
+                        <input type="text" name="sigla_curso" id="sigla_curso" list="lista-siglas"
+                            placeholder="Ingrese o elija la sigla del curso, o 'NA' si no aplica" oninput="onSiglaInput()"
+                            autocomplete="off">
+                        <datalist id="lista-siglas"></datalist>
+
+                        <label for="nombre_curso">Nombre del curso</label>
+                        <input type="text" name="nombre_curso" id="nombre_curso" list="lista-nombres"
+                            placeholder="Ingrese o elija el nombre del curso, o el motivo de la reserva" oninput="onNombreInput()"
+                            autocomplete="off">
+                        <datalist id="lista-nombres"></datalist>
+                    </div>
                 </div>
-
-                <!-- Sigla del curso -->
-                <label for="sigla_curso"><i class="fa-solid fa-star-of-life fa-2xs" style="color: #ff0000;"></i> Sigla del
-                    curso</label>
-                <input type="text" name="sigla_curso" id="sigla_curso"
-                    placeholder="Sigla del curso (ejemplos: IC-0101, IC9500) o 'NA' si no aplica" oninput="searchCourse()">
-
-                <!-- Nombre del curso (se autorrellena a menos que se ingrese 'NA' como Sigla del curso) -->
-                <label id="label_nombre_curso" for="nombre_curso">Nombre del curso</label>
-                <input type="text" name="nombre_curso" id="nombre_curso" placeholder="Ingrese la sigla del curso primero"
-                    readonly>
-
-                <!-- Nombre del solicitante -->
-                <label for="solicitante"><i class="fa-solid fa-star-of-life fa-2xs" style="color: #ff0000;"></i> Nombre del
-                    solicitante</label>
-                <input type="text" name="solicitante" id="solicitante" placeholder="Ingrese el nombre del solicitante" required>
-
-                <!-- Correo institucional -->
-                <label for="correo"><i class="fa-solid fa-star-of-life fa-2xs" style="color: #ff0000;"></i> Correo
-                    institucional</label>
-                <input type="text" name="correo" id="correo" placeholder="Ingrese el correo institucional del solicitante"
-                    oninput="checkMail()" required>
-                <div id="error_correo"></div>
 
                 <!-- Activar repeticiópn de reserva -->
                 <h4 style="margin: 0px">¿Desea repetir esta reserva?</h4>
@@ -84,18 +106,16 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
 
                 <!-- Selección de día -->
                 <div id="dia">
-                    <label for="fecha" class="control-label"><i class="fa-solid fa-star-of-life fa-2xs"
-                            style="color: #ff0000;"></i> Fecha</label>
-                    <input type="text" name="fecha" id="fecha" placeholder="Seleccione la fecha" required
+                    <label for="fecha" class="control-label">Fecha</label>
+                    <input type="text" name="fecha" id="fecha" placeholder="Seleccione la fecha"
                         onchange="updateDate()">
                 </div>
 
                 <!-- Selección de rango de días -->
                 <div id="rango">
-                    <label for="numero_dia" class="control-label"><i class="fa-solid fa-star-of-life fa-2xs"
-                            style="color: #ff0000;"></i> Día</label>
-                    <div class="selectContainer">
-                        <select class="selectValue" name="numero_dia" id="numero_dia" required onchange="updateDay()">
+                    <label for="numero_dia" class="control-label">Día</label>
+                    <div class="selectContainer" id="numero-dia-container">
+                        <select class="selectValue" name="numero_dia" id="numero_dia" onchange="updateDay()">
                             <option value="">Seleccione el día</option>
                             <option value="1">Lunes</option>
                             <option value="2">Martes</option>
@@ -105,23 +125,19 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
                             <option value="6">Sábado</option>
                         </select>
                     </div>
-                    <label for="rango_inicio" class="control-label"><i class="fa-solid fa-star-of-life fa-2xs"
-                            style="color: #ff0000;"></i> Inicio</label>
+                    <label for="rango_inicio" class="control-label">Inicio</label>
                     <input type="text" name="rango_inicio" id="rango_inicio" placeholder="Seleccione la fecha de inicio"
-                        required onchange="updateDatePickers('rango_inicio')">
-                    <label for="rango_fin" class="control-label"><i class="fa-solid fa-star-of-life fa-2xs"
-                            style="color: #ff0000;"></i> Finalización</label>
+                        onchange="updateDatePickers('rango_inicio')">
+                    <label for="rango_fin" class="control-label">Finalización</label>
                     <input type="text" name="rango_fin" id="rango_fin" placeholder="Seleccione la fecha de finalización"
-                        required onchange="updateDatePickers('rango_fin')">
+                        onchange="updateDatePickers('rango_fin')">
                 </div>
 
                 <!-- Selección de hora de inicio -->
-                <label for="hora_inicio" class="control-label"><i class="fa-solid fa-star-of-life fa-2xs"
-                        style="color: #ff0000;"></i>
-                    Hora de inicio</label>
-                <div class="selectContainer">
-                    <select class="selectValue" name="hora_inicio" id="hora_inicio" onchange="updateTime('hora_inicio')"
-                        required>
+                <label for="hora_inicio" class="control-label">Hora de inicio</label>
+                <div class="selectContainer" id="hora-inicio-container">
+                    <select class="selectValue" name="hora_inicio" id="hora_inicio"
+                        onchange="updateTime('hora_inicio'); updateEndTimeOptions();">
                         <option value="">Seleccione la hora de inicio</option>
                         <option value="07:00">07:00</option>
                         <option value="07:30">07:30</option>
@@ -158,11 +174,9 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
                 <div id="error_hora_inicio"></div>
 
                 <!-- Selección de hora de finalización -->
-                <label for="hora_fin" class="control-label"><i class="fa-solid fa-star-of-life fa-2xs"
-                        style="color: #ff0000;"></i>
-                    Hora de finalización</label>
-                <div class="selectContainer">
-                    <select class="selectValue" name="hora_fin" id="hora_fin" onchange="updateTime('hora_fin')" required>
+                <label for="hora_fin" class="control-label">Hora de finalización</label>
+                <div class="selectContainer" id="hora-fin-container">
+                    <select class="selectValue" name="hora_fin" id="hora_fin" onchange="updateTime('hora_fin')">
                         <option value="">Seleccione la hora de finalización</option>
                         <option value="07:30">07:30</option>
                         <option value="08:00">08:00</option>
@@ -199,19 +213,19 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
                 <div id="error_hora_fin"></div>
                 <div id="hora_fin_mayor"></div>
                 <div id="error_reserva_concurrente"></div>
-                </div>
 
                 <!-- Continuar o cerrar sesión, por defecto intenta cerrar la sesión -->
                 <input type="hidden" name="continue" id="continue" value="no" />
 
-                <!-- Botón para enviar los datos al servidor -->
-                <input type="button" id="btnSubmit" value="Enviar solicitud" onclick="sendForm(this.form);" disabled />
-            </form>
+                <!-- Botón para enviar los datos al servidor. No queda deshabilitado
+                     de verdad (para poder resaltar los campos faltantes al hacer
+                     clic), solo se ve apagado mientras falten datos. -->
+                <input type="button" id="btnSubmit" class="btn-incomplete" value="Enviar solicitud"
+                    onclick="attemptSubmit(this.form);" />
 
-            <!-- Botón para cancelar la solicitud -->
-            <div class="center">
-                <button id="btn5" onclick="location.href='inicio.php'">Cancelar</button>
-            </div>
+                <!-- Botón para cancelar la solicitud: dentro de la misma tarjeta -->
+                <button type="button" id="btn5" onclick="location.href='inicio.php'">Cancelar</button>
+            </form>
 
             <?php
             // Obtiene las reservaciones ya existentes que puedan chocar con la nueva
@@ -234,7 +248,7 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
             let listaReservasAprobadas = <?php echo json_encode($approvedScheds); ?>;
             let listaReservasPendientes = <?php echo json_encode($pendingScheds); ?>;
             let spaceSelected = false;
-            let foundCourse = false;
+            let validMail = false;
             let validDate = false;
             let validStartTime = false;
             let validEndTime = false;
@@ -259,66 +273,137 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
                 }
             });
 
-            // Revisa que todos los campos estén correctos y activa el botón para enviar los datos
+            // Revisa que todos los campos estén correctos y actualiza el aspecto
+            // (apagado/activo) del botón de enviar
             function checkFilled() {
-                if (spaceSelected && foundCourse && validDate && validStartTime && validEndTime && validStartEndTime && validTimeRange && validDay && validRangeStart && validRangeEnd) {
-                    document.getElementById('btnSubmit').disabled = false;
-                } else {
-                    document.getElementById('btnSubmit').disabled = true;
-                }
+                let complete = document.getElementById('solicitante').value.trim() != "" && validMail &&
+                    document.getElementById('sigla_curso').value.trim() != "" &&
+                    document.getElementById('nombre_curso').value.trim() != "" &&
+                    spaceSelected && validDate && validStartTime && validEndTime && validStartEndTime && validTimeRange && validDay && validRangeStart && validRangeEnd;
+                document.getElementById('btnSubmit').classList.toggle('btn-incomplete', !complete);
             }
 
-            // Verifica que el correo termine con @ucr.ac.cr
-            function checkMail() {
-                if (document.getElementById('correo').value.toLowerCase().endsWith("@ucr.ac.cr")) {
-                    document.getElementById('error_correo').innerHTML = '';
-                    validMail = true;
+            // Llena las listas de sugerencias (datalist) de sigla y nombre con
+            // los cursos existentes; no limitan lo que se puede escribir.
+            function populateCourseDatalists() {
+                let listaSiglas = document.getElementById('lista-siglas');
+                let listaNombres = document.getElementById('lista-nombres');
+                listaCursos.forEach(function (curso) {
+                    let opcionSigla = document.createElement('option');
+                    opcionSigla.value = curso.sigla_curso;
+                    listaSiglas.appendChild(opcionSigla);
+
+                    let opcionNombre = document.createElement('option');
+                    opcionNombre.value = curso.nombre_curso;
+                    listaNombres.appendChild(opcionNombre);
+                });
+            }
+
+            // El AD de la EIC espera el usuario en mayúsculas (NOMBRE.APELLIDO),
+            // pero el dominio "@ucr.ac.cr" debe quedar en minúsculas (así lo
+            // reconoce el AD), igual que en las pantallas de inicio de sesión.
+            function forceUppercase(input) {
+                let p = input.selectionStart;
+                let value = input.value;
+                let at = value.indexOf('@');
+                if (at === -1) {
+                    value = value.toUpperCase();
                 } else {
-                    document.getElementById('error_correo').innerHTML = "<h5 style='color: red; margin-top: 0;'>Error: el correo debe finalizar con @ucr.ac.cr</h5>";
+                    value = value.slice(0, at).toUpperCase() + '@' + value.slice(at + 1).toLowerCase();
+                }
+                input.value = value;
+                input.setSelectionRange(p, p);
+            }
+
+            // Limpia el mensaje/resaltado de error del correo (al escribir, sin
+            // validar todavía: la validación del dominio se hace hasta que se
+            // deja de escribir, ver checkMail())
+            function clearMailError() {
+                document.getElementById('error_correo').textContent = '';
+                document.getElementById('correo').classList.remove('input-error');
+            }
+
+            // Verifica que el correo termine con @ucr.ac.cr; se llama al salir
+            // del campo (blur), no en cada tecla, para no mostrar el error
+            // apenas se empieza a escribir
+            function checkMail() {
+                let correo = document.getElementById('correo').value.trim();
+                if (correo === "") {
+                    clearMailError();
                     validMail = false;
+                } else if (!correo.toLowerCase().endsWith("@ucr.ac.cr")) {
+                    document.getElementById('error_correo').textContent = 'El correo debe usar el dominio @ucr.ac.cr';
+                    document.getElementById('correo').classList.add('input-error');
+                    validMail = false;
+                } else {
+                    clearMailError();
+                    validMail = true;
                 }
                 checkFilled();
             }
 
-            // Compara el código introducido por el usuario con los códigos de los cursos en la base de datos y rellena el campo de nombre si encuentra un match
-            function searchCourse() {
-                let p = document.getElementById('sigla_curso').selectionStart;
-                document.getElementById('sigla_curso').value = document.getElementById('sigla_curso').value.toUpperCase();
-                document.getElementById('sigla_curso').setSelectionRange(p, p);
-
-                // Asegura que el formato sea [Letra][Letra]-[Número][Número][Número][Número]
-                let regex = /[A-Z][A-Z]-[0-9][0-9][0-9][0-9]/;
-                let input = document.getElementById('sigla_curso').value;
-                if (!regex.test(input)) { // Agrega el guión si el usuario no lo introduce manualmente
-                    regex = /[A-Z][A-Z][0-9][0-9][0-9][0-9]/;
-                    if (regex.test(input)) {
-                        input = input.slice(0, 2) + "-" + input.slice(2);
-                    }
+            // Si lo escrito/elegido coincide con un curso conocido, rellena el
+            // otro campo; si no coincide (curso nuevo o motivo libre, no
+            // registrado), no toca el otro campo.
+            function onSiglaInput() {
+                let valor = document.getElementById('sigla_curso').value.trim().toUpperCase();
+                let curso = listaCursos.find((element) => element.sigla_curso.toUpperCase() == valor);
+                if (curso) {
+                    document.getElementById('nombre_curso').value = curso.nombre_curso;
                 }
-                let curso = listaCursos.find((element) => element.sigla_curso == input);
+                checkFilled();
+            }
 
-                // Si encuentra el curso obtiene el nombre
+            function onNombreInput() {
+                let valor = document.getElementById('nombre_curso').value.trim().toUpperCase();
+                let curso = listaCursos.find((element) => element.nombre_curso.toUpperCase() == valor);
                 if (curso) {
                     document.getElementById('sigla_curso').value = curso.sigla_curso;
-                    document.getElementById('nombre_curso').setAttribute("value", curso.nombre_curso);
-                    foundCourse = true;
-                } else { // Si el usuario ingresa NA permite el ingreso de cualquier texto en lugar de nombre de curso
-                    if (document.getElementById('sigla_curso').value == "NA") {
-                        document.getElementById('label_nombre_curso').innerHTML = "<i class='fa-solid fa-star-of-life fa-2xs' style='color: #ff0000;'></i> Razón para la reserva"
-                        document.getElementById('nombre_curso').removeAttribute("readonly");
-                        document.getElementById('nombre_curso').setAttribute("required", "");
-                        document.getElementById('nombre_curso').setAttribute("placeholder", "Ingrese la razón para la reserva");
-                        foundCourse = true;
-                    } else { // Si el usuario ingresa un código incorrecto vuelve a bloquear el espacio de nombre
-                        document.getElementById('label_nombre_curso').innerHTML = "Nombre del curso"
-                        document.getElementById('nombre_curso').setAttribute("value", "");
-                        document.getElementById('nombre_curso').setAttribute("readonly", "");
-                        document.getElementById('nombre_curso').removeAttribute("required");
-                        document.getElementById('nombre_curso').setAttribute("placeholder", "Ingrese la sigla del curso primero");
-                        foundCourse = false;
-                    }
                 }
                 checkFilled();
+            }
+
+            // Convierte una hora "HH:MM" (24 horas) a formato de 12 horas para
+            // mostrarla en las opciones; el "value" interno de cada opción se
+            // mantiene en 24 horas para que las comparaciones (">=", "<=") sigan
+            // funcionando igual.
+            function formatHour12(value) {
+                let [h, m] = value.split(':').map(Number);
+                let date = new Date(2000, 0, 1, h, m);
+                return date.toLocaleTimeString('es-CR', { hour: 'numeric', minute: '2-digit', hour12: true });
+            }
+
+            function formatTimeOptions() {
+                ['hora_inicio', 'hora_fin'].forEach(function (id) {
+                    document.querySelectorAll('#' + id + ' option[value]:not([value=""])').forEach(function (opt) {
+                        opt.textContent = formatHour12(opt.value);
+                    });
+                });
+            }
+
+            // Oculta en "Hora de finalización" las horas que no son posteriores
+            // a la hora de inicio elegida, para evitar seleccionar un rango
+            // inválido
+            function updateEndTimeOptions() {
+                let inicio = document.getElementById('hora_inicio').value;
+                let finSelect = document.getElementById('hora_fin');
+                let seleccionOculta = false;
+
+                Array.from(finSelect.options).forEach(function (opt) {
+                    if (opt.value === '') {
+                        return;
+                    }
+                    let oculta = inicio !== '' && opt.value <= inicio;
+                    opt.hidden = oculta;
+                    if (oculta && finSelect.value === opt.value) {
+                        seleccionOculta = true;
+                    }
+                });
+
+                if (seleccionOculta) {
+                    finSelect.value = '';
+                    updateTime('hora_fin');
+                }
             }
 
             // Verifica que se haya elegido un espacio
@@ -418,7 +503,6 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
                             if (document.getElementById("fecha").value != "" && document.getElementById("hora_inicio").value != "" && document.getElementById("hora_fin").value != "") {
                                 newReservationStart = document.getElementById("fecha").value + " " + document.getElementById("hora_inicio").value + ":00";
                                 newReservationEnd = document.getElementById("fecha").value + " " + document.getElementById("hora_fin").value + ":00";
-                                //if (newReservationStart < endDateTime && startDateTime < newReservationEnd && document.getElementById("espacio").value == space) {
                                 if (newReservationStart < startDateTime && newReservationEnd > endDateTime && document.getElementById("espacio").value == space) {
                                     document.getElementById("error_reserva_concurrente").innerHTML = "<h5 style='color: red; margin-top: 0;'>Error: el rango de horas elegido hace conflicto con otra reserva</h5>";
                                     validTimeRange = false;
@@ -545,6 +629,157 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
                 }
 
                 checkFilled();
+            }
+
+            // Resalta en rojo los campos obligatorios que aún estén vacíos o
+            // sean inválidos (el correo, según lo que ya haya validado checkMail())
+            function highlightMissing() {
+                let ok = true;
+
+                let solicitanteEl = document.getElementById('solicitante');
+                if (solicitanteEl.value.trim() === "") {
+                    solicitanteEl.classList.add('input-error');
+                    ok = false;
+                } else {
+                    solicitanteEl.classList.remove('input-error');
+                }
+
+                checkMail();
+                let correoEl = document.getElementById('correo');
+                if (correoEl.value.trim() === "") {
+                    correoEl.classList.add('input-error');
+                    ok = false;
+                } else if (!validMail) {
+                    ok = false;
+                }
+
+                ['sigla_curso', 'nombre_curso'].forEach(function (id) {
+                    let el = document.getElementById(id);
+                    if (el.value.trim() === "") {
+                        el.classList.add('input-error');
+                        ok = false;
+                    } else {
+                        el.classList.remove('input-error');
+                    }
+                });
+
+                let espacioContainer = document.getElementById('espacio-container');
+                if (document.getElementById('espacio').value === "") {
+                    espacioContainer.classList.add('input-error');
+                    ok = false;
+                } else {
+                    espacioContainer.classList.remove('input-error');
+                }
+
+                if (document.querySelector('input[name="repetir"]:checked').value == "no") {
+                    let fechaEl = document.getElementById('fecha');
+                    if (fechaEl.value.trim() === "") {
+                        fechaEl.classList.add('input-error');
+                        ok = false;
+                    } else {
+                        fechaEl.classList.remove('input-error');
+                    }
+                } else {
+                    let numeroDiaContainer = document.getElementById('numero-dia-container');
+                    if (document.getElementById('numero_dia').value === "") {
+                        numeroDiaContainer.classList.add('input-error');
+                        ok = false;
+                    } else {
+                        numeroDiaContainer.classList.remove('input-error');
+                    }
+
+                    ['rango_inicio', 'rango_fin'].forEach(function (id) {
+                        let el = document.getElementById(id);
+                        if (el.value.trim() === "") {
+                            el.classList.add('input-error');
+                            ok = false;
+                        } else {
+                            el.classList.remove('input-error');
+                        }
+                    });
+                }
+
+                let horaInicioContainer = document.getElementById('hora-inicio-container');
+                if (document.getElementById('hora_inicio').value === "") {
+                    horaInicioContainer.classList.add('input-error');
+                    ok = false;
+                } else {
+                    horaInicioContainer.classList.remove('input-error');
+                }
+
+                let horaFinContainer = document.getElementById('hora-fin-container');
+                if (document.getElementById('hora_fin').value === "") {
+                    horaFinContainer.classList.add('input-error');
+                    ok = false;
+                } else {
+                    horaFinContainer.classList.remove('input-error');
+                }
+
+                return ok;
+            }
+
+            // Al hacer clic en "Enviar solicitud": si falta algo o el correo no es
+            // válido lo resalta, si no, muestra el recuadro de confirmación con
+            // los detalles antes de continuar con el envío
+            function attemptSubmit(form) {
+                let fieldsOk = highlightMissing();
+                if (fieldsOk && validDate && validStartTime && validEndTime && validStartEndTime && validTimeRange && validDay && validRangeStart && validRangeEnd) {
+                    confirmReservation(form);
+                }
+            }
+
+            // Escapa texto antes de insertarlo como HTML en el recuadro de detalles
+            function escapeHtml(texto) {
+                let div = document.createElement('div');
+                div.textContent = texto;
+                return div.innerHTML;
+            }
+
+            function diaNombre(numero) {
+                let dias = { '1': 'Lunes', '2': 'Martes', '3': 'Miércoles', '4': 'Jueves', '5': 'Viernes', '6': 'Sábado' };
+                return dias[numero] || '';
+            }
+
+            // Recuadro de confirmación con los detalles de la reserva: hay que
+            // darle clic a "Confirmar" para que se envíe de verdad (si se
+            // cancela, no se crea nada y se puede seguir editando el formulario)
+            function confirmReservation(form) {
+                let repite = document.querySelector('input[name="repetir"]:checked').value == 'si';
+                let horario = formatHour12(document.getElementById('hora_inicio').value) + ' - ' +
+                    formatHour12(document.getElementById('hora_fin').value);
+
+                let detalles = '<div class="confirm-space-badge"><i class="fa-solid fa-building"></i><span>' +
+                    escapeHtml(document.getElementById('espacio').value) + '</span></div>' +
+                    '<div class="confirm-details">' +
+                    '<p><span>Solicitante:</span> ' + escapeHtml(document.getElementById('solicitante').value) + '</p>' +
+                    '<p><span>Correo:</span> ' + escapeHtml(document.getElementById('correo').value) + '</p>' +
+                    '<p><span>Sigla del curso:</span> ' + escapeHtml(document.getElementById('sigla_curso').value) + '</p>' +
+                    '<p><span>Nombre del curso:</span> ' + escapeHtml(document.getElementById('nombre_curso').value) + '</p>';
+
+                if (repite) {
+                    detalles += '<p><span>Se repite:</span> Todos los ' + diaNombre(document.getElementById('numero_dia').value) + '</p>' +
+                        '<p><span>Desde:</span> ' + escapeHtml(document.getElementById('rango_inicio').value) + '</p>' +
+                        '<p><span>Hasta:</span> ' + escapeHtml(document.getElementById('rango_fin').value) + '</p>';
+                } else {
+                    detalles += '<p><span>Fecha:</span> ' + escapeHtml(document.getElementById('fecha').value) + '</p>';
+                }
+
+                detalles += '<p><span>Horario:</span> ' + horario + '</p>' +
+                    '</div>' +
+                    '<p>¿Confirma la creación de esta reserva?</p>';
+
+                // sendForm() abre a su vez otro recuadro de alertify (mensaje de
+                // éxito, o el chequeo de conflictos si la reserva se repite).
+                // alertify.js reutiliza internamente el mismo diálogo para
+                // "confirm", así que hay que esperar a que este se termine de
+                // cerrar antes de abrir el siguiente; si no, el segundo
+                // recuadro queda visualmente encima pero sin funcionar
+                // (el botón no hace nada y la reserva nunca se guarda).
+                alertify.confirm('Confirmar reserva',
+                    detalles,
+                    function () { setTimeout(function () { sendForm(form); }, 300); },
+                    function () { }
+                ).set({ transition: "zoom", closable: false, labels: { ok: 'Confirmar', cancel: 'Cancelar' } });
             }
 
             // Función para enviar la información al servidor
@@ -742,7 +977,9 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
                 }
             }
 
+            populateCourseDatalists();
             changeRepetition('no');
+            formatTimeOptions();
         </script>
 
         </html>

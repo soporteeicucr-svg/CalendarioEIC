@@ -1,0 +1,462 @@
+/* =========================================================================
+   Calendario de reservas (docente/calendario-reserva.php, luego tambien
+   administrativo): mismo lenguaje visual que el resto de la app (degradado
+   de fondo, tarjeta de vidrio), con pestañas modernas en vez del estilo
+   clásico de tabs, y el calendario (FullCalendar) restyleado para usar la
+   misma paleta de colores.
+   ========================================================================= */
+
+@font-face {
+  font-family: "CreatoDisplay";
+  src: url("../fonts/CreatoDisplay-Regular.otf") format("opentype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  --gradient-start: #8bb9e3;
+  --gradient-middle: #5886b0;
+  --gradient-end: #37546e;
+  --color-primary-500: #2f6fb3;
+  --color-primary-700: #123a6b;
+  --color-primary-800: #213242;
+  --color-primary-900: #43576a;
+
+  --color-gray-50: #f7f8fa;
+  --color-gray-100: #eef1f5;
+  --color-gray-300: #d4d9e0;
+  --color-gray-500: #8a93a3;
+  --color-gray-600: #5b6472;
+  --color-gray-700: #3d4451;
+
+  --color-danger: #b3261e;
+  --color-danger-dark: #8f1e18;
+
+  --radius-lg: 1rem;
+  --radius-sm: 10px;
+
+  --shadow-card: 0 24px 60px -12px rgba(8, 29, 56, 0.35), 0 4px 12px rgba(8, 29, 56, 0.08);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: "Segoe UI", Arial, sans-serif;
+  color: var(--color-gray-700);
+  background: linear-gradient(90deg, var(--gradient-start) 0%, var(--gradient-middle) 50%, var(--gradient-end) 100%);
+  padding: 40px 20px 56px;
+}
+
+.cal-header {
+  margin: 0 auto 28px;
+  max-width: 1180px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.cal-header-brand {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.cal-header-brand img {
+  height: 44px;
+  width: auto;
+}
+
+.cal-header h1 {
+  margin: 0;
+  font-family: "CreatoDisplay", "Segoe UI", Arial, sans-serif;
+  color: #fff;
+  font-size: clamp(20px, 2vw, 26px);
+}
+
+.btn-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1.5px solid rgba(255, 255, 255, 0.4);
+  border-radius: var(--radius-sm);
+  color: #fff;
+  font-weight: 600;
+  font-size: 14px;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+
+.btn-back:hover {
+  background: rgba(255, 255, 255, 0.22);
+  border-color: rgba(255, 255, 255, 0.6);
+  color: #fff;
+}
+
+/* -------------------------------------------------------------------------
+   Tarjeta principal
+   ------------------------------------------------------------------------- */
+
+.calendar-card {
+  max-width: 1180px;
+  margin: 0 auto;
+  background: rgba(255, 255, 255, 0.97);
+  -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  padding: 28px;
+}
+
+/* -------------------------------------------------------------------------
+   Pestañas (reemplaza el estilo clásico de .tab/.tablinks)
+   ------------------------------------------------------------------------- */
+
+.calendar-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 24px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--color-gray-300);
+}
+
+.cal-tab {
+  padding: 10px 18px;
+  border: 1.5px solid var(--color-gray-300);
+  border-radius: 999px;
+  background: #fff;
+  color: var(--color-gray-600);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: border-color 0.15s ease, color 0.15s ease, background 0.15s ease;
+}
+
+.cal-tab:hover {
+  border-color: var(--color-primary-500);
+  color: var(--color-primary-700);
+}
+
+.cal-tab.active {
+  background: var(--color-primary-800);
+  border-color: var(--color-primary-800);
+  color: #fff;
+}
+
+.tabcontent {
+  display: none;
+}
+
+.tabcontent.cal-fade {
+  animation: calFadeIn 0.4s ease;
+}
+
+@keyframes calFadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+/* -------------------------------------------------------------------------
+   FullCalendar: mismos botones y bloques de la propuesta (paleta primaria),
+   pero con las líneas internas de la cuadrícula en gris claro, como antes
+   (no negro).
+   ------------------------------------------------------------------------- */
+
+.fc {
+  --fc-border-color: #ededed;
+  /* La columna/celda de "hoy" viene amarilla por defecto; se cambia a un
+     azul suave de la misma paleta del resto de la app. */
+  --fc-today-bg-color: rgba(47, 111, 179, 0.2);
+}
+
+/* El tema "bootstrap" de FullCalendar dibuja tablas normales; sin esto,
+   el navegador les aplica su borde por defecto (gris oscuro/negro). */
+.fc table,
+.fc tbody,
+.fc td,
+.fc tfoot,
+.fc th,
+.fc thead,
+.fc tr {
+  border-color: #ededed !important;
+  border-style: solid;
+  border-width: 1px !important;
+}
+
+.fc .fc-toolbar-title {
+  color: var(--color-primary-800);
+  font-family: "CreatoDisplay", "Segoe UI", Arial, sans-serif;
+  font-size: 1.35rem;
+  font-weight: 700;
+}
+
+/* -------------------------------------------------------------------------
+   Barra de herramientas (prev/next/Hoy y el selector Semana/Mes): controles
+   en forma de píldora, a juego con las pestañas de arriba, en vez de los
+   botones cuadrados azules de Bootstrap por defecto.
+   (El tema "bootstrap" de esta versión de FullCalendar dibuja botones
+   normales de Bootstrap: clases "btn btn-primary" dentro de un "btn-group",
+   sin prefijo "fc-", por eso las reglas van sobre esas clases.)
+   ------------------------------------------------------------------------- */
+
+.fc .fc-toolbar {
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.fc .fc-toolbar .btn {
+  box-shadow: none !important;
+}
+
+/* Grupo prev/next: píldora conectada, en gris (son navegación secundaria) */
+.fc .fc-toolbar-chunk:first-child .btn-group {
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.fc .fc-toolbar-chunk:first-child .btn-group .btn.btn-primary {
+  background-color: var(--color-gray-100);
+  border-color: var(--color-gray-100);
+  color: var(--color-primary-800);
+}
+
+.fc .fc-toolbar-chunk:first-child .btn-group .btn.btn-primary:hover {
+  background-color: var(--color-gray-300);
+  border-color: var(--color-gray-300);
+}
+
+/* Hoy: píldora con borde, separada del grupo prev/next */
+.fc .fc-today-button.btn.btn-primary {
+  border-radius: 999px !important;
+  background-color: #fff !important;
+  border: 1.5px solid var(--color-gray-300) !important;
+  color: var(--color-primary-800) !important;
+  font-weight: 600;
+  padding: 6px 18px !important;
+}
+
+.fc .fc-today-button.btn.btn-primary:not(:disabled):hover {
+  border-color: var(--color-primary-500) !important;
+  color: var(--color-primary-700) !important;
+}
+
+.fc .fc-today-button.btn.btn-primary:disabled {
+  opacity: 0.5;
+}
+
+/* Semana/Mes: control segmentado (pista gris con la opción activa resaltada) */
+.fc .fc-toolbar-chunk:last-child .btn-group {
+  background: var(--color-gray-100);
+  padding: 4px;
+  border-radius: 999px;
+  gap: 2px;
+}
+
+.fc .fc-toolbar-chunk:last-child .btn-group .btn.btn-primary {
+  background: transparent;
+  border-color: transparent;
+  border-radius: 999px !important;
+  color: var(--color-gray-600);
+  padding: 6px 18px;
+}
+
+.fc .fc-toolbar-chunk:last-child .btn-group .btn.btn-primary:hover {
+  color: var(--color-primary-700);
+}
+
+.fc .fc-toolbar-chunk:last-child .btn-group .btn.btn-primary.active {
+  background: var(--color-primary-800);
+  border-color: var(--color-primary-800);
+  color: #fff;
+}
+
+.fc-event {
+  background-color: var(--color-primary-500);
+  border-color: var(--color-primary-500);
+}
+
+/* Barra de desplazamiento del cuerpo del calendario: delgada y sin las
+   flechitas de subir/bajar de a poco (con arrastrar el thumb o la rueda
+   del mouse ya alcanza; las flechas solo se ven anticuadas). */
+.fc-scroller::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+.fc-scroller::-webkit-scrollbar-button {
+  display: none;
+  width: 0;
+  height: 0;
+}
+
+.fc-scroller::-webkit-scrollbar-track {
+  background: var(--color-gray-100);
+}
+
+.fc-scroller::-webkit-scrollbar-thumb {
+  background: var(--color-gray-300);
+  border-radius: 999px;
+}
+
+.fc-scroller::-webkit-scrollbar-thumb:hover {
+  background: var(--color-gray-500);
+}
+
+/* -------------------------------------------------------------------------
+   Modal de detalles de reservación
+   ------------------------------------------------------------------------- */
+
+#event-details-modal .modal-content {
+  border: none;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-card);
+}
+
+#event-details-modal .modal-header {
+  background: var(--color-primary-800);
+  color: #fff;
+  border-bottom: none;
+  padding: 20px 24px;
+}
+
+#event-details-modal .modal-header .modal-title {
+  font-family: "CreatoDisplay", "Segoe UI", Arial, sans-serif;
+  font-weight: 700;
+}
+
+#event-details-modal .modal-body {
+  padding: 24px;
+}
+
+#event-details-modal .cal-modal-info {
+  margin: 0;
+}
+
+#event-details-modal .cal-modal-info dt {
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  color: var(--color-gray-500);
+  margin-top: 16px;
+}
+
+#event-details-modal .cal-modal-info dt:first-child {
+  margin-top: 0;
+}
+
+#event-details-modal .cal-modal-info dd {
+  margin: 2px 0 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--color-gray-700);
+}
+
+#event-details-modal .cal-modal-info dd#title {
+  font-size: 19px;
+  color: var(--color-primary-800);
+}
+
+#event-details-modal .modal-footer {
+  border-top: 1px solid var(--color-gray-300);
+  padding: 16px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+#event-details-modal .cal-modal-reserveid {
+  margin: 0;
+  font-size: 12px;
+  color: var(--color-gray-500);
+}
+
+#event-details-modal .cal-modal-actions {
+  display: flex;
+  gap: 10px;
+}
+
+#event-details-modal .cal-modal-close {
+  padding: 9px 24px;
+  border: none;
+  border-radius: 999px;
+  background: var(--color-gray-100);
+  color: var(--color-gray-700);
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+#event-details-modal .cal-modal-close:hover {
+  background: var(--color-gray-300);
+}
+
+#event-details-modal .cal-modal-danger {
+  padding: 9px 24px;
+  border: none;
+  border-radius: 999px;
+  background: var(--color-danger);
+  color: #fff;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+#event-details-modal .cal-modal-danger:hover {
+  background: var(--color-danger-dark);
+}
+
+/* Botón para cancelar toda la serie repetida: mismo lenguaje que
+   .cal-modal-danger pero con contorno, para diferenciarlo del que cancela
+   solo la instancia actual. */
+#event-details-modal .cal-modal-danger-outline {
+  padding: 8px 22px;
+  border: 1.5px solid var(--color-danger);
+  border-radius: 999px;
+  background: #fff;
+  color: var(--color-danger);
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+#event-details-modal .cal-modal-danger-outline:hover {
+  background: var(--color-danger);
+  color: #fff;
+}
+
+/* -------------------------------------------------------------------------
+   Responsive
+   ------------------------------------------------------------------------- */
+
+@media screen and (max-width: 680px) {
+  .calendar-card {
+    padding: 18px;
+  }
+}

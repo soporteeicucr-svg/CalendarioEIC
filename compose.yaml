@@ -1,0 +1,44 @@
+name: registro
+
+services:
+  web:
+    build:
+      context: .
+    env_file: .env
+    ports:
+      - "0.0.0.0:8083:80"
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: unless-stopped
+    networks: [registro_net]
+
+  db:
+    image: mariadb:11
+    environment:
+      MARIADB_DATABASE: ${DB_NAME}
+      MARIADB_USER: ${DB_USER}
+      MARIADB_PASSWORD: ${DB_PASSWORD}
+      MARIADB_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+    volumes:
+      - db_data:/var/lib/mysql
+      # Solo aplica en un volumen nuevo/vacio (imagen oficial de MariaDB):
+      # crea el esquema la primera vez que se levanta el contenedor.
+      # La migracion real de datos de produccion (Fase 3) reemplaza esto
+      # por un restore del dump real.
+      - ./shared/utils/db-script.sql:/docker-entrypoint-initdb.d/01-schema.sql:ro
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      interval: 5s
+      timeout: 5s
+      retries: 40
+    restart: unless-stopped
+    networks: [registro_net]
+    # Sin "ports": la BD solo es alcanzable dentro de registro_net, igual
+    # que el resto de apps de esta VM.
+
+networks:
+  registro_net:
+
+volumes:
+  db_data:

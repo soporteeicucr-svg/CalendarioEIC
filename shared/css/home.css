@@ -1,17 +1,128 @@
+/* =========================================================================
+   Paneles internos (docente/inicio.php, administrativo/inicio.php): mismo
+   lenguaje visual que login.css (degradado de fondo, tarjetas de vidrio,
+   botón primario), aplicado sobre las bootstrap cards existentes sin
+   cambiar su acomodo.
+   ========================================================================= */
+
+@font-face {
+  font-family: "CreatoDisplay";
+  src: url("../fonts/CreatoDisplay-Regular.otf") format("opentype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  --gradient-start: #8bb9e3;
+  --gradient-middle: #5886b0;
+  --gradient-end: #37546e;
+  --color-primary-500: #2f6fb3;
+  --color-primary-700: #123a6b;
+  --color-primary-800: #213242;
+  --color-primary-900: #43576a;
+
+  --color-gray-300: #d4d9e0;
+  --color-gray-500: #8a93a3;
+  --color-gray-700: #3d4451;
+
+  --color-danger: #b3261e;
+  --color-danger-dark: #8f1e18;
+
+  --radius-lg: 1rem;
+  --radius-sm: 10px;
+
+  --shadow-card: 0 24px 60px -12px rgba(8, 29, 56, 0.35), 0 4px 12px rgba(8, 29, 56, 0.08);
+}
+
+* {
+  box-sizing: border-box;
+}
+
 .center {
   margin: auto;
-  width: 50%;
+  max-width: 640px;
   padding: 10px;
   text-align: center;
 }
 
+.center img {
+  max-width: 210px;
+  height: auto;
+  margin-bottom: 14px;
+  border-radius: var(--radius-sm);
+}
+
 body {
-  font-family: Arial, sans-serif;
-  background-color: #f2f2f2;
-  padding: 20px;
+  margin: 0;
+  min-height: 100vh;
+  font-family: "Segoe UI", Arial, sans-serif;
+  color: var(--color-gray-700);
+  background: linear-gradient(90deg, var(--gradient-start) 0%, var(--gradient-middle) 50%, var(--gradient-end) 100%);
+  padding: 40px 20px;
 }
 
 h1 {
   text-align: center;
-  margin-bottom: 25px;
+  margin-bottom: 32px;
+  font-family: "CreatoDisplay", "Segoe UI", Arial, sans-serif;
+  color: #fff;
+  font-size: clamp(22px, 2.2vw, 28px);
+}
+
+/* -------------------------------------------------------------------------
+   Bootstrap cards -> tarjetas de vidrio (mismo look que el login)
+   ------------------------------------------------------------------------- */
+
+.card {
+  background: rgba(255, 255, 255, 0.95) !important;
+  -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.6) !important;
+  border-radius: var(--radius-lg) !important;
+  box-shadow: var(--shadow-card);
+  overflow: hidden;
+}
+
+.card-header {
+  background: transparent !important;
+  border-bottom: 1px solid var(--color-gray-300) !important;
+  color: var(--color-primary-800);
+}
+
+.card-title {
+  color: var(--color-gray-700);
+}
+
+/* -------------------------------------------------------------------------
+   Botones bootstrap -> mismo color primario que el login
+   ------------------------------------------------------------------------- */
+
+.btn {
+  border-radius: var(--radius-sm) !important;
+  font-weight: 600;
+}
+
+.btn-primary {
+  background-color: var(--color-primary-800) !important;
+  border-color: var(--color-primary-800) !important;
+}
+
+.btn-primary:hover {
+  background-color: var(--color-primary-900) !important;
+  border-color: var(--color-primary-900) !important;
+}
+
+.btn-danger {
+  background-color: var(--color-danger) !important;
+  border-color: var(--color-danger) !important;
+}
+
+.btn-danger:hover {
+  background-color: var(--color-danger-dark) !important;
+  border-color: var(--color-danger-dark) !important;
+}
+
+.spacingLogout {
+  margin-top: 40px;
 }

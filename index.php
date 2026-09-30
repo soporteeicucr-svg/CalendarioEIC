@@ -1,16 +1,12 @@
 <?php
-include 'shared/utils/variables.php';
-
+// La app vive en la raíz de su propio (sub)dominio (sin prefijo /registro),
+// así que el redirect es siempre al mismo origen + /inicio.php.
 if (!empty($_SERVER['HTTPS']) && ('on' == $_SERVER['HTTPS'])) {
 	$uri = 'https://';
 } else {
 	$uri = 'http://';
 }
-if ($_SERVER['HTTP_HOST'] == 'localhost') {
-	$uri .= $_SERVER['HTTP_HOST'] . $rootDir;
-} else {
-	$uri .= $_SERVER['HTTP_HOST'];
-}
+$uri .= $_SERVER['HTTP_HOST'];
 header('Location: ' . $uri . '/inicio.php');
 exit;
 ?>

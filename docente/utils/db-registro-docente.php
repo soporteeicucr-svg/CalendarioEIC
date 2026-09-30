@@ -19,7 +19,7 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
         $stmt->close();
         $conn->close();
         if ($_POST['continue'] == 'yes') {
-            header("Location: ../inicio.php");
+            header("Location: ../registro/inicio.php");
         } else {
             header("Location: ../../shared/cerrar-sesion.php");
         }

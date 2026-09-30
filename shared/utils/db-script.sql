@@ -32,6 +32,41 @@ CREATE TABLE `cursos` (
   `nombre_curso` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Datos de ejemplo para la tabla `cursos` (para poder probar el
+-- formulario de registro de docentes)
+--
+
+INSERT INTO `cursos` (`sigla_curso`, `nombre_curso`) VALUES
+('IC-0101', 'Introducción a la Ingeniería Civil'),
+('IC-0402', 'Mecánica de Materiales'),
+('IC-0512', 'Hidráulica'),
+('IC-0621', 'Estructuras de Concreto'),
+('IC-0714', 'Geotecnia'),
+('IC-9500', 'Proyecto de Graduación');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `espacios` (catálogo de salas y
+-- laboratorios reservables, editable desde administrativo/gestionar-catalogos.php)
+--
+
+CREATE TABLE `espacios` (
+  `nombre` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+INSERT INTO `espacios` (`nombre`) VALUES
+('Laboratorio 1'),
+('Laboratorio 2'),
+('Laboratorio 3'),
+('Aula PEC'),
+('Sala Interna'),
+('Sala Externa'),
+('Aula 413'),
+('Aula 414'),
+('Aula 415');
+
 -- --------------------------------------------------------
 
 --
@@ -47,8 +82,13 @@ CREATE TABLE `lista_horarios` (
   `correo` varchar(255) NOT NULL,
   `hora_inicio` datetime NOT NULL,
   `hora_fin` datetime DEFAULT NULL,
-  `estado` varchar(255) NOT NULL
+  `estado` varchar(255) NOT NULL,
+  `serie_id` varchar(64) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- serie_id agrupa las reservaciones creadas en conjunto como una serie
+-- repetida (crear-reserva.php, opcion de repetir reserva); NULL en una
+-- reservacion individual. Permite cancelar toda la serie de una vez.
 
 -- --------------------------------------------------------
 
@@ -133,6 +173,12 @@ CREATE TABLE `usuarios_estudiantes` (
 --
 ALTER TABLE `cursos`
   ADD PRIMARY KEY (`sigla_curso`);
+
+--
+-- Indices de la tabla `espacios`
+--
+ALTER TABLE `espacios`
+  ADD PRIMARY KEY (`nombre`);
 
 --
 -- Indices de la tabla `lista_horarios`

@@ -4,6 +4,7 @@
 <?php
 include '../shared/utils/db-conn.php';
 include '../shared/utils/translate-date.php';
+include '../shared/utils/get-spaces.php';
 
 session_start();
 
@@ -14,14 +15,14 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
         <head>
             <meta charset='UTF-8'>
             <meta http-equiv='X-UA-Compatible' content='IE=edge'>
-            <title>Calendario de reservas para docentes</title>
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Calendario EIC</title>
             <link rel='stylesheet' type='text/css' href='../shared/lib/alertify/css/alertify.css'>
             <link rel='stylesheet' type='text/css' href='../shared/lib/alertify/css/themes/bootstrap.css'>
             <link rel='stylesheet' type='text/css' href='../shared/lib/bootstrap/bootstrap.min.css'>
             <link rel='stylesheet' type='text/css' href='../shared/lib/fontawesome/css/all.css'>
             <link rel='stylesheet' type='text/css' href='../shared/lib/fullcalendar/lib/main.min.css'>
-            <link rel='stylesheet' type='text/css' href='../shared/css/reserva.css'>
-            <link rel='stylesheet' type='text/css' href='../shared/css/tabs.css'>
+            <link rel='stylesheet' type='text/css' href='../shared/css/calendario.css'>
             <script src='../shared/lib/alertify/alertify.min.js'></script>
             <script src='../shared/lib/bootstrap/bootstrap.min.js'></script>
             <script src='../shared/lib/fullcalendar/index.global.min.js'></script>
@@ -29,90 +30,58 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
             <script src='../shared/lib/jquery/jquery-3.6.0.min.js'></script>
         </head>
 
-        <body class="bg-light">
-            <nav class="navbar navbar-expand-lg navbar-dark bg-gradient bg-primary" id="topNavBar">
-                <div class="container">
-                    <a class="navbar-brand">
-                        Escuela de Ingeniería Civil
-                    </a>
-                    <div>
-                        <button class="buttonHome" onclick="location.href='inicio.php'">Inicio</button>
-                    </div>
+        <body>
+            <div class="cal-header">
+                <div class="cal-header-brand">
+                    <img src="../shared/img/EIC.png" alt="Logo Escuela de Ingeniería Civil UCR">
+                    <h1>Calendario de reservas</h1>
                 </div>
-            </nav>
-            <div class="container py-3" id="page-container">
-                <div class="row">
-                    <div class="col-md-14">
+                <button type="button" class="btn-back" onclick="location.href='inicio.php'">
+                    <i class="fa-solid fa-arrow-left"></i> Inicio
+                </button>
+            </div>
 
-                        <!-- Tabs -->
-                        <div class="tab d-flex justify-content-center">
-                            <button class="tablinks" onclick="openCalendar(event, 'Laboratorio 1')" id="defaultOpen">Laboratorio
-                                1</button>
-                            <button class="tablinks" onclick="openCalendar(event, 'Laboratorio 2')">Laboratorio 2</button>
-                            <button class="tablinks" onclick="openCalendar(event, 'Laboratorio 3')">Laboratorio 3</button>
-                            <button class="tablinks" onclick="openCalendar(event, 'Aula PEC')">Aula PEC (visto bueno)</button>
-                            <button class="tablinks" onclick="openCalendar(event, 'Sala Interna')">Sala Interna (visto
-                                bueno)</button>
-                            <button class="tablinks" onclick="openCalendar(event, 'Sala Externa')">Sala Externa</button>
-                        </div>
-
-                        <!-- Contenido de las tabs -->
-                        <!-- Elementos donde se insertan los calendarios cuando se renderizan -->
-                        <div id="Laboratorio 1" class="tabcontent">
-                            <div id="calendar Laboratorio 1"></div>
-                        </div>
-
-                        <div id="Laboratorio 2" class="tabcontent">
-                            <div id="calendar Laboratorio 2"></div>
-                        </div>
-
-                        <div id="Laboratorio 3" class="tabcontent">
-                            <div id="calendar Laboratorio 3"></div>
-                        </div>
-
-                        <div id="Aula PEC" class="tabcontent">
-                            <div id="calendar Aula PEC"></div>
-                        </div>
-
-                        <div id="Sala Interna" class="tabcontent">
-                            <div id="calendar Sala Interna"></div>
-                        </div>
-
-                        <div id="Sala Externa" class="tabcontent">
-                            <div id="calendar Sala Externa"></div>
-                        </div>
-
-                    </div>
+            <div class="calendar-card">
+                <!-- Pestañas: una por cada espacio del catálogo
+                     (administrativo/gestionar-catalogos.php) -->
+                <div class="calendar-tabs">
+                    <?php foreach ($spaces as $i => $espacio) { ?>
+                        <button class="cal-tab" onclick="openCalendar(event, '<?php echo htmlspecialchars($espacio, ENT_QUOTES); ?>')"
+                            <?php echo $i == 0 ? 'id="defaultOpen"' : ''; ?>><?php echo htmlspecialchars($espacio); ?></button>
+                    <?php } ?>
                 </div>
+
+                <!-- Contenido de las tabs -->
+                <!-- Elementos donde se insertan los calendarios cuando se renderizan -->
+                <?php foreach ($spaces as $espacio) { ?>
+                    <div id="<?php echo htmlspecialchars($espacio, ENT_QUOTES); ?>" class="tabcontent cal-fade">
+                        <div id="calendar <?php echo htmlspecialchars($espacio, ENT_QUOTES); ?>"></div>
+                    </div>
+                <?php } ?>
             </div>
 
             <!-- Modal con información que se muestra al hacer click en una reservación -->
             <div class="modal fade" tabindex="-1" data-bs-backdrop="static" id="event-details-modal">
                 <div class="modal-dialog modal-dialog-centered">
-                    <div class="modal-content rounded-3">
-                        <div class="modal-header rounded-0">
+                    <div class="modal-content">
+                        <div class="modal-header">
                             <h5 class="modal-title">Detalles de reservación</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                                aria-label="Close"></button>
                         </div>
-                        <div class="modal-body rounded-0">
-                            <div class="container-fluid">
-                                <dl>
-                                    <dt class="text-muted">Información</dt>
-                                    <dd id="title" class="fw-bold fs-4"></dd>
-                                    <dt class="text-muted">Inicio</dt>
-                                    <dd id="start" class=""></dd>
-                                    <dt class="text-muted">Finalización</dt>
-                                    <dd id="end" class=""></dd>
-                                </dl>
-                            </div>
+                        <div class="modal-body">
+                            <dl class="cal-modal-info">
+                                <dt>Información</dt>
+                                <dd id="title"></dd>
+                                <dt>Inicio</dt>
+                                <dd id="start"></dd>
+                                <dt>Finalización</dt>
+                                <dd id="end"></dd>
+                            </dl>
                         </div>
-                        <div class="modal-footer rounded-0">
-                            <div class="text-end">
-
-                                <!-- Botón para cerrar el modal -->
-                                <button type="button" class="btn btn-secondary btn-sm rounded-3"
-                                    data-bs-dismiss="modal">Cerrar</button>
-                            </div>
+                        <div class="modal-footer">
+                            <!-- Botón para cerrar el modal -->
+                            <button type="button" class="cal-modal-close" data-bs-dismiss="modal">Cerrar</button>
                         </div>
                     </div>
                 </div>
@@ -135,8 +104,8 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
             ?>
         </body>
         <script>
-            var scheds = $.parseJSON('<?= json_encode($sched_res) ?>');
-            var calendarNames = ["Laboratorio 1", "Laboratorio 2", "Laboratorio 3", "Aula PEC", "Sala Interna", "Sala Externa"];
+            var scheds = <?= json_encode($sched_res, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) ?>;
+            var calendarNames = <?= json_encode($spaces, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) ?>;
             var calendars = [];
 
             // Carga de reservaciones en el calendario
@@ -166,6 +135,8 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
                     initialView: 'timeGridWeek',
                     slotMinTime: "07:00:00",
                     slotMaxTime: "22:00:00",
+                    slotLabelFormat: { hour: 'numeric', minute: '2-digit', hour12: true },
+                    eventTimeFormat: { hour: 'numeric', minute: '2-digit', hour12: true },
                     allDaySlot: false,
                     expandRows: true,
                     selectable: true,
@@ -206,8 +177,8 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
                     tabcontent[i].style.display = "none";
                 }
 
-                // Busca todos los elementos con class="tablinks" y borra la class "active"
-                tablinks = document.getElementsByClassName("tablinks");
+                // Busca todos los elementos con class="cal-tab" y borra la class "active"
+                tablinks = document.getElementsByClassName("cal-tab");
                 for (i = 0; i < tablinks.length; i++) {
                     tablinks[i].className = tablinks[i].className.replace(" active", "");
                 }

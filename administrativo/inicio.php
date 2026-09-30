@@ -11,7 +11,7 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
         <head>
             <meta charset='UTF-8'>
             <meta http-equiv='X-UA-Compatible' content='ie=edge'>
-            <title>Sistema de reservas administrativo</title>
+            <title>Calendario EIC</title>
             <link rel='stylesheet' type='text/css' href='../shared/lib/bootstrap/bootstrap.min.css'>
             <link rel='stylesheet' type='text/css' href='../shared/css/home.css'>
             <script src='../shared/lib/jquery/jquery-3.6.0.min.js'></script>
@@ -21,8 +21,8 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
         <body>
             <div>
                 <div class="center">
-                    <img src="../shared/img/logoEIC.png" alt="Logo Escuela de Ingeniería Civil UCR">
-                    <h1>Sistema administrativo de reserva de espacios</h1>
+                    <img src="../shared/img/EIC.png" alt="Logo Escuela de Ingeniería Civil UCR">
+                    <h1>Sistema Registro Laboratorios</h1>
                 </div>
 
                 <!-- Botones con bootstrap cards -->
@@ -44,24 +44,6 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
                                 </div>
                                 <div class="card-footer">
                                     <a href="registro-accesos.php" class="btn btn-primary">Ver lista</a>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Card de solicitudes de reserva -->
-                        <div class="col-md-3">
-                            <div class="card w-100 h-100">
-                                <div class="card-header">
-                                    <h3 class="mb-0">Solicitudes de reserva</h3>
-                                </div>
-                                <div class="card-body card-body d-flex justify-content-center align-content-between flex-wrap">
-                                    <div class="w-100">
-                                        <h4 class="card-title">Solicitudes de reserva de espacio</h4>
-                                    </div>
-                                    <img class="img-fluid" width="50%" src="../shared/img/formulario.png" alt="Formulario">
-                                </div>
-                                <div class="card-footer">
-                                    <a href="administrar-solicitudes.php" class="btn btn-primary">Administrar solicitudes</a>
                                 </div>
                             </div>
                         </div>
@@ -101,8 +83,26 @@ if (isset($_SESSION['usuario']) && isset($_SESSION['tipo'])) {
                                 </div>
                             </div>
                         </div>
+
+                        <!-- Card de gestión de cursos y salas -->
+                        <div class="col-md-3">
+                            <div class="card w-100 h-100">
+                                <div class="card-header">
+                                    <h3 class="mb-0">Gestión de cursos y salas</h3>
+                                </div>
+                                <div class="card-body card-body d-flex justify-content-center align-content-between flex-wrap">
+                                    <div class="w-100">
+                                        <h4 class="card-title">Agregar cursos y salas/laboratorios</h4>
+                                    </div>
+                                    <img class="img-fluid" width="50%" src="../shared/img/formulario.png" alt="Formulario">
+                                </div>
+                                <div class="card-footer">
+                                    <a href="gestionar-catalogos.php" class="btn btn-primary">Gestionar</a>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="row d-flex justify-content-center">
+                    <div class="row d-flex justify-content-center spacingLogout">
                         <div class="center">
                             <button id="btn3" onclick="location.href='../shared/cerrar-sesion.php'"
                                 class="btn btn-danger">Cerrar sesión</button>
